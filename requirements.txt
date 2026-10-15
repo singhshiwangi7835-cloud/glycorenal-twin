@@ -1,0 +1,28 @@
+# Python 3.11 (on Windows ARM laptops use the x64 build; see README)
+# core
+pandas==3.0.6
+numpy==2.4.6
+scikit-learn==1.9.1
+xgboost==3.2.0
+joblib==1.6.0
+pyyaml==6.0.3
+# api
+fastapi==0.143.1
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+pydantic==2.14.1
+pydantic-settings==2.16.0
+sqlmodel==0.0.48
+bcrypt==5.0.0
+python-jose[cryptography]==3.5.0
+httpx==0.28.1
+requests==2.34.2
+apscheduler==3.11.2
+# frontend
+streamlit==1.66.0
+plotly==7.1.0
+# fhir, llm, pdf
+fhir.resources==8.2.0
+openai==2.21.0
+fpdf2==2.8.6
+uharfbuzz==0.53.0

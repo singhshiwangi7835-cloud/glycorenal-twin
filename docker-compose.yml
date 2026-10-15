@@ -1,0 +1,37 @@
+# Start everything:  docker compose up --build
+#   API docs          http://localhost:8000/docs
+#   Hospital view     http://localhost:8501
+#   Patient app       http://localhost:8502
+services:
+  api:
+    build: .
+    image: glycorenal-twin:latest
+    ports: ["8000:8000"]
+    env_file:
+      - path: .env
+        required: false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  hospital:
+    image: glycorenal-twin:latest
+    command: streamlit run dashboards/hospital.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    ports: ["8501:8501"]
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+  patient:
+    image: glycorenal-twin:latest
+    command: streamlit run dashboards/patient.py --server.port 8502 --server.address 0.0.0.0 --server.headless true
+    ports: ["8502:8502"]
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy

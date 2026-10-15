@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.xpt binary
+*.zip binary
+*.ttf binary
+*.png binary
+*.joblib binary

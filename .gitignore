@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# secrets
+.env
+
+# data: raw datasets are downloaded by scripts/download_data.py, never pushed
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# trained models (rebuilt by scripts/train.py)
+models/*.joblib
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.venv/
