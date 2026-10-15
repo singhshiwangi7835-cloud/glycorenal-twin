@@ -19,5 +19,5 @@ COPY . .
 # train Model 1 at build time so containers start instantly
 RUN python scripts/train.py
 
-EXPOSE 8000 8501 8502
+EXPOSE 8000 8501
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

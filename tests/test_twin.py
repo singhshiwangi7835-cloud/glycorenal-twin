@@ -1,13 +1,9 @@
-from fastapi.testclient import TestClient
+"""Tests for the legacy v0.1 twin (in-memory demo patients), kept until FAST TRACK step 3."""
 
-from api.main import app
 from src.demo_patients import DEMO_BY_ID
 from src.model2_treatment.advisor import eligibility
 from src.patient_state.builder import build_state
-from src.twin import run_twin
-
-client = TestClient(app)
-
+from src.twin.loop import run_twin
 
 def test_twin_runs_for_all_demo_patients():
     for p in DEMO_BY_ID.values():
@@ -32,17 +28,17 @@ def test_eligibility_rules():
     assert any("Sulfonylurea" in w for w in warnings)
 
 
-def test_patient_never_sees_drug_options():
-    v = client.get("/patients/IND-0107/patient-view").json()
+def test_patient_never_sees_drug_options(client):
+    v = client.get("/legacy/patients/IND-0107/patient-view").json()
     assert all(o["kind"] == "lifestyle" for o in v["lifestyle_options"])
     assert "recommendation" not in v
 
 
-def test_api_endpoints():
+def test_legacy_api_endpoints(client):
     assert client.get("/health").json()["status"] == "ok"
-    rows = client.get("/patients").json()
+    rows = client.get("/legacy/patients").json()
     assert len(rows) == 5
     assert rows[0]["dkd_risk_3y"] >= rows[-1]["dkd_risk_3y"]
-    assert client.get("/patients/NOPE/twin").status_code == 404
-    r = client.post("/patients/IND-0042/ask", json={"question": "why?", "mode": "doctor"})
+    assert client.get("/legacy/patients/NOPE/twin").status_code == 404
+    r = client.post("/legacy/patients/IND-0042/ask", json={"question": "why?", "mode": "doctor"})
     assert r.status_code == 200 and r.json()["answer"]

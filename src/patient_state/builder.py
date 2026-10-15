@@ -12,9 +12,10 @@ from typing import Optional
 import numpy as np
 from pydantic import BaseModel, Field
 
-from src.pipeline.cgm import cgm_metrics
-from src.pipeline.egfr import egfr_ckd_epi_2021, egfr_slope_per_year
-from src.pipeline.kdigo import kdigo_stage
+from src.clinical.cgm_metrics import cgm_metrics
+from src.clinical.egfr import egfr_ckd_epi_2021, egfr_slope_per_year
+from src.clinical.kdigo import kdigo_stage
+from src.clinical.rules import clinical_rules
 
 DRUG_CLASSES = {
     "metformin": ["metformin"],
@@ -77,12 +78,20 @@ def med_flags(meds: list[str]) -> dict[str, int]:
 
 
 def _freshness(labs: Labs, today: date) -> list[str]:
+    fr = clinical_rules()["freshness"]
     flags = []
-    if labs.uacr_date and (today - labs.uacr_date).days > 365:
+    if labs.uacr_date and (today - labs.uacr_date).days > fr["uacr_max_days"]:
         flags.append("UACR older than 12 months")
-    if labs.hba1c_date and (today - labs.hba1c_date).days > 120:
-        flags.append("HbA1c older than 4 months")
+    if labs.hba1c_date and (today - labs.hba1c_date).days > fr["hba1c_max_days"]:
+        flags.append("HbA1c older than 6 months")
     return flags
+
+
+def bp_on_target(sbp: float, dbp: float, uacr: float) -> bool:
+    """BP target is stricter with albuminuria (UACR >= 30 mg/g); values in clinical_rules.yaml."""
+    t = clinical_rules()["targets"]
+    key = "bp_with_albuminuria" if uacr >= 30 else "bp_without_albuminuria"
+    return sbp < t[key]["systolic_below"] and dbp < t[key]["diastolic_below"]
 
 
 def build_state(p: PatientInput, today: Optional[date] = None) -> dict:
@@ -99,8 +108,8 @@ def build_state(p: PatientInput, today: Optional[date] = None) -> dict:
         "kdigo_colour": kd["colour"],
         "has_ckd": kd["has_ckd"],
         "egfr_slope_per_year": egfr_slope_per_year(p.labs.egfr_history),
-        "bp_on_target": p.vitals.sbp < 130 and p.vitals.dbp < 80,
-        "hba1c_on_target": p.labs.hba1c < 7.0,
+        "bp_on_target": bp_on_target(p.vitals.sbp, p.vitals.dbp, p.labs.uacr),
+        "hba1c_on_target": p.labs.hba1c < clinical_rules()["targets"]["hba1c_pct_below"],
         "freshness_flags": _freshness(p.labs, today),
     }
 

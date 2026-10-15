@@ -14,8 +14,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from src.pipeline.egfr import egfr_ckd_epi_2021
-from src.pipeline.kdigo import kdigo_stage
+from src.clinical.egfr import egfr_ckd_epi_2021
+from src.clinical.kdigo import kdigo_stage
 
 CALIBRATION = {
     "age_mean": 54, "age_sd": 10,

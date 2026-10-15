@@ -1,0 +1,60 @@
+food,food_hi,serving,serving_g,carbs_g,gi_category,group,source,verified
+Steamed white rice,सफ़ेद चावल,1 katori (cooked),150,42,high,cereal,approx; verify vs IFCT 2017,false
+Brown rice,ब्राउन राइस,1 katori (cooked),150,35,medium,cereal,approx; verify vs IFCT 2017,false
+Jeera rice,जीरा राइस,1 katori,150,45,high,cereal,approx; verify vs IFCT 2017,false
+Vegetable biryani,वेज बिरयानी,1 plate,250,70,high,cereal,approx; verify vs IFCT 2017,false
+Chicken biryani,चिकन बिरयानी,1 plate,250,60,high,cereal,approx; verify vs IFCT 2017,false
+Lemon rice,लेमन राइस,1 katori,150,45,high,cereal,approx; verify vs IFCT 2017,false
+Curd rice,दही चावल,1 katori,200,40,medium,cereal,approx; verify vs IFCT 2017,false
+Khichdi,खिचड़ी,1 katori,200,35,medium,cereal,approx; verify vs IFCT 2017,false
+Chapati (whole wheat),चपाती,1 medium,40,18,medium,cereal,approx; verify vs IFCT 2017,false
+Phulka,फुलका,1 small,30,14,medium,cereal,approx; verify vs IFCT 2017,false
+Plain paratha,सादा पराठा,1 piece,60,25,medium,cereal,approx; verify vs IFCT 2017,false
+Aloo paratha,आलू पराठा,1 piece,100,38,high,cereal,approx; verify vs IFCT 2017,false
+Puri,पूरी,1 piece,25,10,high,cereal,approx; verify vs IFCT 2017,false
+Naan,नान,1 piece,90,45,high,cereal,approx; verify vs IFCT 2017,false
+Bajra roti,बाजरे की रोटी,1 piece,50,25,medium,millet,approx; verify vs IFCT 2017,false
+Jowar roti,ज्वार की रोटी,1 piece,50,24,medium,millet,approx; verify vs IFCT 2017,false
+Ragi mudde,रागी मुद्दे,1 ball,100,35,high,millet,approx; verify vs IFCT 2017,false
+Idli,इडली,1 piece,40,8,high,south_indian,approx; verify vs IFCT 2017,false
+Plain dosa,सादा डोसा,1 piece,80,28,medium,south_indian,approx; verify vs IFCT 2017,false
+Masala dosa,मसाला डोसा,1 piece,150,45,high,south_indian,approx; verify vs IFCT 2017,false
+Uttapam,उत्तपम,1 piece,100,30,medium,south_indian,approx; verify vs IFCT 2017,false
+Medu vada,मेदु वड़ा,1 piece,40,12,medium,south_indian,approx; verify vs IFCT 2017,false
+Upma,उपमा,1 katori,150,30,medium,breakfast,approx; verify vs IFCT 2017,false
+Poha,पोहा,1 katori,150,35,medium,breakfast,approx; verify vs IFCT 2017,false
+Moong dal chilla,मूंग दाल चीला,1 piece,70,15,low,breakfast,approx; verify vs IFCT 2017,false
+Besan chilla,बेसन चीला,1 piece,70,15,low,breakfast,approx; verify vs IFCT 2017,false
+Dhokla,ढोकला,2 pieces,80,20,medium,snack,approx; verify vs IFCT 2017,false
+Sambar,सांभर,1 katori,150,12,low,dal,approx; verify vs IFCT 2017,false
+Toor dal,अरहर दाल,1 katori,150,15,low,dal,approx; verify vs IFCT 2017,false
+Rajma curry,राजमा,1 katori,150,20,low,dal,approx; verify vs IFCT 2017,false
+Chole,छोले,1 katori,150,25,low,dal,approx; verify vs IFCT 2017,false
+Sprouts salad,अंकुरित सलाद,1 katori,100,12,low,dal,approx; verify vs IFCT 2017,false
+Paneer curry,पनीर सब्ज़ी,1 katori,150,8,low,vegetable,approx; verify vs IFCT 2017,false
+Palak paneer,पालक पनीर,1 katori,150,8,low,vegetable,approx; verify vs IFCT 2017,false
+Mixed vegetable sabzi,मिक्स सब्ज़ी,1 katori,150,12,low,vegetable,approx; verify vs IFCT 2017,false
+Aloo sabzi,आलू की सब्ज़ी,1 katori,150,25,high,vegetable,approx; verify vs IFCT 2017,false
+Bhindi sabzi,भिंडी की सब्ज़ी,1 katori,150,10,low,vegetable,approx; verify vs IFCT 2017,false
+Chicken curry,चिकन करी,1 katori,150,6,low,non_veg,approx; verify vs IFCT 2017,false
+Fish curry,मछली करी,1 katori,150,5,low,non_veg,approx; verify vs IFCT 2017,false
+Boiled egg,उबला अंडा,1 egg,50,0.5,low,non_veg,approx; verify vs IFCT 2017,false
+Curd (dahi),दही,1 katori,100,4,low,dairy,approx; verify vs IFCT 2017,false
+Raita,रायता,1 katori,100,5,low,dairy,approx; verify vs IFCT 2017,false
+Milk,दूध,1 glass,200,10,low,dairy,approx; verify vs IFCT 2017,false
+Tea with milk and sugar,चाय (चीनी के साथ),1 cup,150,10,medium,beverage,approx; verify vs IFCT 2017,false
+Sweet lassi,मीठी लस्सी,1 glass,250,30,medium,beverage,approx; verify vs IFCT 2017,false
+Sugarcane juice,गन्ने का रस,1 glass,250,50,high,beverage,approx; verify vs IFCT 2017,false
+Coconut water,नारियल पानी,1 glass,250,9,low,beverage,approx; verify vs IFCT 2017,false
+Banana,केला,1 medium,100,23,medium,fruit,approx; verify vs IFCT 2017,false
+Apple,सेब,1 medium,150,20,low,fruit,approx; verify vs IFCT 2017,false
+Mango,आम,1 cup,150,23,medium,fruit,approx; verify vs IFCT 2017,false
+Guava,अमरूद,1 medium,100,14,low,fruit,approx; verify vs IFCT 2017,false
+Papaya,पपीता,1 cup,150,16,medium,fruit,approx; verify vs IFCT 2017,false
+Samosa,समोसा,1 piece,60,25,high,snack,approx; verify vs IFCT 2017,false
+Onion pakora,प्याज़ पकौड़ा,4 pieces,60,18,medium,snack,approx; verify vs IFCT 2017,false
+Roasted chana,भुना चना,1 handful,30,15,low,snack,approx; verify vs IFCT 2017,false
+Peanuts,मूंगफली,1 handful,30,5,low,snack,approx; verify vs IFCT 2017,false
+Gulab jamun,गुलाब जामुन,1 piece,40,20,high,sweet,approx; verify vs IFCT 2017,false
+Jalebi,जलेबी,1 piece,30,18,high,sweet,approx; verify vs IFCT 2017,false
+Kheer,खीर,1 katori,150,30,medium,sweet,approx; verify vs IFCT 2017,false

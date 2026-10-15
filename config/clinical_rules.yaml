@@ -1,0 +1,251 @@
+# GlycoRenal Twin: clinical rules (owner: Shiwangi)
+#
+# Every clinical number the twin uses lives here, so it can be changed without touching Python.
+# Each block has `source` and `verified`. Set `verified: true` only after checking the source
+# (KDIGO 2022 diabetes-in-CKD guideline, ADA Standards of Care 2026, product labels, trial papers).
+# After editing, restart the API so the new values are loaded.
+
+version: "0.1"
+
+# ---------------------------------------------------------------------------
+# Targets
+# ---------------------------------------------------------------------------
+targets:
+  hba1c_pct_below: 7.0
+  tir_pct_above: 70        # time in range 70-180 mg/dL
+  tbr_pct_below: 4         # time below 70 mg/dL
+  tbr_severe_pct_below: 1  # time below 54 mg/dL
+  tar_pct_below: 25        # time above 180 mg/dL
+  cv_pct_at_or_below: 36   # glucose variability
+  bp_with_albuminuria: {systolic_below: 130, diastolic_below: 80}   # UACR >= 30 mg/g
+  bp_without_albuminuria: {systolic_below: 140, diastolic_below: 90}
+  ldl_mg_dl_below: 100
+  steps_per_day_at_least: 7000
+  source: "ADA Standards of Care 2026 (sec 6, 10); Battelino 2019 international CGM consensus; KDIGO 2021 BP in CKD"
+  verified: false
+
+# ---------------------------------------------------------------------------
+# KDIGO staging (eGFR in mL/min/1.73m2, UACR in mg/g)
+# ---------------------------------------------------------------------------
+kdigo:
+  gfr_categories:            # lower bound of each category, checked top to bottom
+    G1: 90
+    G2: 60
+    G3a: 45
+    G3b: 30
+    G4: 15
+    G5: 0
+  albuminuria_categories:    # A1 < 30, A2 30-300, A3 > 300
+    A2_from: 30
+    A3_above: 300
+  # prognosis heat map: rows = G, columns = A1, A2, A3
+  risk_grid:
+    G1: [low, moderate, high]
+    G2: [low, moderate, high]
+    G3a: [moderate, high, very_high]
+    G3b: [high, very_high, very_high]
+    G4: [very_high, very_high, very_high]
+    G5: [very_high, very_high, very_high]
+  colours:
+    low: "#2e7d32"        # green
+    moderate: "#f9a825"   # yellow
+    high: "#ef6c00"       # orange
+    very_high: "#c62828"  # red
+  source: "KDIGO 2024 CKD evaluation and management guideline, Figure (CGA heat map)"
+  verified: false
+
+# ---------------------------------------------------------------------------
+# CGM metric ranges (mg/dL)
+# ---------------------------------------------------------------------------
+cgm:
+  window_days: 14
+  range_low: 70
+  range_high: 180
+  very_low: 54
+  very_high: 250
+  reading_interval_min: 5    # used for data sufficiency %
+  min_sufficiency_pct: 70    # below this, metrics are flagged as unreliable
+  gmi_formula: "3.31 + 0.02392 x mean glucose (mg/dL)"
+  source: "Battelino T et al. Diabetes Care 2019;42:1593 (TIR consensus); Bergenstal 2018 (GMI)"
+  verified: false
+
+# ---------------------------------------------------------------------------
+# Freshness: when a value is too old to trust
+# ---------------------------------------------------------------------------
+freshness:
+  hba1c_max_days: 183        # 6 months
+  uacr_max_days: 365
+  creatinine_max_days: 365
+  cgm_max_minutes: 120       # no CGM for > 2 h -> sensor disconnected
+  source: "ADA Standards of Care 2026 (HbA1c at least every 6 months; UACR + eGFR yearly)"
+  verified: false
+
+# ---------------------------------------------------------------------------
+# Drug eligibility (starter rules, decision support only)
+# ---------------------------------------------------------------------------
+eligibility:
+  metformin:
+    contraindicated_egfr_below: 30
+    do_not_start_egfr_below: 45
+    reduce_dose_egfr_below: 45       # 30-44: review / max 1,000 mg per day
+    max_daily_dose_mg_reduced: 1000
+    source: "KDIGO 2022 diabetes in CKD, Rec 4.1.1 and Practice Point 4.1.4; US FDA metformin label"
+    verified: false
+  sglt2i:
+    initiate_egfr_at_least: 20
+    continue_until: "dialysis or transplant"
+    source: "KDIGO 2022 diabetes in CKD, Rec 1.3.1 and Practice Point 1.3.5"
+    verified: false
+  glp1ra:
+    egfr_restriction: none
+    cautions: ["GI intolerance", "history of pancreatitis", "medullary thyroid cancer / MEN2"]
+    source: "KDIGO 2022 diabetes in CKD, Rec 4.2.1; product labels"
+    verified: false
+  acei_arb:
+    indicated_if: ["albuminuria A2/A3", "hypertension"]
+    hold_if_potassium_above: 5.5
+    monitor: ["potassium", "creatinine within 2-4 weeks of start or dose change"]
+    never_combine_acei_and_arb: true
+    source: "KDIGO 2022 diabetes in CKD, Rec 1.2.1 and Practice Points 1.2.2-1.2.5"
+    verified: false
+  finerenone:
+    requires_t2dm: true
+    uacr_at_least: 30
+    egfr_at_least: 25
+    potassium_at_most: 5.0
+    requires_max_tolerated_acei_arb: true
+    source: "KDIGO 2022 diabetes in CKD, Rec 1.4.1; FIDELIO-DKD / FIGARO-DKD; Kerendia label"
+    verified: false
+  sulfonylurea:
+    hypo_risk_flag_egfr_below: 45
+    note: "Flag hypoglycaemia risk; prefer gliclazide / glipizide when eGFR is low"
+    source: "KDIGO 2022 diabetes in CKD, Practice Point 4.2.x; ADA 2026 sec 9"
+    verified: false
+  insulin:
+    hypo_risk_flag_egfr_below: 30
+    note: "Insulin clearance falls with eGFR; flag hypoglycaemia risk"
+    source: "ADA Standards of Care 2026 sec 11"
+    verified: false
+
+# ---------------------------------------------------------------------------
+# Effect sizes for treatment simulation (starter values: TO VERIFY)
+# kidney_hr = hazard ratio on the trial's kidney composite outcome (multiplies DKD risk)
+# hba1c_change = average absolute change in HbA1c (%) when added to background therapy
+# sbp_change = average change in systolic BP (mmHg)
+# ---------------------------------------------------------------------------
+effects:
+  sglt2i:
+    label: "Add SGLT2 inhibitor (e.g. dapagliflozin 10 mg)"
+    kind: drug
+    kidney_hr: 0.61
+    hba1c_change: -0.5
+    sbp_change: -4
+    source: "DAPA-CKD, Heerspink NEJM 2020;383:1436 (HR 0.61); CREDENCE canagliflozin HR 0.70 (Perkovic NEJM 2019)"
+    verified: false
+  glp1ra:
+    label: "Add GLP-1 receptor agonist (e.g. semaglutide)"
+    kind: drug
+    kidney_hr: 0.76
+    hba1c_change: -1.0
+    sbp_change: -3
+    weight_change_pct: -5
+    source: "FLOW, Perkovic NEJM 2024;391:109 (HR 0.76); SUSTAIN-6"
+    verified: false
+  finerenone:
+    label: "Add finerenone 10-20 mg"
+    kind: drug
+    kidney_hr: 0.82
+    hba1c_change: 0.0
+    sbp_change: -2
+    source: "FIDELIO-DKD, Bakris NEJM 2020;383:2219 (HR 0.82)"
+    verified: false
+  acei_arb:
+    label: "Start / maximise ACE inhibitor or ARB (e.g. telmisartan)"
+    kind: drug
+    kidney_hr: 0.84
+    hba1c_change: 0.0
+    sbp_change: -8
+    source: "RENAAL losartan, Brenner NEJM 2001 (doubling of creatinine/ESKD/death RR 0.84); IDNT"
+    verified: false
+  metformin:
+    label: "Add metformin"
+    kind: drug
+    kidney_hr: 1.0
+    hba1c_change: -1.0
+    source: "ADA Standards of Care 2026 sec 9 (expected HbA1c lowering ~1-1.5%)"
+    verified: false
+  dpp4i:
+    label: "Add DPP-4 inhibitor (e.g. linagliptin)"
+    kind: drug
+    kidney_hr: 1.0
+    hba1c_change: -0.6
+    source: "ADA Standards of Care 2026 sec 9; CARMELINA (kidney neutral)"
+    verified: false
+  sulfonylurea:
+    label: "Add sulfonylurea (e.g. gliclazide)"
+    kind: drug
+    kidney_hr: 1.0
+    hba1c_change: -1.0
+    hypo_risk: high
+    source: "ADA Standards of Care 2026 sec 9"
+    verified: false
+  insulin_basal:
+    label: "Start basal insulin"
+    kind: drug
+    kidney_hr: 1.0
+    hba1c_change: -1.5
+    hypo_risk: high
+    source: "ADA Standards of Care 2026 sec 9"
+    verified: false
+  # lifestyle levers: the only options a patient sees
+  bp_control:
+    label: "Bring BP to target (< 130/80)"
+    kind: lifestyle
+    sbp_target: 125
+    source: "KDIGO 2021 BP in CKD guideline; ADA 2026 sec 10"
+    verified: false
+  weight_loss_5pct:
+    label: "Lose 5% of body weight"
+    kind: lifestyle
+    weight_change_pct: -5
+    hba1c_change: -0.4
+    sbp_change: -3
+    source: "Look AHEAD, Wing Diabetes Care 2011;34:1481"
+    verified: false
+  steps_plus_2000:
+    label: "Walk 2,000 more steps a day"
+    kind: lifestyle
+    steps_change: 2000
+    hba1c_change: -0.2
+    sbp_change: -2
+    source: "Umpierre JAMA 2011;305:1790 (structured exercise and HbA1c); to verify for step counts"
+    verified: false
+  stop_smoking:
+    label: "Stop smoking"
+    kind: lifestyle
+    kidney_hr: 0.85
+    source: "KDIGO 2022 diabetes in CKD, Practice Point 3.x (smoking cessation); to verify size"
+    verified: false
+
+# ---------------------------------------------------------------------------
+# Synthetic Indian T2DM cohort (used in FT2, scripts/build_synthetic_cohort.py)
+# ---------------------------------------------------------------------------
+cohort:
+  n_patients: 2000
+  years: 4
+  visits_per_year: 4
+  seed: 42
+  age: {mean: 54, sd: 10, min: 25, max: 85}
+  male_fraction: 0.55
+  dm_duration_years: {mean: 8, sd: 5}
+  hba1c_pct: {mean: 8.2, sd: 1.5}
+  sbp_mmHg: {mean: 136, sd: 16}
+  bmi: {mean: 26.5, sd: 4.0}
+  hypertension_fraction: 0.5
+  smoker_fraction: 0.15
+  family_history_ckd_fraction: 0.4
+  uacr_log_mean: 2.9      # log-normal, median ~18 mg/g
+  uacr_log_sd: 1.1
+  creatinine_mg_dl: {mean: 0.95, sd: 0.25}
+  source: "ICMR-INDIAB (Anjana, Lancet Diabetes Endocrinol 2023) informed; rough starter values"
+  verified: false

@@ -1,0 +1,29 @@
+# GlycoRenal Twin: alert thresholds (owner: Shiwangi)
+# Severity is one of: info, warning, critical.
+# The same alert type is not repeated for the same patient within `dedupe_minutes`.
+
+dedupe_minutes: 60
+
+glucose:
+  low_warning_below: 70          # mg/dL
+  low_critical_below: 54
+  high_warning_above: 250
+  predicted_hypo_minutes: 30     # warn if the forecast drops below low_warning_below within this time
+
+kidney:
+  egfr_drop_pct_in_12_months: 25 # warning if eGFR falls by more than this
+  uacr_category_rise: true       # warning when A1 -> A2 or A2 -> A3
+  potassium_critical_above: 5.5  # mmol/L
+
+blood_pressure:
+  systolic_warning_above: 160
+  diastolic_warning_above: 100
+
+adherence:
+  warning_below_pct: 80          # 7-day medication adherence
+
+stale_data:
+  cgm_minutes: 120               # "sensor disconnected"
+
+source: "CLAUDE.md section 9; ADA Standards of Care 2026 sec 6 (hypoglycaemia levels 1 and 2)"
+verified: false

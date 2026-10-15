@@ -1,14 +1,18 @@
 import pytest
 
-from src.pipeline.cgm import cgm_metrics
-from src.pipeline.egfr import egfr_ckd_epi_2021, egfr_slope_per_year
-from src.pipeline.kdigo import kdigo_stage
+from src.clinical.cgm_metrics import cgm_metrics
+from src.clinical.egfr import egfr_ckd_epi_2021, egfr_slope_per_year
+from src.clinical.kdigo import kdigo_stage
 
 
 @pytest.mark.parametrize("scr,age,sex,expected", [
-    (1.0, 50, "M", 91.7),   # hand-calculated from the CKD-EPI 2021 formula
+    # hand-calculated from the CKD-EPI 2021 equation (Inker NEJM 2021); Shiwangi to cross-check
+    # against the NKF online eGFR calculator
+    (1.0, 50, "M", 91.7),
     (1.0, 50, "F", 68.6),
     (0.7, 40, "F", 112.1),
+    (2.3, 68, "M", 30.2),   # demo patient with advanced CKD
+    (0.5, 30, "M", 140.7),  # low creatinine branch (Scr < kappa)
 ])
 def test_egfr_ckd_epi_2021(scr, age, sex, expected):
     assert egfr_ckd_epi_2021(scr, age, sex) == pytest.approx(expected, abs=0.2)
@@ -51,3 +55,23 @@ def test_cgm_metrics():
     assert m["tbr_pct"] == 20.0
     assert m["tar_pct"] == 40.0
     assert m["gmi_pct"] == pytest.approx(3.31 + 0.02392 * 152, abs=0.01)
+    assert m["tbr_severe_pct"] == 0.0 and m["tar_severe_pct"] == 0.0
+
+
+def test_cgm_sufficiency():
+    one_day_full = [120.0] * 288
+    assert cgm_metrics(one_day_full, window_days=1)["sufficiency_pct"] == 100.0
+    half = cgm_metrics([120.0] * 144, window_days=1)
+    assert half["sufficiency_pct"] == 50.0 and not half["sufficient"]
+
+
+def test_kdigo_boundaries_and_colours():
+    assert kdigo_stage(90, 29.9)["stage"] == "G1-A1"
+    assert kdigo_stage(89.9, 30)["stage"] == "G2-A2"
+    assert kdigo_stage(60, 300)["stage"] == "G2-A2"
+    assert kdigo_stage(59.9, 300.1)["stage"] == "G3a-A3"
+    assert kdigo_stage(44.9, 10)["g_stage"] == "G3b"
+    assert kdigo_stage(14.9, 10)["g_stage"] == "G5"
+    assert kdigo_stage(95, 10)["colour"] == "green"
+    assert kdigo_stage(95, 400)["colour"] == "orange"
+    assert kdigo_stage(20, 10)["colour"] == "red"

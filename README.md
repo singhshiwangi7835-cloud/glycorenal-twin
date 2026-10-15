@@ -18,41 +18,62 @@ Healthcare in India" Summit, Bengaluru).
 | **Model 1: risk** | 3-year DKD onset/progression risk, HbA1c forecast at 3 months, hypo/hyper risk from CGM, and the factors driving the risk |
 | **Model 2: treatment advisor** | Eligibility rules (eGFR, UACR, potassium, current meds), simulates each eligible option on the twin, re-runs Model 1, ranks by risk reduction, e.g. *"Add SGLT2i: 39% → 21%"* |
 | **Alert engine** | Severe hypo/hyper, low time in range, rising UACR, rapid eGFR decline, hyperkalaemia, stale data |
-| **LLM assistant** | Doctor summary + "ask the twin" chat; patient explanations in English or Hindi. Uses Claude or Gemini if a key is set, otherwise built-in templates |
-| **Dashboards** | Hospital view (patient list, risk, ranked options, alerts) and patient app (bilingual) |
+| **LLM assistant** | Doctor summary + "ask the twin" chat; patient explanations in English or Hindi. Uses Kimi (backup: Gemini) if keys are set, otherwise built-in templates |
+| **App** | One Streamlit app with role-based login: doctor portal, patient app (Hindi/English), admin panel |
 
 See [docs/architecture.md](docs/architecture.md) for the diagram.
 
-## Quick start with Docker (recommended)
+## Run it locally (Windows)
 
-1. Install and open **Docker Desktop** (wait for "Engine running").
-2. In this folder run:
-
-   ```bash
-   docker compose up --build
-   ```
-
-3. Open:
-   - Hospital dashboard: http://localhost:8501
-   - Patient app: http://localhost:8502
-   - API docs: http://localhost:8000/docs
-
-Stop with `Ctrl+C`, or `docker compose down`.
-
-**Optional LLM:** copy `.env.example` to `.env` and add `ANTHROPIC_API_KEY` or `GEMINI_API_KEY`.
-
-## Run without Docker
+One-time setup:
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate     Mac/Linux: source .venv/bin/activate
-pip install -r requirements-dev.txt
-python scripts/train.py
-uvicorn api.main:app --reload                     # terminal 1
-streamlit run dashboards/hospital.py              # terminal 2
-streamlit run dashboards/patient.py --server.port 8502   # terminal 3
-pytest                                            # tests
+.venv\Scripts\python -m pip install -r requirements-dev.txt
+copy .env.example .env
 ```
+
+> **Windows on ARM (e.g. Snapdragon laptops):** Streamlit (pyarrow) and XGBoost have no ARM
+> wheels, so `.venv` uses the **x64 build of Python 3.11**, which runs under Windows emulation:
+> `pip install uv`, then `uv venv --python cpython-3.11-windows-x86_64-none .venv`, then
+> `uv pip install --python .venv\Scripts\python.exe -r requirements-dev.txt`.
+
+Start the app (two terminals, from this folder):
+
+```bash
+.venv\Scripts\python -m uvicorn api.main:app --reload     # terminal 1: API on :8000
+.venv\Scripts\python -m streamlit run app/Home.py         # terminal 2: app on :8501
+```
+
+Open http://localhost:8501 and log in. The database (`data/twin.db`) creates and seeds itself on
+first start. Reset it with `.venv\Scripts\python scripts/seed_demo.py --reset`.
+
+| Role | Username | Password |
+|---|---|---|
+| Doctor | `dr.mehta` | `doctor123` |
+| Patient | `ramesh`, `sunita` (+ priya, mohan, arjun, lakshmi, imran, kavita, suresh, anita) | `patient123` |
+| Admin | `admin` | `admin123` |
+
+Tests: `.venv\Scripts\python -m pytest -q`
+
+## Clinical settings (no Python needed)
+
+| File | What it holds |
+|---|---|
+| `config/clinical_rules.yaml` | targets, KDIGO cut-offs, drug eligibility, effect sizes, synthetic cohort (each with `source` + `verified`) |
+| `config/alerts.yaml` | alert thresholds |
+| `data/reference/indian_foods.csv` | foods, serving, carbs, GI category (verify vs IFCT 2017) |
+| `data/reference/loinc_map.csv` | variable, LOINC code, unit (`verify` flag) |
+
+Restart the API after editing them.
+
+## Docker
+
+```bash
+docker compose up --build
+```
+
+API docs at http://localhost:8000/docs, app at http://localhost:8501.
 
 ## Data
 

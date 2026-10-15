@@ -10,18 +10,23 @@ venv/
 # secrets
 .env
 
-# data: raw datasets are downloaded by scripts/download_data.py, never pushed
+# data: raw downloads, processed tables, synthetic cohort and the database are re-creatable
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/DATA_SOURCES.md
 data/processed/*
 !data/processed/.gitkeep
+data/synthetic/*
+!data/synthetic/.gitkeep
+data/*.db
+data/*.db-journal
 
-# trained models (rebuilt by scripts/train.py)
+# trained models (rebuilt by scripts/train_models.py)
 models/*.joblib
 
-# OS / editors
+# OS / editors / local tools
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-.venv/
+.claude/

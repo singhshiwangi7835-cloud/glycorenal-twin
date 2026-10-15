@@ -1,0 +1,13 @@
+# Clean clinical look: white background, one accent colour (KDIGO colours are used only for risk)
+[theme]
+base = "light"
+primaryColor = "#0b6e99"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f3f6f8"
+textColor = "#1f2933"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

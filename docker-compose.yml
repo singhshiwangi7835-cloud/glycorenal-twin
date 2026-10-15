@@ -1,7 +1,6 @@
 # Start everything:  docker compose up --build
-#   API docs          http://localhost:8000/docs
-#   Hospital view     http://localhost:8501
-#   Patient app       http://localhost:8502
+#   API docs   http://localhost:8000/docs
+#   App        http://localhost:8501   (login page; demo accounts in the "Demo accounts" box)
 services:
   api:
     build: .
@@ -10,15 +9,19 @@ services:
     env_file:
       - path: .env
         required: false
+    volumes:
+      - twin-data:/app/data/db
+    environment:
+      DATABASE_URL: sqlite:////app/data/db/twin.db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 5s
       retries: 10
 
-  hospital:
+  ui:
     image: glycorenal-twin:latest
-    command: streamlit run dashboards/hospital.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+    command: streamlit run app/Home.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
     ports: ["8501:8501"]
     environment:
       API_URL: http://api:8000
@@ -26,12 +29,5 @@ services:
       api:
         condition: service_healthy
 
-  patient:
-    image: glycorenal-twin:latest
-    command: streamlit run dashboards/patient.py --server.port 8502 --server.address 0.0.0.0 --server.headless true
-    ports: ["8502:8502"]
-    environment:
-      API_URL: http://api:8000
-    depends_on:
-      api:
-        condition: service_healthy
+volumes:
+  twin-data:

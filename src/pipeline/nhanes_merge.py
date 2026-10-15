@@ -20,8 +20,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.pipeline.egfr import egfr_ckd_epi_2021
-from src.pipeline.kdigo import kdigo_stage
+from src.clinical.egfr import egfr_ckd_epi_2021
+from src.clinical.kdigo import kdigo_stage
 
 RAW = Path("data/raw/nhanes")
 OUT = Path("data/processed/nhanes_t2dm.csv")
