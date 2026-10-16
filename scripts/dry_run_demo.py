@@ -109,6 +109,18 @@ def main() -> int:
               f"prediction confirmed: onset risk was {before:.0%}; now KDIGO {tw['state']['kidney']['stage']} -> "
               f"{kind} risk {after:.0%}")
 
+        step(75, "Doctor: personal twin (patient's own glucose + kidney model)")
+        pt = c.get("/patients/IND-0042/twin/personal", headers=doc).json()
+        ex, acc, kt = pt["glucose"]["explain"], pt["glucose"]["accuracy"], pt["kidney"]
+        check(pt["glucose"]["available"] and acc["mae"] < 25,
+              f"knows him {pt['maturity']['score']}%: +{ex['per_10g_carbs']} mg/dL per 10 g carbs, peak {ex['peak_minutes']} min, "
+              f"walk -{ex['walk_15_min_lowers_by']}; replays last 3 days within {acc['mae']} mg/dL")
+        check(kt["available"], f"own eGFR slope {kt['slope']}/yr (population {kt['population_slope']}); "
+                               f"eGFR 45 in {kt['projection']['years_to']['45']} years")
+        wi = c.post("/patients/IND-0042/twin/personal/what-if", headers=pat,
+                    json={"items": [{"food": "Steamed white rice", "servings": 2}], "walk_minutes": 15}).json()
+        check(wi["available"], f"what-if 2 katori rice + 15-min walk: peak {wi['summary']['peak']} at {wi['summary']['peak_time']}")
+
         step(8, "Doctor: ranked treatments")
         tr = c.get("/patients/IND-0042/treatments", headers=doc).json()
         top = tr["options"][0]

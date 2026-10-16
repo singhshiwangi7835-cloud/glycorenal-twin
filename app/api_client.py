@@ -73,6 +73,11 @@ def get_bytes(path: str) -> bytes:
     return r.content
 
 
+def ask(path: str, json: dict):
+    """POST that only calculates (e.g. a what-if): does not clear the read cache."""
+    return _call("POST", path, json=json)
+
+
 def post(path: str, json: dict | list | None = None, data: dict | None = None):
     out = _call("POST", path, json=json, data=data)
     if path != "/auth/login":

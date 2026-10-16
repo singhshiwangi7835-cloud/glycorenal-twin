@@ -142,3 +142,57 @@ def tir_ring(tir: float | None, label: str) -> go.Figure:
 
 def show_error(e: Exception) -> None:
     st.error(str(e))
+
+
+# ---------------- personal twin charts ----------------
+
+def twin_vs_real_chart(replay: dict, title: str = "Twin vs real (last 3 days, not used for tuning)") -> go.Figure:
+    t = pd.to_datetime(pd.Series(replay["time"]), format="ISO8601", utc=True).dt.tz_convert("Asia/Kolkata")
+    fig = go.Figure()
+    fig.add_hrect(y0=70, y1=180, fillcolor=KDIGO_HEX["green"], opacity=0.07, line_width=0)
+    fig.add_trace(go.Scatter(x=t, y=replay["real"], mode="lines", name="real sensor", line=dict(color="#1f2933", width=1.6)))
+    fig.add_trace(go.Scatter(x=t, y=replay["twin"], mode="lines", name="twin", line=dict(color=ACCENT, width=2, dash="dot")))
+    fig = _layout(fig, title, 300, "mg/dL")
+    fig.update_layout(showlegend=True, legend=dict(orientation="h", y=1.12, x=1, xanchor="right"))
+    return fig
+
+
+def what_if_chart(w: dict, label_plan: str = "with this meal", label_without: str = "without it") -> go.Figure:
+    t = pd.to_datetime(pd.Series(w["time"]), format="ISO8601", utc=True).dt.tz_convert("Asia/Kolkata")
+    fig = go.Figure()
+    fig.add_hrect(y0=70, y1=180, fillcolor=KDIGO_HEX["green"], opacity=0.07, line_width=0)
+    fig.add_trace(go.Scatter(x=t, y=w["without_meal"], mode="lines", name=label_without,
+                             line=dict(color="#9aa5b1", width=1.5, dash="dot")))
+    fig.add_trace(go.Scatter(x=t, y=w["with_plan"], mode="lines", name=label_plan, line=dict(color=ACCENT, width=2.4)))
+    fig.add_hline(y=180, line=dict(color=KDIGO_HEX["orange"], width=1, dash="dash"))
+    fig = _layout(fig, "", 280, "mg/dL")
+    fig.update_layout(showlegend=True, legend=dict(orientation="h", y=1.1, x=1, xanchor="right"))
+    return fig
+
+
+def kidney_path_chart(k: dict, measured: list[dict], plan: dict | None = None, plan_label: str = "with plan") -> go.Figure:
+    from datetime import datetime, timedelta, timezone
+    now = datetime.now(timezone.utc)
+    p = k["projection"]
+    xs = [now + timedelta(days=365.25 * y) for y in p["years"]]
+    fig = go.Figure()
+    for lo, hi, colour in ((90, 160, "#2e7d32"), (60, 90, "#2e7d32"), (45, 60, "#f9a825"), (30, 45, "#ef6c00"),
+                           (15, 30, "#c62828"), (0, 15, "#c62828")):
+        fig.add_hrect(y0=lo, y1=hi, fillcolor=colour, opacity=0.05, line_width=0)
+    fig.add_trace(go.Scatter(x=xs + xs[::-1], y=p["high"] + p["low"][::-1], fill="toself", fillcolor="rgba(11,110,153,0.12)",
+                             line=dict(width=0), name="80% range", hoverinfo="skip"))
+    fig.add_trace(go.Scatter(x=xs, y=p["mean"], mode="lines", name="twin: current path", line=dict(color=ACCENT, width=2.4)))
+    if plan:
+        pp = plan["projection"]
+        fig.add_trace(go.Scatter(x=xs, y=pp["mean"], mode="lines", name=plan_label,
+                                 line=dict(color=KDIGO_HEX["green"], width=2.4, dash="dash")))
+    if measured:
+        m = pd.DataFrame(measured)
+        fig.add_trace(go.Scatter(x=pd.to_datetime(m["time"], format="ISO8601", utc=True), y=m["value"], mode="markers",
+                                 name="measured eGFR", marker=dict(color="#1f2933", size=8)))
+    for th in (60, 45, 30):
+        fig.add_hline(y=th, line=dict(color="#9aa5b1", width=1, dash="dot"), annotation_text=str(th),
+                      annotation_position="right")
+    fig = _layout(fig, "Personal eGFR path (CKD-EPI 2021)", 320, "mL/min/1.73m²")
+    fig.update_layout(showlegend=True, legend=dict(orientation="h", y=1.14, x=1, xanchor="right"))
+    return fig

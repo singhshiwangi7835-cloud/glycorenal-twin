@@ -68,6 +68,21 @@ def ask(session: Session, patient_id: str, mode: str, language: str = "en",
     ctx = prompts.build_context(state, latest_predictions(session, patient_id), treatments, alerts,
                                 top_spiking_foods(session, patient_id) if patient_view else None, patient_view)
     options = [o for o in treatments.get("options", []) if o["kind"] == "lifestyle"]
+    try:  # the patient's own (personal) twin, so answers describe this body, not an average one
+        from src.twin import personal
+        pt = personal.build(session, patient_id, save=False)
+        ex = pt["glucose"].get("explain") or {}
+        kd = pt["kidney"]
+        ctx["personal_twin"] = {
+            "how_well_the_twin_knows_the_patient_pct": pt["maturity"]["score"],
+            "glucose_rise_per_10g_carbs": ex.get("per_10g_carbs"), "glucose_peak_minutes_after_meal": ex.get("peak_minutes"),
+            "walk_15_min_lowers_glucose_by": ex.get("walk_15_min_lowers_by"),
+            "two_katori_rice_rise": ex.get("two_katori_rice_rise"),
+            "own_egfr_slope_per_year": kd.get("slope"), "population_egfr_slope": kd.get("population_slope"),
+            "years_until_egfr_45": (kd.get("projection") or {}).get("years_to", {}).get("45"),
+        }
+    except Exception:  # noqa: BLE001  (the summary still works without it)
+        pass
 
     # ---- fixed safety answers (never from the LLM) ----
     if patient_view and guardrails.needs_hypo_message(state, alerts):

@@ -6,6 +6,8 @@ Used (a) for demo patients so the live simulator works even without CGMacros, an
 Glucose model (simple, physiology-shaped, not a validated simulator):
   baseline that drifts slowly + dawn rise + meal responses (gamma-shaped curve, height
   proportional to carbs, larger when control is poor) - a dip after walking + sensor noise.
+Walks are brisk (~100 steps/min); each 1,000 steps lowers glucose by ~20 mg/dL over the next
+hour, and heart rate rises ~0.05 bpm per step per 5 minutes (+20-25 bpm while walking).
 """
 
 from __future__ import annotations
@@ -96,14 +98,14 @@ def generate(days: int = 14, hba1c: float = 8.0, cv_target: float = 0.30, steps_
 
     # steps: walking bouts, more in the morning and evening
     steps = np.zeros(n)
-    daily_walk_slots = max(int(steps_per_day / 500), 1)
+    daily_walk_slots = max(int(steps_per_day / 1300), 1)
     for d in range(days):
         for _ in range(daily_walk_slots):
             hour = rng.choice([7, 7.5, 10, 12, 14.5, 18, 19, 21.5])
             idx = d * 288 + int((hour + rng.normal(0, 0.3)) * 12)
             span = rng.integers(2, 5)
-            steps[idx: idx + span] += rng.integers(120, 220, size=len(steps[idx: idx + span]))
-    walking = np.convolve(steps, np.ones(12) / 12, mode="full")[:n]
+            steps[idx: idx + span] += rng.integers(380, 560, size=len(steps[idx: idx + span]))
+    walking = np.convolve(steps, np.exp(-np.arange(36) / 12), mode="full")[:n]  # fades over ~1 h
     glucose = glucose - 0.02 * walking
 
     # scale variability toward the target CV, then add sensor noise
@@ -114,7 +116,7 @@ def generate(days: int = 14, hba1c: float = 8.0, cv_target: float = 0.30, steps_
     glucose = np.clip(glucose, 40, 400).round(0)
 
     sleeping = (hours < 6) | (hours >= 23)
-    hr = np.where(sleeping, 62, 76) + 0.04 * steps + rng.normal(0, 3, n)
+    hr = np.where(sleeping, 62, 76) + 0.05 * steps + rng.normal(0, 3, n)
 
     readings = pd.DataFrame({
         "time": [start + timedelta(minutes=int(m)) for m in t_min],

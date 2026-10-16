@@ -109,6 +109,27 @@ def build(session: Session, patient_id: str, doctor_name: str | None = None) -> 
     else:
         pdf.para("No CGM data in the last 14 days.")
 
+    # ---- personal twin ----
+    try:
+        from src.twin import personal
+        pt = personal.build(session, patient_id, save=False)
+        pdf.h2(f"Personal twin (knows this patient: {pt['maturity']['score']}%)")
+        ex, acc = pt["glucose"].get("explain"), pt["glucose"].get("accuracy")
+        if ex:
+            pdf.para(f"Glucose twin tuned on {pt['glucose']['days_of_cgm']} days of CGM and {pt['glucose']['meals']} meals: "
+                     f"+{ex['per_10g_carbs']} mg/dL per 10 g carbs, peak {ex['peak_minutes']} min after eating, "
+                     f"15-min walk lowers by {ex['walk_15_min_lowers_by']} mg/dL; 2 katori rice: +{ex['two_katori_rice_rise']} mg/dL."
+                     + (f" Replays the last {acc['days']} days within {acc['mae']} mg/dL on average." if acc else ""))
+        kt = pt["kidney"]
+        if kt.get("available"):
+            yt = kt["projection"]["years_to"]
+            fmt = lambda v: "now" if v == 0 else ("not within 15 y" if v is None else f"{v} y")  # noqa: E731
+            pdf.para(f"Own eGFR slope {kt['slope']} mL/min/yr (80% range {kt['slope_80pct'][0]} to {kt['slope_80pct'][1]}; "
+                     f"population {kt['population_slope']}), from {kt['results_used']} results. "
+                     f"eGFR < 60: {fmt(yt['60'])}; < 45: {fmt(yt['45'])}; < 30: {fmt(yt['30'])}.")
+    except Exception:  # noqa: BLE001  (report still builds without the personal twin)
+        pass
+
     # ---- treatments ----
     pdf.add_page()
     pdf.h2("Treatment options, ranked by predicted reduction in 3-year kidney risk")

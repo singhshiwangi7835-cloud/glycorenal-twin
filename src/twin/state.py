@@ -11,7 +11,11 @@ from __future__ import annotations
 import math
 from datetime import datetime, timedelta, timezone
 
+from zoneinfo import ZoneInfo
+
 from sqlmodel import Session, select
+
+from config.settings import get_settings
 
 from src.clinical import loinc
 from src.clinical.cgm_metrics import cgm_metrics, gmi
@@ -181,7 +185,7 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
           if vitals["sbp"] and vitals["dbp"] else None}
 
     # ---------------- medicines + adherence ----------------
-    today = now.date()
+    today = now.astimezone(ZoneInfo(get_settings().timezone)).date()  # prescriptions use local dates
     meds = session.exec(select(Medication).where(Medication.patient_id == patient_id)).all()
     active = [m for m in meds if (m.start_date is None or m.start_date <= today)
               and (m.end_date is None or m.end_date >= today)]

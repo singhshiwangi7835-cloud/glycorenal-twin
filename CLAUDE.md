@@ -334,4 +334,6 @@ Every connector returns a list of `ObservationIn` and calls `translator.save()`,
 - **Weight-loss lever:** offered from BMI 23 (WHO Asian cut-off), configurable in `clinical_rules.yaml`.
 - **Docker:** one image, `MODE=api | ui | all` (`deploy/start.sh`); `all` = API + Streamlit in one container for Hugging Face Spaces.
 - **LLM timeout:** 40 s per call (spec said 20 s) with one retry and a 60 s total deadline, because Kimi K2.6 via the LiteLLM gateway is a reasoning model and the gateway rejects `thinking` / `reasoning_effort` parameters. The prompt asks for brief reasoning.
+- **Personal, progressive twin** (added 17 Oct): per-patient glucose model (gamma meal response, ridge shrinkage to population priors, tuned on own CGM/meals/HR) and Bayesian per-patient eGFR/UACR trajectories; maturity score; nightly re-tune; settings in `clinical_rules.yaml -> personal_twin`. Population models remain for patients without history.
+- **Time zone:** active-medicine checks use the local date (Asia/Kolkata), matching prescription dates.
 - **BUILD_PROMPTS.md** was never added to the repo; FAST_TRACK.md was followed.

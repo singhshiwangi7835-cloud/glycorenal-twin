@@ -55,6 +55,21 @@ Open **IND-0042 · Ramesh Kumar**. Overview tab.
 > paper, no kidney disease yet. But his twin says **77% chance of developing kidney disease in three
 > years**, driven by his albuminuria, eGFR and glucose control. Note the KDIGO grid and the trends."
 
+## 4:30 - 5:30  His own twin, not an average (Doctor Personal twin tab)
+
+Doctor → **Personal twin** tab.
+
+> "This is not a population model. The twin has tuned itself to Ramesh's own body from 13 days of his
+> CGM, 45 meals and his heart rate: his sugar rises about 13 mg/dL for every 10 grams of carbs and peaks
+> 50 minutes after eating; two katoris of rice push him up about 140. To prove it is him: here it replays
+> the last three days, which it never saw while learning; it matches his real sensor within about 8 mg/dL.
+> It is progressive: it started from population values and gets more personal with every day of data;
+> it knows him 90% now. His kidneys: his own eGFR is falling about 4.6 a year, faster than the 3.4 the
+> population estimate expected; at this pace he reaches 45 in about 4 years, and with an SGLT2 inhibitor
+> about 8."
+
+Optional: change the what-if foods (e.g. jowar roti instead of rice) and show the lower peak.
+
 ## 5:30 - 8:00  Living twin: sensor + meal (Patient, then Doctor Live tab)
 
 Right window: log in **ramesh / patient123** (opens in Hindi). Show **आज** (Today): big sugar number,

@@ -28,6 +28,24 @@ Built for the **Digital Twin Challenge 2026** (Happiest Health Summit, Bengaluru
 | **AI assistant** | Kimi (Moonshot) -> Gemini -> built-in templates; explains, never predicts; patient guardrails in English and Hindi; cites 8 guideline notes |
 | **Screens and reports** | Doctor portal, patient app (English / हिंदी), admin panel; doctor PDF and one-page bilingual patient PDF |
 
+## Personal, progressive twin
+
+Each patient gets **their own model**, not just a population prediction:
+
+- **Glucose twin** (`src/twin/personal_glucose.py`): a small physiological model (baseline + morning rise
+  + gamma-shaped meal responses + walking effect) **tuned to the patient's own CGM, meals and heart
+  rate**. It learns, for example, "+12.9 mg/dL per 10 g carbs, peak 50 min after eating, a 15-min walk
+  lowers sugar by 14 mg/dL". **Twin vs real**: it replays the last 3 days (not used for tuning) and
+  shows the error (about 8 mg/dL on the demo patients). **What-if**: "if I eat this now / walk after".
+- **Kidney twin** (`src/twin/personal_kidney.py`): the patient's own eGFR and UACR path, starting from
+  the population slope and **updated by Bayes' rule with every lab result**; projection with an 80%
+  band, years to eGFR 60/45/30, and the same path with treatments applied.
+- **Progressive**: ridge/Bayesian shrinkage means a new patient starts at population values and the
+  twin becomes personal as data accumulates. A **maturity score** (0-100%), a learning curve
+  (error vs days of data) and a history of every re-tune show it learning. Re-tuned nightly and on demand.
+- Works the same on synthetic, demo and real data (CGMacros, Libre, live sensors, hospital FHIR):
+  real data only makes it more accurate. Settings: `config/clinical_rules.yaml -> personal_twin`.
+
 ## Quick start
 
 ### Option A: Docker (any computer)

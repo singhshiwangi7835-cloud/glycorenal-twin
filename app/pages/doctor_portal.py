@@ -57,7 +57,8 @@ s, preds, alerts = twin["state"], twin["predictions"], twin["alerts"]
 k, g, cgm = s["kidney"], s["glycaemia"], s["cgm"]
 dkd = preds.get("dkd_3y", {})
 
-tabs = st.tabs(["Overview", "Live", "Treatments", "Medications", "Meals", "EHR", "AI assistant", "Report"])
+tabs = st.tabs(["Overview", "Personal twin", "Live", "Treatments", "Medications", "Meals", "EHR",
+                "AI assistant", "Report"])
 
 # ---------------- Overview ----------------
 with tabs[0]:
@@ -109,8 +110,114 @@ with tabs[0]:
                    f"above 180 {m['tar_pct']}% · CV {m['cv_pct']}% · GMI {m['gmi_pct']}% · "
                    f"data {m['sufficiency_pct']}%")
 
-# ---------------- Live ----------------
+# ---------------- Personal twin ----------------
 with tabs[1]:
+    try:
+        pt = api.cached_get(f"/patients/{pid}/twin/personal")
+    except api.APIError as e:
+        ui.show_error(e)
+        pt = None
+    if pt:
+        mat, gl, kd = pt["maturity"], pt["glucose"], pt["kidney"]
+        st.markdown(f"**How well the twin knows {pid}: {mat['score']}%** ({mat['level']})")
+        st.progress(mat["score"] / 100)
+        st.caption("CGM {cgm}% · meals {meals}% · eGFR results {egfr}% · UACR results {uacr}%".format(**mat["parts"])
+                   + (f" · to improve: {', '.join(mat['to_improve'])}" if mat["to_improve"] else ""))
+
+        st.subheader("Glucose twin: what it has learnt about this patient")
+        if gl.get("available"):
+            ex, popu = gl["explain"], gl["population"]
+            c = st.columns(5)
+            c[0].metric("Between meals", f"{ex['between_meals']} mg/dL", f"population {popu['basal']:.0f}",
+                        delta_color="off")
+            c[1].metric("Rise per 10 g carbs", f"+{ex['per_10g_carbs']} mg/dL",
+                        f"population +{popu['carb_sensitivity'] * 10:.0f}", delta_color="off")
+            c[2].metric("Peak after eating", f"{ex['peak_minutes']} min")
+            c[3].metric("15-min walk lowers by", f"{ex['walk_15_min_lowers_by']} mg/dL")
+            c[4].metric("Early-morning rise", f"+{ex['morning_rise']} mg/dL")
+            st.caption(f"Tuned on {gl['days_of_cgm']} days of CGM and {gl['meals']} logged meals. "
+                       f"2 katori white rice raises this patient's sugar by about **{ex['two_katori_rice_rise']} mg/dL**.")
+            acc = gl.get("accuracy")
+            if gl.get("replay") and acc:
+                st.plotly_chart(ui.twin_vs_real_chart(gl["replay"]), width="stretch", key=f"replay_{pid}")
+                st.caption(f"The twin reproduced the last {acc['days']} days (which it never saw while tuning) within "
+                           f"**{acc['mae']} mg/dL** on average; {acc['within_20_pct']}% of readings within 20 mg/dL; "
+                           f"correlation {acc['correlation']}. It knows only meals and activity, plus yesterday's level.")
+            lc = pt.get("glucose_learning") or []
+            if lc:
+                st.markdown("**Learning curve**: error on those days when the twin had seen only N earlier days")
+                st.dataframe(pd.DataFrame([{"days of data": x["days_of_data"], "average error (mg/dL)": x["mae"],
+                                            "learnt rise per 10 g": round(x["carb_sensitivity"] * 10, 1),
+                                            "learnt peak (min)": x["peak_minutes"]} for x in lc]),
+                             hide_index=True, width="stretch")
+        else:
+            st.info(gl.get("reason", "Not enough data yet; the twin uses population values."))
+
+        st.markdown("**What if this patient eats ... now?** (simulated on this patient's own glucose twin)")
+        foods_all = api.cached_get("/foods")
+        info = {f["food"]: f for f in foods_all}
+        cc = st.columns([3, 1, 1])
+        pick = cc[0].multiselect("Foods", list(info), default=["Steamed white rice", "Toor dal"], key=f"wi_foods_{pid}")
+        serv = cc[1].number_input("Servings each", 0.5, 4.0, 1.0, 0.5, key=f"wi_serv_{pid}")
+        walk = cc[2].selectbox("Walk after", [0, 10, 15, 30], format_func=lambda m: f"{m} min" if m else "no walk",
+                               key=f"wi_walk_{pid}")
+        if pick:
+            try:
+                w = api.ask(f"/patients/{pid}/twin/personal/what-if",
+                             json={"items": [{"food": f, "servings": serv} for f in pick], "walk_minutes": walk})
+                if w.get("available"):
+                    st.plotly_chart(ui.what_if_chart(w), width="stretch", key=f"wi_chart_{pid}")
+                    sm = w["summary"]
+                    st.caption(f"Starts at {w['start_glucose']} mg/dL, peak **{sm['peak']} mg/dL at {sm['peak_time']}**, "
+                               f"{sm['minutes_above_180']} min above 180 ({w['effective_carbs']:.0f} g GI-weighted carbs"
+                               + (f", {walk}-min walk 30 min after eating" if walk else "") + ").")
+                else:
+                    st.info(w.get("reason"))
+            except api.APIError as e:
+                ui.show_error(e)
+
+        st.subheader("Kidney twin: this patient's own eGFR path")
+        if kd.get("available"):
+            try:
+                tr_opts = api.cached_get(f"/patients/{pid}/treatments").get("options", [])
+            except api.APIError:
+                tr_opts = []
+            labels_k = {o["option"]: o["label"] for o in tr_opts}
+            choice = st.multiselect("Apply to the twin's path", list(labels_k), default=list(labels_k)[:1],
+                                    key=f"kd_opts_{pid}", format_func=lambda x: labels_k[x])
+            plan = None
+            if choice:
+                plan = api.cached_get(f"/patients/{pid}/twin/personal", options=",".join(choice))["kidney"].get("with_options")
+            st.plotly_chart(ui.kidney_path_chart(kd, s["history"]["egfr"], plan), width="stretch", key=f"kpath_{pid}")
+
+            def yrs(v):
+                return "now" if v == 0 else ("not within 15 years" if v is None else f"{v} years")
+            rows = [{"eGFR falls below": th, "current path": yrs(kd["projection"]["years_to"][str(th)]),
+                     "with selected options": yrs(plan["projection"]["years_to"][str(th)]) if plan else "-"}
+                    for th in (60, 45, 30, 15)]
+            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+            lo, hi = kd["slope_80pct"]
+            st.caption(f"Personal slope **{kd['slope']} mL/min/yr** (80% range {lo} to {hi}); population estimate for "
+                       f"someone like this: {kd['population_slope']}. Learnt from {kd['results_used']} eGFR results over "
+                       f"{kd['span_years']} years." + (f" With the selected options: {plan['slope']} per year." if plan else ""))
+            ua = kd.get("uacr")
+            if ua:
+                a3 = ua["years_to_A3"]
+                when = "already" if a3 == 0 else (f"in about {a3} years" if a3 else "not within 15 years")
+                st.caption(f"UACR: latest {ua['latest']} mg/g, changing about {ua['change_per_year_pct']:+d}% a year "
+                           f"in this patient; A3 (> 300) {when}.")
+            if kd.get("learning"):
+                st.markdown("**How the kidney estimate sharpened with each result**")
+                st.dataframe(pd.DataFrame([{"after result": x["results"], "date": x["date"], "slope / yr": x["slope"],
+                                            "80% range": f"{x['slope_80pct'][0]} to {x['slope_80pct'][1]}"}
+                                           for x in kd["learning"]]), hide_index=True, width="stretch")
+        else:
+            st.info(kd.get("reason"))
+        st.caption("Decision support only. The twin is a simplified model of this patient, tuned to their own data; "
+                   "the clinician decides.")
+
+# ---------------- Live ----------------
+with tabs[2]:
     sim = api.get(f"/patients/{pid}/devices")["simulator"]
     b = st.columns([1, 1, 1, 1, 3])
     if not sim["running"]:
@@ -180,7 +287,7 @@ with tabs[1]:
     live_panel()
 
 # ---------------- Treatments ----------------
-with tabs[2]:
+with tabs[3]:
     try:
         tr = api.cached_get(f"/patients/{pid}/treatments")
     except api.APIError as e:
@@ -234,7 +341,7 @@ with tabs[2]:
                 st.write(f"**{n['label']}**: {n['reason']}")
 
 # ---------------- Medications ----------------
-with tabs[3]:
+with tabs[4]:
     rem = api.cached_get(f"/patients/{pid}/reminders")
     a7, a30 = rem["adherence_7d"], rem["adherence_30d"]
     c = st.columns(3)
@@ -279,7 +386,7 @@ with tabs[3]:
                                for d in rem["today"]]), hide_index=True, width="stretch")
 
 # ---------------- Meals ----------------
-with tabs[4]:
+with tabs[5]:
     meals = api.cached_get(f"/patients/{pid}/meals")
     top = api.cached_get(f"/patients/{pid}/meals/top-foods")
     if top:
@@ -296,7 +403,7 @@ with tabs[4]:
         st.caption("No meals logged.")
 
 # ---------------- EHR ----------------
-with tabs[5]:
+with tabs[6]:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Import from hospital EHR (FHIR R4)**")
@@ -365,7 +472,7 @@ with tabs[5]:
                     ui.show_error(e)
 
 # ---------------- AI assistant ----------------
-with tabs[6]:
+with tabs[7]:
     status = api.cached_get("/assistant/status")
     if not status["configured"]:
         st.info(status["message"])
@@ -395,7 +502,7 @@ with tabs[6]:
         st.rerun()
 
 # ---------------- Report ----------------
-with tabs[7]:
+with tabs[8]:
     st.markdown("**PDF reports** for the clinic file and for the patient (English + Hindi, one page).")
     cc = st.columns(2)
     if cc[0].button("Prepare clinical report (doctor)", type="primary"):

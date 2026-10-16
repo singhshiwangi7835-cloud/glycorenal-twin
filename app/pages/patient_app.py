@@ -147,6 +147,25 @@ with tabs[2]:
         total = sum(info[f]["carbs_g"] * n for f, n in servings.items())
         if picked:
             st.caption(f"≈ {total:.0f} g {t('carbs')}")
+        if picked:
+            with st.expander(f"🔮 {t('ask_twin_meal')}"):
+                walk = st.radio(t("walk_after"), [0, 15, 30], horizontal=True, key="p_walk",
+                                format_func=lambda m: f"{m} min" if m else t("no_walk"))
+                if st.button(t("see_prediction"), key="p_whatif"):
+                    try:
+                        w = api.ask(f"/patients/{pid}/twin/personal/what-if",
+                                    json={"items": [{"food": f, "servings": n} for f, n in servings.items()],
+                                          "walk_minutes": walk})
+                        if w.get("available"):
+                            sm = w["summary"]
+                            st.plotly_chart(ui.what_if_chart(w, t("with_meal"), t("without_meal")), width="stretch",
+                                            key="p_wi_chart")
+                            st.markdown(f"**{t('twin_expects')} {sm['peak']} mg/dL** ({t('at')} {sm['peak_time']}); "
+                                        f"{sm['minutes_above_180']} {t('minutes_above_180')}.")
+                        else:
+                            st.info(w.get("reason"))
+                    except api.APIError as e:
+                        ui.show_error(e)
         if st.button(t("save_meal"), type="primary", disabled=not picked):
             try:
                 api.post(f"/patients/{pid}/meals", json={"items": [{"food": f, "servings": n} for f, n in servings.items()]})
@@ -170,6 +189,19 @@ with tabs[2]:
 
 # ---------------- My health ----------------
 with tabs[3]:
+    try:
+        ptw = api.cached_get(f"/patients/{pid}/twin/personal")
+        st.markdown(f"**{t('twin_knows_you')}: {ptw['maturity']['score']}%**")
+        st.progress(ptw["maturity"]["score"] / 100)
+        if ptw["glucose"].get("available"):
+            ex = ptw["glucose"]["explain"]
+            st.markdown(f"**{t('twin_learnt')}**")
+            st.write("• " + t("per_10g").format(x=ex["per_10g_carbs"]))
+            st.write("• " + t("peaks_after").format(x=ex["peak_minutes"]))
+            if ex["walk_15_min_lowers_by"] > 0:
+                st.write("• " + t("walk_lowers").format(x=ex["walk_15_min_lowers_by"]))
+    except api.APIError as e:
+        ui.show_error(e)
     tw = api.get(f"/patients/{pid}/twin")
     s = tw["state"]
     k = s["kidney"]

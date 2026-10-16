@@ -298,3 +298,42 @@ cohort:
     tir_per_hba1c: 12.5                 # TIR falls ~10-12.5 points per 1% HbA1c (Beck 2019)
   source: "ICMR-INDIAB (Anjana, Lancet Diabetes Endocrinol 2023) informed; progression weights are starter assumptions (UKPDS 74, Retnakaran 2006 for direction); Beck Diabetes Care 2019 for TIR-HbA1c"
   verified: false
+
+# ---------------------------------------------------------------------------
+# Personal (progressive) twin: starting values for a patient the twin does not know yet.
+# Each patient's own data pulls the twin away from these values; with more data the
+# patient's own numbers dominate (Bayesian / ridge shrinkage).
+# ---------------------------------------------------------------------------
+personal_twin:
+  glucose:
+    window_days: 14              # data used to tune the glucose twin
+    min_days: 2                  # below this the twin uses the starting values only
+    replay_days: 3               # "twin vs real" check on the most recent days (not used for tuning)
+    meal_peak_minutes: [30, 120] # range searched for the time to peak after a meal
+    curve_shape: 2               # meal response shape (gamma curve); 2 = typical mixed meal
+    meal_duration_minutes: 240
+    activity_memory_minutes: 60  # how long a walk keeps lowering glucose
+    residual_sd: 20              # typical CGM wobble the twin cannot explain (mg/dL)
+    priors:                      # population starting values and how sure we are of them (sd)
+      basal: {mean: 150, sd: 60}             # mg/dL between meals
+      dawn: {mean: 10, sd: 15}               # early-morning rise, mg/dL
+      carb_sensitivity: {mean: 1.5, sd: 1.0} # mg/dL peak rise per gram of carbs (GI-weighted)
+      activity: {mean: 0.15, sd: 0.3}        # mg/dL fall per (heart-rate rise x 5 min), decaying
+    walk_heart_rate_rise: 25     # bpm above resting during a brisk walk (for what-if)
+    source: "Gamma meal-response model (Dalla Man 2007 style, simplified); priors are project starting values"
+    verified: false
+  kidney:
+    egfr_noise_sd: 3.0           # lab-to-lab variation of eGFR (mL/min/1.73m2)
+    egfr_slope_prior_sd: 2.5     # how far a person's eGFR slope can differ from the population estimate
+    uacr_log_noise_sd: 0.30      # day-to-day variation of UACR (log scale)
+    uacr_drift_prior_sd: 0.30
+    projection_years: 5
+    thresholds_egfr: [60, 45, 30, 15]
+    source: "Bayesian linear trajectory; population slope from cohort.progression weights; UACR variability ~30% (KDIGO)"
+    verified: false
+  maturity:                      # how well the twin knows the patient (0-100%)
+    cgm_days_full: 14
+    meals_full: 20
+    egfr_results_full: 4
+    uacr_results_full: 3
+    weights: {cgm: 0.35, meals: 0.2, egfr: 0.3, uacr: 0.15}
