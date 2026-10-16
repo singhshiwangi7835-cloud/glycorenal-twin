@@ -1,6 +1,7 @@
 # Start everything:  docker compose up --build
 #   API docs   http://localhost:8000/docs
 #   App        http://localhost:8501   (login page; demo accounts in the "Demo accounts" box)
+# Optional: put LLM keys and JWT_SECRET in .env (copied from .env.example).
 services:
   api:
     build: .
@@ -9,21 +10,24 @@ services:
     env_file:
       - path: .env
         required: false
+    environment:
+      MODE: api
+      DATABASE_URL: sqlite:////app/data/db/twin.db
     volumes:
       - twin-data:/app/data/db
-    environment:
-      DATABASE_URL: sqlite:////app/data/db/twin.db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
       interval: 10s
       timeout: 5s
+      start_period: 120s
       retries: 10
 
   ui:
     image: glycorenal-twin:latest
-    command: streamlit run app/Home.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
     ports: ["8501:8501"]
     environment:
+      MODE: ui
+      PORT: "8501"
       API_URL: http://api:8000
     depends_on:
       api:

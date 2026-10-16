@@ -7,25 +7,40 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
+      - name: Secret scan
+        run: python scripts/check_secrets.py
       - run: pip install -r requirements-dev.txt
-      - run: pytest -q
+      - name: Tests
+        run: pytest -q
+      - name: Demo story dry run
+        run: python scripts/dry_run_demo.py
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build image
         run: docker build -t glycorenal-twin:ci .
-      - name: Smoke test API
+      - name: Smoke test, API container (MODE=api)
         run: |
-          docker run -d -p 8000:8000 --name twin glycorenal-twin:ci
-          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 2; done
-          curl -sf -X POST localhost:8000/auth/login -d "username=dr.mehta&password=doctor123" | head -c 120
+          docker run -d -p 8000:8000 -e MODE=api --name api glycorenal-twin:ci
+          for i in $(seq 1 60); do curl -sf localhost:8000/health && break; sleep 3; done
+          TOKEN=$(curl -sf -X POST localhost:8000/auth/login -d "username=dr.mehta&password=doctor123" | python3 -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
+          curl -sf -H "Authorization: Bearer $TOKEN" localhost:8000/patients | python3 -c "import json,sys;r=json.load(sys.stdin);print(len(r),'patients');assert len(r)>=10"
+          curl -sf -H "Authorization: Bearer $TOKEN" -o report.pdf localhost:8000/patients/IND-0042/report/doctor.pdf && head -c 4 report.pdf
+      - name: Smoke test, single container (MODE=all, as on Hugging Face Spaces)
+        run: |
+          docker run -d -p 7860:7860 --name all glycorenal-twin:ci
+          for i in $(seq 1 80); do curl -sf localhost:7860/_stcore/health && break; sleep 3; done
+          curl -sf localhost:7860/_stcore/health
+      - name: Logs on failure
+        if: failure()
+        run: docker logs api || true; docker logs all || true

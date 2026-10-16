@@ -1,29 +1,45 @@
 # GlycoRenal Twin
 
-A proof-of-concept **digital twin** for people with **type 2 diabetes (T2DM)** that predicts
-short-term glucose control and long-term **diabetic kidney disease (DKD)** risk, then
-simulates which treatments would lower that risk.
+A proof-of-concept **digital twin** for people with **type 2 diabetes** that predicts short-term
+glucose and 3-month HbA1c (**Track A**) and the risk of **diabetic kidney disease** onset and
+progression over 3 years (**Track B**), then **simulates treatments on the twin** and ranks them by
+predicted kidney-risk reduction. It joins **hospital EHR data (FHIR R4)**, **live wearable data**
+(CGM, heart rate, steps) and the patient's own entries (meals, medicines, BP), with role-based
+logins, medicine reminders, an Indian meal log, an AI assistant in English and Hindi, and PDF reports.
 
-Built for the **Digital Twin Challenge 2026** (Happiest Health, "Reimagining and Reforming
-Healthcare in India" Summit, Bengaluru).
+Built for the **Digital Twin Challenge 2026** (Happiest Health Summit, Bengaluru).
 
-> Decision support only. The twin ranks options; the clinician decides. Patients only see
-> lifestyle suggestions, never medicine changes.
+> **Decision support only.** Not a medical device and not for clinical use. The twin suggests and
+> explains; the clinician decides. Patients only ever see lifestyle suggestions, never medicine changes.
+
+![Architecture](docs/architecture.png)
 
 ## What it does
 
-| Module | What it does |
+| | |
 |---|---|
-| **Patient state** | One time-stamped record per patient: profile, labs, vitals, meds, CGM, plus derived eGFR (CKD-EPI 2021), KDIGO stage, CGM metrics (TIR, GMI, CV), eGFR slope and stale-data flags |
-| **Model 1: risk** | 3-year DKD onset/progression risk, HbA1c forecast at 3 months, hypo/hyper risk from CGM, and the factors driving the risk |
-| **Model 2: treatment advisor** | Eligibility rules (eGFR, UACR, potassium, current meds), simulates each eligible option on the twin, re-runs Model 1, ranks by risk reduction, e.g. *"Add SGLT2i: 39% → 21%"* |
-| **Alert engine** | Severe hypo/hyper, low time in range, rising UACR, rapid eGFR decline, hyperkalaemia, stale data |
-| **LLM assistant** | Doctor summary + "ask the twin" chat; patient explanations in English or Hindi. Uses Kimi (backup: Gemini) if keys are set, otherwise built-in templates |
-| **App** | One Streamlit app with role-based login: doctor portal, patient app (Hindi/English), admin panel |
+| **Twin state** | Latest labs with age and stale-data flags; eGFR by the race-free **CKD-EPI 2021** equation; **KDIGO** G/A stage and heat-map colour; eGFR slope; 14-day CGM metrics (TIR, TBR, TAR, GMI, CV, data sufficiency); BP target by albuminuria; 7/30-day medicine adherence |
+| **Track A** | Glucose forecast +30 / +60 min with a rule-based hypo safety net; HbA1c in 3 months; 2-hour meal spikes and "top 3 spiking foods" |
+| **Track B** | 3-year DKD **onset** (kidneys healthy now) or **progression** (DKD now) risk with the factors driving it; glycaemic features feed the kidney model |
+| **Treatment advisor** | Eligibility from KDIGO 2022 / ADA 2026 rules (eGFR, UACR, potassium, current drugs), simulate each option on the twin (HbA1c, BP, weight change -> re-run the model -> trial hazard ratio), rank: *"Add SGLT2 inhibitor: DKD 3-yr risk 62% -> 38% (DAPA-CKD)"* |
+| **Living twin** | Every reading: save -> instant alerts -> CGM metrics -> short-term forecast. Kidney risk re-runs on new labs, medicine changes and daily |
+| **Data in** | FHIR R4 import (Synthea samples, public HAPI server) and export; lab CSV; live CGM simulator; Libre CSV upload; Dexcom (coming soon); patient app entries |
+| **Alerts, reminders, meals** | Low/high glucose, predicted hypo, UACR rise, eGFR fall, potassium, BP, low adherence, sensor disconnected (no repeats within 60 min); daily doses with Taken/Skip, missed after 2 h; Indian food list with carbs and GI |
+| **AI assistant** | Kimi (Moonshot) -> Gemini -> built-in templates; explains, never predicts; patient guardrails in English and Hindi; cites 8 guideline notes |
+| **Screens and reports** | Doctor portal, patient app (English / हिंदी), admin panel; doctor PDF and one-page bilingual patient PDF |
 
-See [docs/architecture.md](docs/architecture.md) for the diagram.
+## Quick start
 
-## Run it locally (Windows)
+### Option A: Docker (any computer)
+
+```bash
+docker compose up --build
+```
+
+App: http://localhost:8501 · API docs: http://localhost:8000/docs. The database creates and seeds
+itself on first start (about a minute). Optional: copy `.env.example` to `.env` first and add LLM keys.
+
+### Option B: Windows, no Docker (two PowerShell windows in this folder)
 
 One-time setup:
 
@@ -33,20 +49,22 @@ python -m venv .venv
 copy .env.example .env
 ```
 
-> **Windows on ARM (e.g. Snapdragon laptops):** Streamlit (pyarrow) and XGBoost have no ARM
-> wheels, so `.venv` uses the **x64 build of Python 3.11**, which runs under Windows emulation:
-> `pip install uv`, then `uv venv --python cpython-3.11-windows-x86_64-none .venv`, then
-> `uv pip install --python .venv\Scripts\python.exe -r requirements-dev.txt`.
+> **Windows on ARM** (e.g. Snapdragon laptops): Streamlit (pyarrow) and XGBoost have no ARM wheels,
+> so use the **x64 build of Python 3.11** (runs under emulation): `python -m pip install uv`, then
+> `python -m uv python install cpython-3.11.17-windows-x86_64-none`,
+> `python -m uv venv --python cpython-3.11.17-windows-x86_64-none .venv`, then
+> `python -m uv pip install --python .venv\Scripts\python.exe -r requirements-dev.txt`.
 
-Start the app (two PowerShell windows, both in this folder; note the `.\` at the start):
+Start (note the `.\` at the start in PowerShell):
 
 ```bash
-.\.venv\Scripts\python.exe -m uvicorn api.main:app --reload     # terminal 1: API on :8000
-.\.venv\Scripts\python.exe -m streamlit run app/Home.py         # terminal 2: app on :8501
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --reload
+.\.venv\Scripts\python.exe -m streamlit run app/Home.py
 ```
 
-Open http://localhost:8501 and log in. The database (`data/twin.db`) creates and seeds itself on
-first start. Reset it with `.\.venv\Scripts\python.exe scripts/seed_demo.py --reset`.
+Open http://localhost:8501.
+
+### Demo accounts
 
 | Role | Username | Password |
 |---|---|---|
@@ -54,169 +72,135 @@ first start. Reset it with `.\.venv\Scripts\python.exe scripts/seed_demo.py --re
 | Patient | `ramesh`, `sunita` (+ priya, mohan, arjun, lakshmi, imran, kavita, suresh, anita) | `patient123` |
 | Admin | `admin` | `admin123` |
 
-Tests: `.\.venv\Scripts\python.exe -m pytest -q`
+### Demo
+
+- **One click:** Admin panel -> Demo data -> **Start demo mode** (resets the data and sets up the story).
+- **Script:** [docs/demo_script.md](docs/demo_script.md), 15-18 minutes with what to click and say.
+- **Rehearsal:** `.\.venv\Scripts\python.exe scripts/dry_run_demo.py` plays the whole story through
+  the API in about 35 s (EHR import, live CGM, rice-meal spike, missed dose, new labs, ranked
+  treatments, prescribing, predicted hypo, both PDFs).
+- **Sample reports:** [docs/samples/](docs/samples/).
+
+### Deploy (free)
+
+Hugging Face Spaces (Docker, one container) step by step, including where to enter the API keys:
+[docs/deploy.md](docs/deploy.md).
+
+## Data sources
+
+| Dataset | Use | Licence |
+|---|---|---|
+| NHANES 2017-Mar 2020 (CDC), 1,455 adults with diabetes | `dkd_current` model (real data); re-scales the synthetic cohort's risk weights | Public domain |
+| UCI Chronic Kidney Disease (Apollo Hospitals, India), 400 patients | Sanity check of eGFR/KDIGO logic and risk direction on Indian data | CC BY 4.0 |
+| Synthetic Indian T2DM cohort, 2,000 patients x 5 years quarterly | DKD onset/progression and HbA1c models; ICMR-INDIAB-informed settings in `config/clinical_rules.yaml` | generated |
+| Synthea (MITRE) sample patients | FHIR R4 sample bundles in `data/fhir_samples/` | Apache 2.0 |
+| CGMacros (PhysioNet) | Glucose forecast and simulator when downloaded (synthetic CGM until then) | ODC-BY |
+| Indian foods | `data/reference/indian_foods.csv`, carbs and GI category (to verify vs IFCT 2017) | project |
+
+Trained models are committed in `models/` (about 3 MB), so nothing needs downloading to run.
+Rebuild from public data: `scripts/download_data.py` -> `python -m src.pipeline.nhanes_merge` ->
+`scripts/build_synthetic_cohort.py` -> `scripts/train_models.py` (about 2 minutes plus downloads).
+Raw data is never pushed to GitHub.
+
+## Models (summary)
+
+| Model | Trained on | Result |
+|---|---|---|
+| `dkd_current`: has DKD now, from non-kidney data | **Real:** NHANES | AUROC **0.72** (5-fold CV); Asian subgroup 0.68 |
+| `dkd_onset`: DKD within 3 years | Synthetic cohort | AUROC 0.90, Brier 0.11 |
+| `dkd_progression`: KDIGO stage worse or eGFR -30% in 3 years | Synthetic cohort; UCI check | AUROC 0.87; on UCI (Indian) risk separates CKD with AUROC 0.93; KDIGO rule agrees with the hospital diagnosis in **94%** |
+| `hba1c_forecast`: HbA1c in 3 months | Synthetic cohort | MAE 0.26% when a drug is added (vs 0.39% "no change") |
+| `glucose_forecast`: +30 / +60 min | Synthetic CGM | MAE 6 / 9 mg/dL (vs 13 / 21 "stays the same") |
+
+Full details, plots and honest limitations: [models/model_card.md](models/model_card.md) and `docs/models/`.
 
 ## Clinical settings (no Python needed)
 
 | File | What it holds |
 |---|---|
-| `config/clinical_rules.yaml` | targets, KDIGO cut-offs, drug eligibility, effect sizes, synthetic cohort (each with `source` + `verified`) |
-| `config/alerts.yaml` | alert thresholds |
-| `data/reference/indian_foods.csv` | foods, serving, carbs, GI category (verify vs IFCT 2017) |
-| `data/reference/loinc_map.csv` | variable, LOINC code, unit (`verify` flag) |
+| `config/clinical_rules.yaml` | Targets, KDIGO cut-offs, drug eligibility, trial effect sizes, risk bands, synthetic cohort; every block has `source` and `verified` |
+| `config/alerts.yaml` | Alert thresholds and de-duplication window |
+| `data/reference/indian_foods.csv` | Foods (English + Hindi), serving, carbs, GI category |
+| `data/reference/loinc_map.csv`, `loinc_aliases.csv` | Variable <-> LOINC code <-> unit |
+| `data/reference/drug_classes.csv` | Drug name -> class |
+| `data/guidelines/*.md` | 8 short guideline notes the AI assistant cites |
 
 Restart the API after editing them.
 
-## Docker
+## AI assistant
 
-```bash
-docker compose up --build
-```
-
-API docs at http://localhost:8000/docs, app at http://localhost:8501.
-
-## Data
-
-Trained models are committed in `models/` (about 3 MB), so the app runs without any download.
-To rebuild everything from the public data (about 2 minutes plus downloads):
-
-```bash
-.\.venv\Scripts\python.exe scripts/download_data.py              # NHANES, UCI CKD, CGMacros -> data/raw/
-.\.venv\Scripts\python.exe -m src.pipeline.nhanes_merge          # -> data/processed/nhanes_diabetes.csv
-.\.venv\Scripts\python.exe scripts/build_synthetic_cohort.py     # -> data/synthetic/ (cohort + demo CGM)
-.\.venv\Scripts\python.exe scripts/train_models.py               # -> models/, docs/models/*.png
-```
-
-| Dataset | Use |
-|---|---|
-| NHANES 2017–Mar 2020 (CDC) | `dkd_current` model (real data); re-scales the synthetic cohort's risk weights |
-| UCI Chronic Kidney Disease | ~400 Indian patients (Apollo Hospitals): sanity check of eGFR/KDIGO and risk direction |
-| Synthetic Indian T2DM cohort | 2,000 patients x 5 years, from `config/clinical_rules.yaml -> cohort` (ICMR-INDIAB-informed) |
-| CGMacros (PhysioNet) | glucose forecast (CGM + meals + Fitbit); synthetic CGM is used until it is downloaded |
-| AI-READI | CGM + wearables + labs (access request at fairhub.io; not used yet) |
-
-Models and honest limitations: [models/model_card.md](models/model_card.md).
-Raw data is never pushed to GitHub (see `.gitignore`).
+- OpenAI-compatible client: **Kimi** first (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` in `.env`),
+  then **Gemini** (`LLM_FALLBACK_*`), then templates marked "offline summary". Check the connection with
+  `.\.venv\Scripts\python.exe scripts/test_llm.py`.
+- Sends only the patient id and numbers, never names; called only on a button press or question;
+  answers cached 30 minutes; 20 s timeout.
+- Guardrails: no medicine-change advice to patients (English + Hindi keyword check, template fallback);
+  medicine questions -> "please discuss this with your doctor"; low glucose -> fixed 15-15 message;
+  every answer ends with "Decision support only".
 
 ## Project structure
 
 ```
-config/              settings.py (.env), clinical_rules.yaml, alerts.yaml   <- clinical numbers
-data/reference/      loinc_map.csv, loinc_aliases.csv, drug_classes.csv, indian_foods.csv
-data/fhir_samples/   FHIR R4 sample bundles made from Synthea patients
-src/
-  clinical/          eGFR (CKD-EPI 2021), KDIGO, CGM metrics, units, LOINC, drug classes
-  db/                SQLModel tables, session, demo seed
-  auth/              bcrypt passwords, JWT, role checks
-  ingestion/         translator (living-twin loop), FHIR import/export, manual + lab CSV
-  twin/              state.py (TwinState from the database), engine.py (runs the models)
-  models/            dkd.py, t2dm.py (predict), features, calibration
-  treatment/         eligibility, simulate, rank
-  alerts/            alert engine with de-duplication
-  pipeline/          NHANES merge, synthetic cohort, synthetic CGM, CGMacros reader
-api/                 FastAPI: auth, patients, twin, treatments, alerts, ehr
-app/                 Streamlit: Home.py (login) + pages per role
-scripts/             download, cohort, training, FHIR samples, seed
-tests/               pytest suite
-docs/                architecture, model card, model plots
+config/              settings.py (.env), clinical_rules.yaml, alerts.yaml
+data/reference/      LOINC map + aliases, drug classes, Indian foods
+data/guidelines/     guideline notes for the assistant
+data/fhir_samples/   Synthea FHIR R4 bundles, sample Libre CSV
+src/clinical/        eGFR, KDIGO, CGM metrics, units, LOINC, drug classes
+src/db/              tables, session, demo seed
+src/auth/            bcrypt passwords, JWT, role checks
+src/ingestion/       translator, FHIR, simulator, Libre, Dexcom stub, manual entry
+src/twin/            state builder, engine
+src/models/          DKD and T2DM predictors, features, calibration
+src/treatment/       eligibility, simulate, rank
+src/alerts/ src/reminders/ src/meals/   alert engine, doses and adherence, meal spikes
+src/llm/             assistant, client, prompts, guardrails, retrieval, templates
+src/reports/         doctor and patient PDFs
+src/pipeline/        NHANES merge, synthetic cohort, synthetic CGM, CGMacros reader
+api/                 FastAPI app and routers
+app/                 Streamlit: Home.py (login), pages per role, i18n.py
+scripts/             data, training, seed, FHIR samples, dry run, LLM test, secret check, diagram
+tests/               pytest (89 tests)
+docs/                architecture, model card, demo script, deploy guide, samples
+deploy/start.sh      container entry point (MODE=api | ui | all)
 ```
 
-## How the twin updates (living-twin loop)
+## Quality checks
 
-Every reading (EHR import, lab CSV, manual entry, sensor) goes through
-`src/ingestion/translator.py`: map LOINC, convert units, skip duplicates, then
-1. instant alerts on that reading (e.g. glucose < 54 = critical; repeats within 60 min are merged),
-2. CGM readings -> glucose +30/+60 min forecast and predicted-hypo alert,
-3. new labs -> full re-run: DKD 3-year risk, HbA1c in 3 months, kidney alerts.
-DKD risk is never re-run on every CGM point; it also re-runs once a day (02:00).
+```bash
+.\.venv\Scripts\python.exe -m pytest -q
+.\.venv\Scripts\python.exe scripts/check_secrets.py
+.\.venv\Scripts\python.exe scripts/dry_run_demo.py
+```
 
-## AI assistant (explains, never predicts)
-
-- `src/llm/`: OpenAI-compatible client, **Kimi** first (`LLM_BASE_URL / LLM_API_KEY / LLM_MODEL` in
-  `.env`), then **Gemini** backup (`LLM_FALLBACK_*`), then built-in templates ("offline summary").
-  Test the connection with `.\.venv\Scripts\python.exe scripts/test_llm.py`.
-- Six modes: doctor summary / chat / report, patient summary / chat / report (English or Hindi).
-- Guardrails: patients never get medicine-change advice (keyword check in English and Hindi, falls
-  back to the template); medicine questions get "please discuss this with your doctor"; low
-  glucose gets a fixed 15-15 safety message; every answer ends with "Decision support only".
-- Retrieval: TF-IDF over the 8 guideline notes in `data/guidelines/` (KDIGO 2022, ADA 2026; marked
-  "verify"); the top 3 are added to the prompt with sources. Answers are cached for 30 minutes.
-- Only de-identified data (patient id + numbers) is sent; never names. The LLM is called only when
-  someone presses a button or asks a question.
-
-## Screens
-
-- **Doctor portal:** patient list sorted by DKD risk (KDIGO and risk chips, alerts) -> Overview
-  (KDIGO heat map, eGFR/HbA1c trends, drivers), Live (CGM auto-refresh every 5 s, forecast, alerts,
-  demo scenarios), Treatments (ranked options + "apply to simulation"), Medications (prescribe,
-  change times, stop), Meals, EHR (FHIR import/fetch/export, lab CSV, manual labs), AI assistant.
-- **Patient app (English / हिंदी):** Today (big glucose number, time-in-range ring, next medicine
-  with Taken/Skip, toasts), Medicines, Meals (log + spikes + top foods), My health, Devices
-  (sensor, Libre upload, home readings), Ask my twin.
-- **Admin:** users, patient-doctor links, import Synthea samples, devices, reset demo data.
-
-## Reports and demo
-
-- **PDF reports** (`src/reports/`, fpdf2 with Noto Sans + Noto Sans Devanagari, OFL, text shaping on):
-  - Doctor: risk with model versions, KDIGO grid, labs with dates and stale flags, eGFR/HbA1c trends,
-    14-day glucose profile (AGP style), ranked options with sources, alerts, AI summary.
-  - Patient: one page, English and Hindi side by side, numbers vs targets, medicines, tips, when to
-    call the doctor. Samples: `docs/samples/`. Download from the Report tab in both portals.
-- **Demo mode:** Admin panel -> Demo data -> **Start demo mode** resets the data and sets up the story
-  (Ramesh without this week's labs; upload `docs/demo/ramesh_labs_today.csv` during the demo).
-- **Demo script:** [docs/demo_script.md](docs/demo_script.md) (15-18 minutes, what to click and say).
-- **Rehearsal:** `.\.venv\Scripts\python.exe scripts/dry_run_demo.py` plays the whole story through the API
-  on a throwaway database in about 35 seconds and prints every step.
-
-## Live data, medicines and meals
-
-- **Live sensor simulator** (`src/ingestion/simulator.py`): replays a patient's CGM + heart rate +
-  steps as if arriving now; one 5-minute reading every `SIM_SPEED_SECONDS` (3 s = 100x real
-  time). Ramesh's starts automatically (`SIM_AUTOSTART`). Demo scenarios: `meal_spike`, `hypo`
-  (`POST /patients/{id}/devices/simulator/scenario`). Uses CGMacros when downloaded.
-- **Libre:** upload a LibreView CSV export (sample: `data/fhir_samples/sample_libre.csv`).
-  **Dexcom:** "coming soon" stub.
-- **Home readings:** `POST /patients/{id}/vitals` (BP, weight, fingerstick glucose, sleep, steps).
-- **Medicines and reminders:** doctor prescribes (`POST /patients/{id}/medications`) -> daily
-  doses at the chosen times; patient taps Taken / Skip; pending > 2 h becomes missed;
-  adherence % over 7 and 30 days feeds the twin. A prescription change re-runs kidney risk.
-- **Indian meal log:** foods from `indian_foods.csv`, carbs summed; 2-hour glucose spike
-  (peak of the next 24 CGM readings minus the reading before); "top 3 spiking foods".
-  Logging a meal while the simulator runs adds a matching rise to the live sensor.
-
-## Hospital EHR (FHIR R4)
-
-- **Import a sample:** `POST /ehr/import/sample` with one of the files in `data/fhir_samples/`
-  (real Synthea patients with type 2 diabetes, dates shifted to today; rebuild them with
-  `scripts/make_fhir_samples.py`).
-- **Fetch from a FHIR server:** `POST /ehr/fetch {"fhir_patient_id": "56196"}` pulls
-  `Patient/56196/$everything` from `FHIR_BASE_URL` (default: the public HAPI R4 test server; its
-  test data changes over time, so example ids may disappear).
-- **Export:** `GET /patients/{id}/fhir` returns the twin's labs, vitals, diagnosis and medicines as
-  a valid FHIR R4 Bundle (5-minute CGM and heart-rate streams stay in the twin).
-
-API docs with every endpoint: http://localhost:8000/docs (click **Authorize**, log in as `dr.mehta`).
+GitHub Actions runs all three on every push, then builds the Docker image and smoke-tests it.
 
 ## Limitations
 
-- Only `dkd_current` is trained on real patients (NHANES). The onset, progression and HbA1c
-  models are trained on a **simulated** Indian cohort; see [models/model_card.md](models/model_card.md).
-- Treatment effects (`config/clinical_rules.yaml -> effects`) are average trial hazard ratios
-  (DAPA-CKD, CREDENCE, FLOW, FIDELIO-DKD, RENAAL) and are all `verified: false` until checked.
-- DKD risk uses Platt calibration instead of isotonic (smoother with small calibration sets).
-- The glucose forecast is trained on synthetic CGM until CGMacros is downloaded; hypo warnings
-  rely on a rule-based safety net.
-- Demo patients are fictional; Synthea FHIR samples are synthetic and time-shifted.
-- Patient app: alert messages and medicine names are shown in English inside the Hindi view.
-- Screens are slow on Windows-on-ARM laptops (Python runs under x64 emulation): a full page
-  load can take 10-25 s; read-only data is cached for 15 s.
-- Not a medical device. Not for clinical use.
+- Only `dkd_current` is trained on real patients; onset, progression and HbA1c models learn from a
+  **simulated** Indian cohort (no open Indian longitudinal dataset exists). High AUROC there means the
+  models learned the simulator's rules, not that they are validated on Indian patients.
+- Treatment effects are average trial hazard ratios (DAPA-CKD, CREDENCE, FLOW, FIDELIO-DKD, RENAAL),
+  all `verified: false` until checked; real effects vary by patient.
+- DKD risk uses Platt calibration rather than isotonic (smoother with small calibration sets).
+- Glucose forecast trained on synthetic CGM until CGMacros is added; hypo warnings rely on a
+  rule-based safety net as well as the model.
+- Demo patients are fictional; Synthea samples are synthetic and time-shifted to today.
+- Hindi view: alert messages and medicine names still appear in English.
+- Slow on Windows-on-ARM laptops (x64 emulation): a full page load can take 10-25 s.
+
+## Next steps
+
+Dexcom live OAuth (sandbox) · real-world validation on Indian hospital EHR data via FHIR ·
+recalibration to Indian incidence (ICMR-INDIAB follow-up) · CDSCO Software-as-a-Medical-Device
+pathway · DPDP Act 2023-compliant hosting in India (consent, audit logs, PostgreSQL, encrypted
+tokens) · WhatsApp/SMS reminders · full Hindi alerts · AI-READI CGM + labs data.
 
 ## Team
 
 - **Shiwangi Singh**: clinical logic, KDIGO staging, drug eligibility rules, data, pitch
 - **Teammate**: DevOps, Docker, CI/CD, deployment
 
-## License
+## Licence
 
-MIT
+MIT (see [LICENSE](LICENSE)). Fonts: Noto Sans / Noto Sans Devanagari, SIL Open Font License
+(`assets/fonts/OFL.txt`). Swagger UI (`api/static/swagger`): Apache 2.0.

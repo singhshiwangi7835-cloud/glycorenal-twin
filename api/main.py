@@ -7,7 +7,7 @@ doses, start the live sensor simulator for SIM_AUTOSTART patients, and start bac
   - every minute: post-meal glucose spikes
   - every 10 min: "sensor disconnected" check
   - 00:05 daily: tomorrow's doses; 02:00 daily: full twin re-run for every patient
-The /docs page uses a local copy of Swagger UI (api/static/swagger, MIT licence), so it works
+The /docs page uses a local copy of Swagger UI (api/static/swagger, Apache 2.0), so it works
 offline and where the CDN is blocked.
 """
 

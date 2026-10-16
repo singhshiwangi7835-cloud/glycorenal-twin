@@ -1,10 +1,16 @@
+# keep the image small; trained models (models/*.joblib) ARE needed and stay in
 .venv
 .git
 .github
-__pycache__
+.claude
+**/__pycache__
 *.pyc
 .pytest_cache
-data/raw
 .env
+data/raw
+data/processed
+data/synthetic
+data/*.db
+data/*.db-journal
+docs/samples
 notebooks
-models/*.joblib

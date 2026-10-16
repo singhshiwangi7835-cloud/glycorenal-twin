@@ -321,3 +321,16 @@ Every connector returns a list of `ObservationIn` and calls `translator.save()`,
 - Demo story in `docs/demo_script.md` runs end-to-end without errors, with or without internet for the LLM.
 - `pytest` passes, including eGFR/KDIGO/eligibility unit tests.
 - README covers: what it is, architecture image, how to run, demo accounts, data sources, model card summary, limitations, licence (MIT).
+
+---
+
+## 15. Implementation notes (decisions made during the build)
+
+- **Passwords:** `bcrypt` is used directly instead of `passlib` (passlib 1.7 is unmaintained and breaks with bcrypt >= 4.1).
+- **DKD calibration:** Platt (logistic) scaling instead of isotonic: with ~400 calibration patients isotonic made flat steps that hid treatment effects.
+- **Treatment simulation:** drug flags are not switched on in the features (kidney benefit counted once via the trial HR); when every effect of an option is favourable the re-run risk is capped at the current risk (tree-model bumps never show a benefit as harm).
+- **Glucose safety net:** a hypo warning also fires when glucose is already < 70 or the 15-minute trend reaches < 80 within 30 minutes (the model alone can miss steady falls).
+- **Windows on ARM:** the `.venv` uses the x64 build of Python 3.11 (uv-managed) because Streamlit/pyarrow and XGBoost have no win-arm64 wheels. Install tools the user runs from a normal terminal, not the sandboxed shell.
+- **Weight-loss lever:** offered from BMI 23 (WHO Asian cut-off), configurable in `clinical_rules.yaml`.
+- **Docker:** one image, `MODE=api | ui | all` (`deploy/start.sh`); `all` = API + Streamlit in one container for Hugging Face Spaces.
+- **BUILD_PROMPTS.md** was never added to the repo; FAST_TRACK.md was followed.
