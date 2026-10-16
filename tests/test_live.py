@@ -3,9 +3,9 @@
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from sqlmodel import Session
+from sqlmodel import Session, select
 
-from src.db.models import Meal, Observation
+from src.db.models import Alert, Meal, Observation
 from src.db.session import engine
 from src.ingestion import simulator
 from src.meals.engine import compute_spikes, top_spiking_foods
@@ -140,9 +140,17 @@ def test_simulator_replays_and_scenarios_raise_alerts(client):
                        json={"scenario": "hypo"}).status_code == 409
     st = client.post("/patients/IND-0839/devices/simulator/start", headers=h, json={}).json()
     assert st["running"]
+    # Same starting point on every machine and at every time of day: settle at a steady
+    # 150 mg/dL, then clear this patient's alerts (the jump from the last seeded reading to 150
+    # can itself look like a fall, and the 60-minute de-duplication would hide the real test).
+    simulator._sims["IND-0839"].rows["glucose"] = 150.0
     with Session(engine) as s:
-        sent = simulator.tick(s)
+        for _ in range(8):
+            sent = simulator.tick(s)
         assert any(x["patient_id"] == "IND-0839" for x in sent)
+        for a in s.exec(select(Alert).where(Alert.patient_id == "IND-0839")).all():
+            s.delete(a)
+        s.commit()
         client.post("/patients/IND-0839/devices/simulator/scenario", headers=h, json={"scenario": "hypo"})
         alerts = [a for _ in range(12) for x in simulator.tick(s) if x["patient_id"] == "IND-0839"
                   for a in x["new_alerts"]]
