@@ -77,21 +77,25 @@ API docs at http://localhost:8000/docs, app at http://localhost:8501.
 
 ## Data
 
-The prototype runs on a **synthetic Indian T2DM cohort** (`src/pipeline/synthetic.py`) and five
-demo patients, so no download is needed to try it. To use real public data:
+Trained models are committed in `models/` (about 3 MB), so the app runs without any download.
+To rebuild everything from the public data (about 2 minutes plus downloads):
 
 ```bash
-python scripts/download_data.py          # NHANES 2017-2020, UCI CKD, CGMacros
-python -m src.pipeline.nhanes_merge      # -> data/processed/nhanes_t2dm.csv
+.venv\Scripts\python scripts/download_data.py              # NHANES, UCI CKD, CGMacros -> data/raw/
+.venv\Scripts\python -m src.pipeline.nhanes_merge          # -> data/processed/nhanes_diabetes.csv
+.venv\Scripts\python scripts/build_synthetic_cohort.py     # -> data/synthetic/ (cohort + demo CGM)
+.venv\Scripts\python scripts/train_models.py               # -> models/, docs/models/*.png
 ```
 
 | Dataset | Use |
 |---|---|
-| NHANES 2017–Mar 2020 (CDC) | HbA1c, creatinine, UACR, BP, BMI, meds |
-| UCI Chronic Kidney Disease | ~400 Indian patients (Apollo Hospitals, Tamil Nadu) |
-| CGMacros (PhysioNet) | CGM + meals + Fitbit, incl. T2D participants |
-| AI-READI | CGM + wearables + labs (access request at fairhub.io) |
+| NHANES 2017–Mar 2020 (CDC) | `dkd_current` model (real data); re-scales the synthetic cohort's risk weights |
+| UCI Chronic Kidney Disease | ~400 Indian patients (Apollo Hospitals): sanity check of eGFR/KDIGO and risk direction |
+| Synthetic Indian T2DM cohort | 2,000 patients x 5 years, from `config/clinical_rules.yaml -> cohort` (ICMR-INDIAB-informed) |
+| CGMacros (PhysioNet) | glucose forecast (CGM + meals + Fitbit); synthetic CGM is used until it is downloaded |
+| AI-READI | CGM + wearables + labs (access request at fairhub.io; not used yet) |
 
+Models and honest limitations: [models/model_card.md](models/model_card.md).
 Raw data is never pushed to GitHub (see `.gitignore`).
 
 ## Project structure

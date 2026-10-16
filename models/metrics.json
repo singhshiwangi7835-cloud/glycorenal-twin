@@ -1,0 +1,203 @@
+{
+  "dkd_current": {
+    "data": "NHANES 2017-Mar 2020, adults with diabetes",
+    "n": 1455,
+    "prevalence": 0.406,
+    "auroc_logistic_cv5": 0.715,
+    "auroc_xgboost_cv5": 0.696,
+    "auroc_best_asian_subgroup": 0.676,
+    "n_asian": 167,
+    "brier_best": 0.208,
+    "chosen": "logistic_regression",
+    "top_features": [
+      {
+        "feature": "on_insulin",
+        "label": "On insulin",
+        "share": 0.202
+      },
+      {
+        "feature": "hypertension",
+        "label": "Hypertension",
+        "share": 0.108
+      },
+      {
+        "feature": "age",
+        "label": "Age",
+        "share": 0.068
+      },
+      {
+        "feature": "hba1c",
+        "label": "HbA1c",
+        "share": 0.063
+      },
+      {
+        "feature": "sbp",
+        "label": "Systolic BP",
+        "share": 0.058
+      },
+      {
+        "feature": "on_sulfonylurea",
+        "label": "On sulfonylurea",
+        "share": 0.05
+      }
+    ]
+  },
+  "dkd_onset": {
+    "data": "synthetic Indian T2DM cohort (landmarks at year 1 and 2, 3-year follow-up)",
+    "n_train": 1282,
+    "n_calibration": 420,
+    "n_test": 429,
+    "event_rate": 0.282,
+    "auroc_test": 0.894,
+    "auroc_logistic_test": 0.831,
+    "brier_test": 0.117,
+    "top_features": [
+      {
+        "feature": "log_uacr",
+        "label": "UACR (log)",
+        "share": 0.175
+      },
+      {
+        "feature": "egfr",
+        "label": "eGFR",
+        "share": 0.13
+      },
+      {
+        "feature": "smoker",
+        "label": "Smoking",
+        "share": 0.063
+      },
+      {
+        "feature": "hba1c",
+        "label": "HbA1c",
+        "share": 0.058
+      },
+      {
+        "feature": "sbp",
+        "label": "Systolic BP",
+        "share": 0.053
+      },
+      {
+        "feature": "tir_pct",
+        "label": "Time in range",
+        "share": 0.049
+      }
+    ]
+  },
+  "dkd_progression": {
+    "data": "synthetic Indian T2DM cohort (landmarks at year 1 and 2, 3-year follow-up)",
+    "n_train": 1135,
+    "n_calibration": 369,
+    "n_test": 365,
+    "event_rate": 0.44,
+    "auroc_test": 0.864,
+    "auroc_logistic_test": 0.779,
+    "brier_test": 0.15,
+    "top_features": [
+      {
+        "feature": "egfr",
+        "label": "eGFR",
+        "share": 0.107
+      },
+      {
+        "feature": "log_uacr",
+        "label": "UACR (log)",
+        "share": 0.1
+      },
+      {
+        "feature": "on_sglt2i",
+        "label": "On SGLT2i",
+        "share": 0.08
+      },
+      {
+        "feature": "smoker",
+        "label": "Smoking",
+        "share": 0.066
+      },
+      {
+        "feature": "age",
+        "label": "Age",
+        "share": 0.065
+      },
+      {
+        "feature": "hba1c",
+        "label": "HbA1c",
+        "share": 0.062
+      }
+    ],
+    "uci_sanity_check": {
+      "used": true,
+      "n_adults": 356,
+      "auroc_risk_vs_ckd_label": 0.92,
+      "agreement_twin_kdigo_vs_label": 0.941,
+      "note": "UCI has no sex, HbA1c or UACR: sex averaged, HbA1c from random glucose, UACR from albumin dipstick. Label is CKD now, not progression."
+    }
+  },
+  "hba1c_forecast": {
+    "data": "synthetic Indian T2DM cohort, quarterly visit pairs",
+    "n_train": 32000,
+    "n_test": 8000,
+    "mae_test": 0.241,
+    "mae_no_change_baseline": 0.259,
+    "mae_when_new_drug": 0.264,
+    "mae_when_new_drug_no_change_baseline": 0.387,
+    "n_test_new_drug": 395,
+    "interval_80pct": [
+      -0.39,
+      0.38
+    ],
+    "top_features": [
+      {
+        "feature": "hba1c",
+        "label": "HbA1c",
+        "share": 0.91
+      },
+      {
+        "feature": "tir_pct",
+        "label": "Time in range",
+        "share": 0.038
+      },
+      {
+        "feature": "gmi_pct",
+        "label": "gmi_pct",
+        "share": 0.026
+      },
+      {
+        "feature": "new_glucose_drug",
+        "label": "new_glucose_drug",
+        "share": 0.008
+      },
+      {
+        "feature": "hba1c_change_3m",
+        "label": "hba1c_change_3m",
+        "share": 0.005
+      },
+      {
+        "feature": "on_glp1ra",
+        "label": "On GLP-1 RA",
+        "share": 0.004
+      }
+    ]
+  },
+  "glucose_forecast": {
+    "data": "synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet",
+    "n_train_rows": 127872,
+    "n_test_rows": 31968,
+    "plus_30min": {
+      "mae": 8.5,
+      "rmse": 15.1,
+      "mae_persistence_baseline": 19.6,
+      "hypo_events_in_test": 54,
+      "hypo_sensitivity": 0.241,
+      "hypo_warnings_correct": 0.406
+    },
+    "plus_60min": {
+      "mae": 14.1,
+      "rmse": 25.4,
+      "mae_persistence_baseline": 33.7,
+      "hypo_events_in_test": 54,
+      "hypo_sensitivity": 0.0,
+      "hypo_warnings_correct": 0.0
+    }
+  }
+}

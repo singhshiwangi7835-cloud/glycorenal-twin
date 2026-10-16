@@ -25,6 +25,16 @@ targets:
   verified: false
 
 # ---------------------------------------------------------------------------
+# Risk bands for the predicted 3-year DKD risk (probability, upper limits)
+# ---------------------------------------------------------------------------
+risk_bands:
+  low_below: 0.10
+  moderate_below: 0.25
+  high_below: 0.45          # at or above this: very_high
+  source: "Project choice for display; no guideline defines these cut-offs"
+  verified: false
+
+# ---------------------------------------------------------------------------
 # KDIGO staging (eGFR in mL/min/1.73m2, UACR in mg/g)
 # ---------------------------------------------------------------------------
 kdigo:

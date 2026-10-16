@@ -21,6 +21,7 @@ apscheduler==3.11.2
 # frontend
 streamlit==1.66.0
 plotly==7.1.0
+matplotlib==3.10.8
 # fhir, llm, pdf
 fhir.resources==8.2.0
 openai==2.21.0

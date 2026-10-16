@@ -21,8 +21,9 @@ data/synthetic/*
 data/*.db
 data/*.db-journal
 
-# trained models (rebuilt by scripts/train_models.py)
-models/*.joblib
+# trained models: the five twin models are small (<10 MB) and committed so deploys work;
+# the legacy v0.1 model is rebuilt on the fly
+models/model1.joblib
 
 # OS / editors / local tools
 .DS_Store
