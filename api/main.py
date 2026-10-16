@@ -23,7 +23,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
 
-from api.routers import alerts, auth, devices, ehr, meals, patients, reminders, treatments, twin
+from api.routers import admin, alerts, auth, devices, ehr, llm, meals, patients, reminders, treatments, twin
 from config.settings import DEV_JWT_SECRET, get_settings
 from src.alerts.engine import check_stale_sensors
 from src.db.models import Patient
@@ -84,12 +84,12 @@ app = FastAPI(
     title="GlycoRenal Twin API",
     description="Digital twin for T2DM glycaemic control and DKD prevention. "
                 "Prototype: decision support only, not for clinical use.",
-    version="0.4.0",
+    version="0.5.0",
     lifespan=lifespan,
     docs_url=None,  # served below from local files
 )
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
-for r in (auth, patients, twin, treatments, alerts, ehr, devices, reminders, meals):
+for r in (auth, patients, twin, treatments, alerts, ehr, devices, reminders, meals, llm, admin):
     app.include_router(r.router)
 
 

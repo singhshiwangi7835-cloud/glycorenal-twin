@@ -130,6 +130,31 @@ Every reading (EHR import, lab CSV, manual entry, sensor) goes through
 3. new labs -> full re-run: DKD 3-year risk, HbA1c in 3 months, kidney alerts.
 DKD risk is never re-run on every CGM point; it also re-runs once a day (02:00).
 
+## AI assistant (explains, never predicts)
+
+- `src/llm/`: OpenAI-compatible client, **Kimi** first (`LLM_BASE_URL / LLM_API_KEY / LLM_MODEL` in
+  `.env`), then **Gemini** backup (`LLM_FALLBACK_*`), then built-in templates ("offline summary").
+  Test the connection with `.\.venv\Scripts\python.exe scripts/test_llm.py`.
+- Six modes: doctor summary / chat / report, patient summary / chat / report (English or Hindi).
+- Guardrails: patients never get medicine-change advice (keyword check in English and Hindi, falls
+  back to the template); medicine questions get "please discuss this with your doctor"; low
+  glucose gets a fixed 15-15 safety message; every answer ends with "Decision support only".
+- Retrieval: TF-IDF over the 8 guideline notes in `data/guidelines/` (KDIGO 2022, ADA 2026; marked
+  "verify"); the top 3 are added to the prompt with sources. Answers are cached for 30 minutes.
+- Only de-identified data (patient id + numbers) is sent; never names. The LLM is called only when
+  someone presses a button or asks a question.
+
+## Screens
+
+- **Doctor portal:** patient list sorted by DKD risk (KDIGO and risk chips, alerts) -> Overview
+  (KDIGO heat map, eGFR/HbA1c trends, drivers), Live (CGM auto-refresh every 5 s, forecast, alerts,
+  demo scenarios), Treatments (ranked options + "apply to simulation"), Medications (prescribe,
+  change times, stop), Meals, EHR (FHIR import/fetch/export, lab CSV, manual labs), AI assistant.
+- **Patient app (English / हिंदी):** Today (big glucose number, time-in-range ring, next medicine
+  with Taken/Skip, toasts), Medicines, Meals (log + spikes + top foods), My health, Devices
+  (sensor, Libre upload, home readings), Ask my twin.
+- **Admin:** users, patient-doctor links, import Synthea samples, devices, reset demo data.
+
 ## Live data, medicines and meals
 
 - **Live sensor simulator** (`src/ingestion/simulator.py`): replays a patient's CGM + heart rate +
@@ -169,6 +194,9 @@ API docs with every endpoint: http://localhost:8000/docs (click **Authorize**, l
 - The glucose forecast is trained on synthetic CGM until CGMacros is downloaded; hypo warnings
   rely on a rule-based safety net.
 - Demo patients are fictional; Synthea FHIR samples are synthetic and time-shifted.
+- Patient app: alert messages and medicine names are shown in English inside the Hindi view.
+- Screens are slow on Windows-on-ARM laptops (Python runs under x64 emulation): a full page
+  load can take 10-25 s; read-only data is cached for 15 s.
 - Not a medical device. Not for clinical use.
 
 ## Team

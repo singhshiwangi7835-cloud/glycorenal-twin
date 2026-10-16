@@ -64,18 +64,17 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
     dm_years = now.year - p.dm_diagnosis_year if p.dm_diagnosis_year else None
 
     # ---------------- observations (non-CGM) ----------------
-    code_var = {loinc.code(v): v for v in LAB_VARS + VITAL_VARS + ["glucose"]}
+    # labs and slow-changing vitals only; 5-minute CGM and heart-rate streams are read separately
+    code_var = {loinc.code(v): v for v in LAB_VARS + VITAL_VARS if v != "heart_rate"}
     rows = session.exec(
         select(Observation).where(Observation.patient_id == patient_id,
                                   Observation.loinc_code.in_(list(code_var)),
                                   Observation.effective_time <= now)
         .order_by(Observation.effective_time)
     ).all()
-    hist: dict[str, list[dict]] = {v: [] for v in code_var.values()}
+    hist: dict[str, list[dict]] = {v: [] for v in LAB_VARS + VITAL_VARS}
     for o in rows:
         var = code_var[o.loinc_code]
-        if var == "glucose" or var == "heart_rate":
-            continue  # CGM/HR handled below (they are many)
         hist[var].append({"time": _utc(o.effective_time), "value": o.value, "source": o.source})
 
     # eGFR: always recalculated from creatinine (CKD-EPI 2021) when creatinine exists
@@ -136,8 +135,9 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
 
     # ---------------- CGM (last 14 days) ----------------
     window = rules["cgm"]["window_days"]
-    cgm_rows = session.exec(
-        select(Observation).where(Observation.patient_id == patient_id,
+    cgm_rows = session.exec(  # plain (time, value, source) tuples: thousands of rows, no ORM objects
+        select(Observation.effective_time, Observation.value, Observation.source).where(
+                                  Observation.patient_id == patient_id,
                                   Observation.loinc_code == loinc.code("glucose"),
                                   Observation.device == "cgm",
                                   Observation.effective_time > now - timedelta(days=window),
@@ -150,15 +150,14 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
     cgm: dict = {"connected": connected or bool(cgm_rows), "metrics": None, "latest": None,
                  "minutes_since_last": None}
     if len(cgm_rows) >= 2:
-        cgm["metrics"] = cgm_metrics([o.value for o in cgm_rows], window_days=window)
+        cgm["metrics"] = cgm_metrics([r[1] for r in cgm_rows], window_days=window)
     if cgm_rows:
-        last = cgm_rows[-1]
-        t_last = _utc(last.effective_time)
-        back = [o for o in cgm_rows[-4:]]
-        slope = ((last.value - back[0].value) /
-                 max((t_last - _utc(back[0].effective_time)).total_seconds() / 60, 1)) if len(back) > 1 else 0
-        cgm["latest"] = {"value": last.value, "time": t_last.isoformat(), "trend_per_min": round(slope, 2),
-                         "arrow": _arrow(slope), "source": last.source}
+        t_last, v_last, src_last = cgm_rows[-1]
+        t_last = _utc(t_last)
+        t0, v0, _ = cgm_rows[-4] if len(cgm_rows) >= 4 else cgm_rows[0]
+        slope = (v_last - v0) / max((t_last - _utc(t0)).total_seconds() / 60, 1) if len(cgm_rows) > 1 else 0
+        cgm["latest"] = {"value": v_last, "time": t_last.isoformat(), "trend_per_min": round(slope, 2),
+                         "arrow": _arrow(slope), "source": src_last}
         cgm["minutes_since_last"] = round((now - t_last).total_seconds() / 60)
         if cgm["minutes_since_last"] > rules["freshness"]["cgm_max_minutes"]:
             flags.append(f"No CGM reading for {cgm['minutes_since_last'] // 60} h")
