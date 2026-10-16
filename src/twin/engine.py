@@ -45,12 +45,18 @@ def _raise(session: Session, pid: str, found: list[tuple[str, str, str]]) -> lis
 
 
 def run_short(session: Session, patient_id: str, now: datetime | None = None) -> dict:
+    """Light re-run after CGM readings (called every few seconds by the simulator)."""
     now = now or datetime.now(timezone.utc)
     g = forecast_glucose(_recent_cgm(session, patient_id, now))
     if g.get("available"):
-        _save(session, patient_id, "glucose_30m", g["plus_30"], g, g["model_version"])
-        state = build_state(session, patient_id, now)
-        found = [a for a in check_state(state, g) if a[0] in ("predicted_hypo",)]
+        last = session.exec(select(Prediction.created_at).where(
+            Prediction.patient_id == patient_id, Prediction.kind == "glucose_30m")
+            .order_by(Prediction.created_at.desc())).first()
+        if last is None or now - last > timedelta(seconds=60):  # store at most once a minute
+            _save(session, patient_id, "glucose_30m", g["plus_30"], g, g["model_version"])
+        mini_state = {"cgm": {"latest": {"value": g["now"]}, "connected": False, "minutes_since_last": None},
+                      "kidney": {}, "adherence": {"pct_7d": None}}
+        found = [a for a in check_state(mini_state, g) if a[0] == "predicted_hypo"]
         g["new_alerts"] = _raise(session, patient_id, found)
     session.commit()
     return g

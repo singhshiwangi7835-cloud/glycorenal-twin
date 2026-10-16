@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 from typing import Optional
 
-from sqlalchemy import JSON, Column
+from sqlalchemy import JSON, Column, Index
 from sqlmodel import Field, SQLModel
 
 ROLES = ("admin", "doctor", "patient")
@@ -46,6 +46,8 @@ class Patient(SQLModel, table=True):
 
 
 class Observation(SQLModel, table=True):
+    __table_args__ = (Index("ix_obs_patient_code_time", "patient_id", "loinc_code", "effective_time"),)
+
     id: Optional[int] = Field(default=None, primary_key=True)
     patient_id: str = Field(foreign_key="patient.id", index=True)
     loinc_code: str = Field(index=True)

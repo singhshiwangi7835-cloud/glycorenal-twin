@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     dexcom_base_url: str = "https://sandbox-api.dexcom.com"
     dexcom_redirect_uri: str = "http://localhost:8000/devices/dexcom/callback"
     sim_speed_seconds: float = 3.0
+    sim_autostart: str = "IND-0042"   # comma-separated patient ids whose simulator starts with the API
 
     # UI
     api_url: str = "http://localhost:8000"

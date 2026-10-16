@@ -4,8 +4,9 @@ Creates: admin, dr.mehta, 10 patients (each with a login) and, per patient,
   - 12 months of labs (HbA1c, creatinine -> eGFR, UACR, potassium, LDL)
   - 6 months of weekly BP and monthly weight/BMI
   - 14 days of 5-minute CGM + heart rate, daily steps and sleep (data/synthetic/cgm/, or
-    generated on the fly), time-shifted so the last reading is 5 minutes ago
+    generated on the fly), moved forward by whole days so it ends now and meals stay at meal times
   - current medicines with reminder times, and 30 days of dose history (adherence)
+  - 14 days of logged Indian meals (matching the CGM trace) with their 2-hour spikes
 then runs the twin once for everyone (risk scores and alerts).
 
 Ramesh (IND-0042) is the demo story: 54 M, T2DM 9 yrs, HbA1c 8.4, eGFR ~63, UACR rising
@@ -28,7 +29,7 @@ from config.settings import get_settings
 from src.auth.security import hash_password
 from src.clinical import loinc
 from src.clinical.egfr import egfr_ckd_epi_2021
-from src.db.models import DeviceConnection, DoseEvent, Medication, Observation, Patient, User
+from src.db.models import DeviceConnection, DoseEvent, Meal, Medication, Observation, Patient, User
 from src.db.session import drop_all, engine, init_db, is_empty
 
 YEAR = date.today().year
@@ -117,16 +118,27 @@ def _obs(pid: str, var: str, value: float, t: datetime, source: str, device: str
             "device": device, "created_at": t}
 
 
-def _trace(pid: str, i: int) -> pd.DataFrame:
+def _trace(pid: str, i: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """(5-minute readings, meals) for a demo patient; times are local wall-clock (naive)."""
     path = CGM_DIR / f"{pid}.csv"
     if path.exists():
-        return pd.read_csv(path, parse_dates=["time"])
+        meals_path = CGM_DIR / f"{pid}_meals.json"
+        meals = pd.read_json(meals_path) if meals_path.exists() else pd.DataFrame(columns=["time", "items", "total_carbs_g"])
+        if len(meals):
+            meals["time"] = pd.to_datetime(meals["time"])
+        return pd.read_csv(path, parse_dates=["time"]), meals
     from src.pipeline.cgm_synth import generate
     hba1c = DEMO_CLINICAL[pid]["hba1c"][-1][1]
-    return generate(days=14, hba1c=hba1c, seed=100 + i)[0]
+    return generate(days=14, hba1c=hba1c, seed=100 + i)
 
 
-def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rng: random.Random) -> list[dict]:
+def _to_now(times: pd.Series, offset_days: int, tz: ZoneInfo) -> pd.Series:
+    """Move local wall-clock times forward by whole days (keeps meals at meal times) -> UTC."""
+    return (times + pd.Timedelta(days=offset_days)).dt.tz_localize(tz).dt.tz_convert("UTC")
+
+
+def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rng: random.Random,
+                  tz: ZoneInfo) -> tuple[list[dict], list[dict]]:
     c = DEMO_CLINICAL[pid]
     rows = []
     for var in ("hba1c", "creatinine", "uacr", "potassium", "ldl"):
@@ -147,9 +159,10 @@ def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rn
         rows.append(_obs(pid, "weight", round(wt, 1), t, "patient_app"))
         rows.append(_obs(pid, "bmi", round(wt / c["height"] ** 2, 1), t, "patient_app"))
 
-    trace = _trace(pid, i)
-    shift = (now - timedelta(minutes=5)) - trace["time"].iloc[-1].to_pydatetime().replace(tzinfo=timezone.utc)
-    trace["time"] = trace["time"].dt.tz_localize("UTC") + shift
+    trace, meals = _trace(pid, i)
+    offset = (now.astimezone(tz).date() - trace["time"].iloc[-1].date()).days
+    trace["time"] = _to_now(trace["time"], offset, tz)
+    trace = trace[trace["time"] <= now]  # the trace ends at "now"; the simulator continues it
     for t, g, hr in zip(trace["time"], trace["glucose"], trace["heart_rate"]):
         t = t.to_pydatetime()
         rows.append(_obs(pid, "glucose", g, t, "simulator", "cgm"))
@@ -159,7 +172,14 @@ def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rn
         rows.append(_obs(pid, "steps", int(steps), t.to_pydatetime() + timedelta(hours=23), "simulator", "fitbit"))
         rows.append(_obs(pid, "sleep", round(rng.uniform(5.5, 7.5), 1), t.to_pydatetime() + timedelta(hours=1),
                          "simulator", "fitbit"))
-    return rows
+    meal_rows = []
+    if len(meals):
+        meals["time"] = _to_now(meals["time"], offset, tz)
+        meal_rows = [{"patient_id": pid, "time": t.to_pydatetime(), "items": items,
+                      "total_carbs_g": carbs}
+                     for t, items, carbs in zip(meals["time"], meals["items"], meals["total_carbs_g"])
+                     if t <= now]
+    return rows, meal_rows
 
 
 def _doses(med: Medication, adherence: float, now: datetime, tz: ZoneInfo, rng: random.Random) -> list[dict]:
@@ -212,7 +232,10 @@ def seed_demo(reset: bool = False, run_twin: bool = True) -> None:
         s.commit()
 
         for i, (pid, _, _, sex, age, *_rest) in enumerate(DEMO_PATIENTS):
-            s.execute(insert(Observation), _patient_rows(pid, i, sex, YEAR - age, now, rng))
+            obs_rows, meal_rows = _patient_rows(pid, i, sex, YEAR - age, now, rng, tz)
+            s.execute(insert(Observation), obs_rows)
+            if meal_rows:
+                s.execute(insert(Meal), meal_rows)
             s.add(DeviceConnection(patient_id=pid, provider="simulator", status="connected", last_sync=now))
             c = DEMO_CLINICAL[pid]
             for drug, cls, dose, times, food in c["meds"]:
@@ -226,6 +249,10 @@ def seed_demo(reset: bool = False, run_twin: bool = True) -> None:
                 s.execute(insert(DoseEvent), _doses(med, c["adherence"], now, tz, rng))
         s.commit()
 
+        from src.meals.engine import compute_spikes
+        from src.reminders.engine import ensure_dose_events
+        compute_spikes(s)
+        ensure_dose_events(s)
         if run_twin:
             from src.twin.engine import run_all
             run_all(s)

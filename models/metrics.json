@@ -184,20 +184,20 @@
     "n_train_rows": 127872,
     "n_test_rows": 31968,
     "plus_30min": {
-      "mae": 8.5,
-      "rmse": 15.1,
-      "mae_persistence_baseline": 19.6,
-      "hypo_events_in_test": 54,
-      "hypo_sensitivity": 0.241,
-      "hypo_warnings_correct": 0.406
+      "mae": 6.1,
+      "rmse": 9.7,
+      "mae_persistence_baseline": 13.1,
+      "hypo_events_in_test": 14,
+      "hypo_sensitivity": 0.357,
+      "hypo_warnings_correct": 0.5
     },
     "plus_60min": {
-      "mae": 14.1,
-      "rmse": 25.4,
-      "mae_persistence_baseline": 33.7,
-      "hypo_events_in_test": 54,
+      "mae": 9.4,
+      "rmse": 16.4,
+      "mae_persistence_baseline": 21.4,
+      "hypo_events_in_test": 14,
       "hypo_sensitivity": 0.0,
-      "hypo_warnings_correct": 0.0
+      "hypo_warnings_correct": null
     }
   }
 }

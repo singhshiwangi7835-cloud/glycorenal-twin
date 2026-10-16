@@ -113,3 +113,26 @@ def active_alerts(session: Session, patient_id: str | None = None, hours: int = 
         q = q.where(Alert.patient_id == patient_id)
     alerts = session.exec(q).all()
     return sorted(alerts, key=lambda a: (SEVERITY_ORDER[a.severity], -a.created_at.timestamp()))
+
+
+def check_stale_sensors(session: Session, now: datetime | None = None) -> list[str]:
+    """Background job: 'sensor disconnected' for connected devices with no CGM for > 2 h."""
+    from src.db.models import DeviceConnection
+
+    now = now or _now()
+    limit = alert_rules()["stale_data"]["cgm_minutes"]
+    raised = []
+    for conn in session.exec(select(DeviceConnection).where(DeviceConnection.status == "connected")).all():
+        last = session.exec(select(Observation.effective_time).where(
+            Observation.patient_id == conn.patient_id, Observation.loinc_code == loinc.code("glucose"),
+            Observation.device == "cgm").order_by(Observation.effective_time.desc())).first()
+        if last is None:
+            continue
+        minutes = (now - last).total_seconds() / 60
+        if minutes > limit:
+            a = raise_alert(session, conn.patient_id, "sensor_disconnected", "warning",
+                            f"No CGM reading for {minutes / 60:.1f} hours: sensor disconnected?", at=now)
+            if a:
+                raised.append(a.message)
+    session.commit()
+    return raised

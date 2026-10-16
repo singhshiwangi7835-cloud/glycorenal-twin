@@ -63,7 +63,7 @@ def generate(days: int = 14, hba1c: float = 8.0, cv_target: float = 0.30, steps_
 
     mean_g = mean_glucose_for_hba1c(hba1c)
     control = np.clip((hba1c - 6) / 4, 0.1, 1.5)       # poorer control -> bigger spikes
-    base = mean_g * 0.82 + np.cumsum(rng.normal(0, 0.6, n))
+    base = mean_g * 0.72 + np.cumsum(rng.normal(0, 0.6, n))
     base = base - np.convolve(base - base.mean(), np.ones(288) / 288, mode="same")  # keep stationary
     glucose = base + 15 * control * np.exp(-((hours - 6.5) / 1.5) ** 2)               # dawn rise
 
@@ -87,7 +87,7 @@ def generate(days: int = 14, hba1c: float = 8.0, cv_target: float = 0.30, steps_
             k = np.arange(0, 48)  # 4 h
             curve = (k / 10) ** 2 * np.exp(-k / 5)
             curve = curve / curve.max()
-            rise = total * gi * (0.9 + 0.8 * control) * rng.uniform(0.8, 1.2)
+            rise = total * gi * (0.7 + 0.5 * control) * rng.uniform(0.8, 1.2)
             end = min(idx + len(k), n)
             glucose[idx:end] += rise * curve[: end - idx]
             meals.append({"time": start + timedelta(minutes=int(idx * 5)), "slot": slot,
@@ -109,7 +109,7 @@ def generate(days: int = 14, hba1c: float = 8.0, cv_target: float = 0.30, steps_
     # scale variability toward the target CV, then add sensor noise
     g = glucose - glucose.mean()
     cur_cv = g.std() / mean_g
-    glucose = mean_g + g * min(cv_target / max(cur_cv, 1e-6), 1.6)
+    glucose = mean_g + g * min(cv_target / max(cur_cv, 1e-6), 1.3)
     glucose = glucose + rng.normal(0, 4, n)
     glucose = np.clip(glucose, 40, 400).round(0)
 
@@ -146,5 +146,6 @@ def inject_meal_spike(readings: pd.DataFrame, at_index: int, peak_rise: float = 
         i = at_index + j
         if i < len(r):
             r.loc[i, "glucose"] = min(400, round(r.loc[i, "glucose"] + peak_rise * c))
-    r.loc[at_index, "carbs_g"] += 90
+    if "carbs_g" in r:
+        r.loc[at_index, "carbs_g"] += 90
     return r

@@ -130,6 +130,22 @@ Every reading (EHR import, lab CSV, manual entry, sensor) goes through
 3. new labs -> full re-run: DKD 3-year risk, HbA1c in 3 months, kidney alerts.
 DKD risk is never re-run on every CGM point; it also re-runs once a day (02:00).
 
+## Live data, medicines and meals
+
+- **Live sensor simulator** (`src/ingestion/simulator.py`): replays a patient's CGM + heart rate +
+  steps as if arriving now; one 5-minute reading every `SIM_SPEED_SECONDS` (3 s = 100x real
+  time). Ramesh's starts automatically (`SIM_AUTOSTART`). Demo scenarios: `meal_spike`, `hypo`
+  (`POST /patients/{id}/devices/simulator/scenario`). Uses CGMacros when downloaded.
+- **Libre:** upload a LibreView CSV export (sample: `data/fhir_samples/sample_libre.csv`).
+  **Dexcom:** "coming soon" stub.
+- **Home readings:** `POST /patients/{id}/vitals` (BP, weight, fingerstick glucose, sleep, steps).
+- **Medicines and reminders:** doctor prescribes (`POST /patients/{id}/medications`) -> daily
+  doses at the chosen times; patient taps Taken / Skip; pending > 2 h becomes missed;
+  adherence % over 7 and 30 days feeds the twin. A prescription change re-runs kidney risk.
+- **Indian meal log:** foods from `indian_foods.csv`, carbs summed; 2-hour glucose spike
+  (peak of the next 24 CGM readings minus the reading before); "top 3 spiking foods".
+  Logging a meal while the simulator runs adds a matching rise to the live sensor.
+
 ## Hospital EHR (FHIR R4)
 
 - **Import a sample:** `POST /ehr/import/sample` with one of the files in `data/fhir_samples/`
