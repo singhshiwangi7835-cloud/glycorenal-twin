@@ -232,7 +232,7 @@ effects:
 # ---------------------------------------------------------------------------
 cohort:
   n_patients: 2000
-  years: 4
+  years: 5
   visits_per_year: 4
   seed: 42
   age: {mean: 54, sd: 10, min: 25, max: 85}
@@ -247,5 +247,39 @@ cohort:
   uacr_log_mean: 2.9      # log-normal, median ~18 mg/g
   uacr_log_sd: 1.1
   creatinine_mg_dl: {mean: 0.95, sd: 0.25}
-  source: "ICMR-INDIAB (Anjana, Lancet Diabetes Endocrinol 2023) informed; rough starter values"
+  adherence: {beta_a: 4, beta_b: 1.6}       # Beta distribution, mean ~0.71 (fraction of doses taken)
+  baseline_meds:                            # fraction of patients on each class at the start
+    metformin: 0.80
+    sulfonylurea: 0.35
+    dpp4i: 0.25
+    sglt2i: 0.15
+    glp1ra: 0.04
+    insulin: 0.12
+    acei_arb_if_hypertension: 0.60
+    finerenone_if_albuminuria: 0.02
+  quarterly_new_drug_probability: 0.06      # chance a doctor adds a glucose/kidney drug each visit
+  measurement_noise: {hba1c: 0.15, egfr: 3.0, log_uacr: 0.30, sbp: 8}
+  # How the disease moves each year. eGFR decline (mL/min/1.73m2 per year) =
+  #   base + per-unit weights x (value - reference), then multiplied by drug kidney effects.
+  # hba1c/sbp/age/smoker/bmi/dm_duration weights are re-scaled to NHANES odds ratios when
+  # data/processed/nhanes_diabetes.csv exists (see data/synthetic/calibration.json).
+  progression:
+    egfr_decline_base: 1.0              # ageing alone
+    egfr_decline_per_hba1c: 0.6         # per % above 7
+    egfr_decline_per_sbp: 0.05          # per mmHg above 130
+    egfr_decline_per_log_uacr: 1.2      # per log-unit above log(30)
+    egfr_decline_per_age: 0.03          # per year above 55
+    egfr_decline_smoker: 0.8
+    egfr_decline_per_bmi: 0.03          # per unit above 25
+    egfr_decline_per_dm_year: 0.04      # per year of diabetes above 8
+    egfr_decline_patient_sd: 1.0        # person-to-person variation
+    uacr_log_drift_base: 0.0            # per year
+    uacr_log_drift_per_hba1c: 0.05
+    uacr_log_drift_per_sbp: 0.006
+    uacr_log_drift_smoker: 0.10
+    uacr_drug_factor: {sglt2i: 0.70, glp1ra: 0.80, acei_arb: 0.65, finerenone: 0.68}
+    hba1c_drop_per_new_drug: {metformin: 1.0, sulfonylurea: 1.0, dpp4i: 0.6, sglt2i: 0.5, glp1ra: 1.0, insulin: 1.5}
+    hba1c_per_low_adherence: 1.5        # extra HbA1c (%) at adherence 0 vs 1
+    tir_per_hba1c: 12.5                 # TIR falls ~10-12.5 points per 1% HbA1c (Beck 2019)
+  source: "ICMR-INDIAB (Anjana, Lancet Diabetes Endocrinol 2023) informed; progression weights are starter assumptions (UKPDS 74, Retnakaran 2006 for direction); Beck Diabetes Care 2019 for TIR-HbA1c"
   verified: false
