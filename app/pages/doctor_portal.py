@@ -370,7 +370,7 @@ with tabs[6]:
     if not status["configured"]:
         st.info(status["message"])
     if st.button("Generate clinical summary", type="primary"):
-        with st.spinner("Summarising the twin..."):
+        with st.spinner("Asking the AI (can take up to a minute; otherwise the offline summary is shown) ..."):
             st.session_state[f"ai_sum_{pid}"] = api.post(f"/patients/{pid}/assistant", json={"mode": "doctor_summary"})
     res = st.session_state.get(f"ai_sum_{pid}")
     if res:

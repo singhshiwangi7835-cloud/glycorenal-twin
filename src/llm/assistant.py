@@ -36,7 +36,15 @@ def _alert_dicts(session: Session, pid: str) -> list[dict]:
 
 
 def _cache_key(mode: str, language: str, question: str | None, ctx: dict) -> str:
-    raw = json.dumps([mode, language, question or "", ctx], sort_keys=True, ensure_ascii=False, default=str)
+    """Hash of mode + language + question + the slow-moving picture of the patient.
+
+    The live sensor changes the latest glucose every few seconds, so it is left out and CGM
+    percentages are rounded; otherwise a live patient would never hit the cache.
+    """
+    stable = {k: v for k, v in ctx.items() if k != "latest_glucose"}
+    if stable.get("cgm_14d"):
+        stable["cgm_14d"] = {k: round(v) if isinstance(v, (int, float)) else v for k, v in stable["cgm_14d"].items()}
+    raw = json.dumps([mode, language, question or "", stable], sort_keys=True, ensure_ascii=False, default=str)
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
 

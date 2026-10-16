@@ -333,4 +333,5 @@ Every connector returns a list of `ObservationIn` and calls `translator.save()`,
 - **Windows on ARM:** the `.venv` uses the x64 build of Python 3.11 (uv-managed) because Streamlit/pyarrow and XGBoost have no win-arm64 wheels. Install tools the user runs from a normal terminal, not the sandboxed shell.
 - **Weight-loss lever:** offered from BMI 23 (WHO Asian cut-off), configurable in `clinical_rules.yaml`.
 - **Docker:** one image, `MODE=api | ui | all` (`deploy/start.sh`); `all` = API + Streamlit in one container for Hugging Face Spaces.
+- **LLM timeout:** 40 s per call (spec said 20 s) with one retry and a 60 s total deadline, because Kimi K2.6 via the LiteLLM gateway is a reasoning model and the gateway rejects `thinking` / `reasoning_effort` parameters. The prompt asks for brief reasoning.
 - **BUILD_PROMPTS.md** was never added to the repo; FAST_TRACK.md was followed.

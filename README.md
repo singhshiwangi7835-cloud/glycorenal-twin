@@ -133,7 +133,10 @@ Restart the API after editing them.
   then **Gemini** (`LLM_FALLBACK_*`), then templates marked "offline summary". Check the connection with
   `.\.venv\Scripts\python.exe scripts/test_llm.py`.
 - Sends only the patient id and numbers, never names; called only on a button press or question;
-  answers cached 30 minutes; 20 s timeout.
+  answers cached 30 minutes (the cache ignores second-by-second sensor changes).
+- Kimi K2.6 is a reasoning model: the prompt asks for brief reasoning, each call may use up to 5,000
+  tokens and 40 s (`LLM_TIMEOUT_S`), an empty "thinking-only" answer is retried once, and after
+  60 s the template is used. Chat answers take about 5-10 s; summaries 10-60 s.
 - Guardrails: no medicine-change advice to patients (English + Hindi keyword check, template fallback);
   medicine questions -> "please discuss this with your doctor"; low glucose -> fixed 15-15 message;
   every answer ends with "Decision support only".

@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from openai import OpenAI  # noqa: E402
 
-from src.llm.client import TIMEOUT_S, providers  # noqa: E402
+from src.llm.client import providers, timeout_s  # noqa: E402
 
 found = providers()
 if not found:
@@ -22,8 +22,8 @@ ok = False
 for name, base_url, key, model in found:
     print(f"[{name}] {model} at {base_url} ...", end=" ", flush=True)
     try:
-        r = OpenAI(base_url=base_url, api_key=key, timeout=TIMEOUT_S, max_retries=0).chat.completions.create(
-            model=model, max_tokens=10, messages=[{"role": "user", "content": "Say OK"}])
+        r = OpenAI(base_url=base_url, api_key=key, timeout=timeout_s(), max_retries=0).chat.completions.create(
+            model=model, max_tokens=300, messages=[{"role": "user", "content": "Say OK"}])  # room to "think"
         print(f"answered: {r.choices[0].message.content.strip()!r}")
         ok = True
     except Exception as e:  # noqa: BLE001

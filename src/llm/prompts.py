@@ -13,6 +13,9 @@ MODES = ("doctor_summary", "patient_summary", "chat_doctor", "chat_patient", "re
 PATIENT_MODES = ("patient_summary", "chat_patient", "report_patient")
 
 COMMON = (
+    # Reasoning models (e.g. Kimi K2.6) otherwise spend their whole token budget thinking.
+    "IMPORTANT: keep your private reasoning under 150 words. Do not re-check or recalculate numbers; "
+    "copy them from the JSON. Start writing the answer quickly. "
     "You are the explainer for GlycoRenal Twin, a digital twin for type 2 diabetes and diabetic kidney "
     "disease. Use ONLY the JSON data and guideline notes given. Quote the numbers you use. Never invent "
     "values, predictions or doses. The twin's models make the predictions; you only explain them."

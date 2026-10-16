@@ -14,7 +14,10 @@ points because the live sensor and dates change.
 3. Log in as **admin / admin123** → Admin panel → **Demo data** tab → **▶ Start demo mode**.
    Wait for "Demo ready" (20-60 s). Download **ramesh_labs_today.csv** (also in `docs/demo/`).
 4. Optional: put the Kimi key in `.env` and run `scripts/test_llm.py`. Without it everything works;
-   AI answers show "offline summary".
+   AI answers show "offline summary". Kimi K2.6 is a "thinking" model: a summary takes 10-60 s and
+   sometimes falls back to the template. **Warm the cache:** about 10 minutes before presenting, open
+   Ramesh -> AI assistant -> Generate clinical summary once (answers are cached for 30 minutes and
+   then appear instantly). Patient chat answers usually take 5-10 s.
 5. Close other apps; set the screen zoom so the whole page fits.
 
 ---

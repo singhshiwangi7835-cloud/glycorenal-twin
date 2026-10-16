@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     llm_fallback_base_url: str = ""
     llm_fallback_api_key: str = ""
     llm_fallback_model: str = ""
+    llm_timeout_s: float = 40.0
 
     # data sources
     fhir_base_url: str = "https://hapi.fhir.org/baseR4"
