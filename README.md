@@ -29,7 +29,7 @@ One-time setup:
 
 ```bash
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 copy .env.example .env
 ```
 
@@ -38,15 +38,15 @@ copy .env.example .env
 > `pip install uv`, then `uv venv --python cpython-3.11-windows-x86_64-none .venv`, then
 > `uv pip install --python .venv\Scripts\python.exe -r requirements-dev.txt`.
 
-Start the app (two terminals, from this folder):
+Start the app (two PowerShell windows, both in this folder; note the `.\` at the start):
 
 ```bash
-.venv\Scripts\python -m uvicorn api.main:app --reload     # terminal 1: API on :8000
-.venv\Scripts\python -m streamlit run app/Home.py         # terminal 2: app on :8501
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --reload     # terminal 1: API on :8000
+.\.venv\Scripts\python.exe -m streamlit run app/Home.py         # terminal 2: app on :8501
 ```
 
 Open http://localhost:8501 and log in. The database (`data/twin.db`) creates and seeds itself on
-first start. Reset it with `.venv\Scripts\python scripts/seed_demo.py --reset`.
+first start. Reset it with `.\.venv\Scripts\python.exe scripts/seed_demo.py --reset`.
 
 | Role | Username | Password |
 |---|---|---|
@@ -54,7 +54,7 @@ first start. Reset it with `.venv\Scripts\python scripts/seed_demo.py --reset`.
 | Patient | `ramesh`, `sunita` (+ priya, mohan, arjun, lakshmi, imran, kavita, suresh, anita) | `patient123` |
 | Admin | `admin` | `admin123` |
 
-Tests: `.venv\Scripts\python -m pytest -q`
+Tests: `.\.venv\Scripts\python.exe -m pytest -q`
 
 ## Clinical settings (no Python needed)
 
@@ -81,10 +81,10 @@ Trained models are committed in `models/` (about 3 MB), so the app runs without 
 To rebuild everything from the public data (about 2 minutes plus downloads):
 
 ```bash
-.venv\Scripts\python scripts/download_data.py              # NHANES, UCI CKD, CGMacros -> data/raw/
-.venv\Scripts\python -m src.pipeline.nhanes_merge          # -> data/processed/nhanes_diabetes.csv
-.venv\Scripts\python scripts/build_synthetic_cohort.py     # -> data/synthetic/ (cohort + demo CGM)
-.venv\Scripts\python scripts/train_models.py               # -> models/, docs/models/*.png
+.\.venv\Scripts\python.exe scripts/download_data.py              # NHANES, UCI CKD, CGMacros -> data/raw/
+.\.venv\Scripts\python.exe -m src.pipeline.nhanes_merge          # -> data/processed/nhanes_diabetes.csv
+.\.venv\Scripts\python.exe scripts/build_synthetic_cohort.py     # -> data/synthetic/ (cohort + demo CGM)
+.\.venv\Scripts\python.exe scripts/train_models.py               # -> models/, docs/models/*.png
 ```
 
 | Dataset | Use |
