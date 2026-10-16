@@ -396,6 +396,27 @@ with tabs[6]:
 
 # ---------------- Report ----------------
 with tabs[7]:
-    st.info("Doctor PDF report (labs, KDIGO grid, trends, risk, ranked options, AI summary) is added in step 6.")
+    st.markdown("**PDF reports** for the clinic file and for the patient (English + Hindi, one page).")
+    cc = st.columns(2)
+    if cc[0].button("Prepare clinical report (doctor)", type="primary"):
+        with st.spinner("Building the clinical report ..."):
+            try:
+                st.session_state[f"pdf_doc_{pid}"] = api.get_bytes(f"/patients/{pid}/report/doctor.pdf")
+            except api.APIError as e:
+                ui.show_error(e)
+    if st.session_state.get(f"pdf_doc_{pid}"):
+        cc[0].download_button("⬇ Download clinical report", st.session_state[f"pdf_doc_{pid}"],
+                              f"{pid}_clinical_report.pdf", "application/pdf")
+    if cc[1].button("Prepare patient report (English + हिंदी)"):
+        with st.spinner("Building the patient report ..."):
+            try:
+                st.session_state[f"pdf_pat_{pid}"] = api.get_bytes(f"/patients/{pid}/report/patient.pdf")
+            except api.APIError as e:
+                ui.show_error(e)
+    if st.session_state.get(f"pdf_pat_{pid}"):
+        cc[1].download_button("⬇ Download patient report", st.session_state[f"pdf_pat_{pid}"],
+                              f"{pid}_patient_report.pdf", "application/pdf")
+    st.caption("Contents: labs with dates and stale-data flags, KDIGO grid, eGFR and HbA1c trends, 14-day glucose "
+               "profile, risk scores with model versions, ranked options with sources, alerts, AI summary.")
 
 ui.footer()

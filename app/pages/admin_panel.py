@@ -83,6 +83,20 @@ with tabs[3]:
                  hide_index=True, width="stretch")
 
 with tabs[4]:
+    st.markdown("**Demo mode**: one click resets everything and sets up the story in docs/demo_script.md "
+                "(Ramesh without this week's labs, his live sensor running).")
+    if st.button("▶ Start demo mode", type="primary"):
+        with st.spinner("Setting up the demo story (about 20-60 seconds) ..."):
+            try:
+                r = api.post("/admin/demo-mode")
+                st.session_state["demo_csv"] = r["lab_csv"]
+                st.success("Demo ready. " + r["next"])
+            except api.APIError as e:
+                ui.show_error(e)
+    if st.session_state.get("demo_csv"):
+        st.download_button("⬇ ramesh_labs_today.csv (upload in the doctor's EHR tab)", st.session_state["demo_csv"],
+                           "ramesh_labs_today.csv", "text/csv")
+    st.divider()
     st.warning("Resetting deletes all data and re-creates the demo patients (about 20-60 seconds).")
     if st.checkbox("I understand") and st.button("Reset demo data", type="primary"):
         with st.spinner("Re-seeding ..."):

@@ -263,7 +263,16 @@ with tabs[5]:
 
 # ---------------- Report ----------------
 with tabs[6]:
-    st.info(t("report_soon"))
+    st.markdown(t("report_intro"))
+    if st.button(t("report_btn"), type="primary"):
+        with st.spinner(t("thinking")):
+            try:
+                st.session_state["my_pdf"] = api.get_bytes(f"/patients/{pid}/report/patient.pdf")
+            except api.APIError as e:
+                ui.show_error(e)
+    if st.session_state.get("my_pdf"):
+        st.download_button(f"⬇ {t('download')}", st.session_state["my_pdf"], f"{pid}_my_health.pdf",
+                           "application/pdf")
 
 st.divider()
 st.caption(t("disclaimer"))

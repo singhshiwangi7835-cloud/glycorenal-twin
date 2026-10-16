@@ -5,6 +5,7 @@ Lab CSV format (header row required; unit optional, blank = standard unit):
     2026-10-01,HbA1c,8.4,%
     2026-10-01,creatinine,1.3,mg/dL
     2026-10-01,UACR,8.5,mg/mmol
+`date` may also be the word "today" (handy for demo files).
 `test` may be our variable name (hba1c, creatinine, uacr, potassium, ldl, sbp, ...), a common
 name (HbA1c, eGFR, UACR, BP systolic), or a LOINC code.
 """
@@ -12,7 +13,7 @@ name (HbA1c, eGFR, UACR, BP systolic), or a LOINC code.
 from __future__ import annotations
 
 import io
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
 
@@ -54,7 +55,9 @@ def parse_lab_csv(content: bytes | str, patient_id: str, source: str = "manual")
             problems.append(f"row {i + 2}: unknown test {r['test']!r}")
             continue
         try:
-            t = pd.to_datetime(r["date"]).to_pydatetime()
+            raw = str(r["date"]).strip().lower()
+            t = (datetime.now(timezone.utc) - timedelta(minutes=1) if raw == "today"
+                 else pd.to_datetime(r["date"]).to_pydatetime())
             items.append(ObservationIn(patient_id=patient_id, variable=var, value=float(r["value"]),
                                        unit=str(r.get("unit", "") if pd.notna(r.get("unit", "")) else ""),
                                        time=t if t.tzinfo else t.replace(tzinfo=timezone.utc),

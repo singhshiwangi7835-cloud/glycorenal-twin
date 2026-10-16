@@ -103,8 +103,10 @@ TEXT = {
     "offline": ("offline summary", "ऑफ़लाइन सारांश"),
     "thinking": ("Thinking...", "सोच रहा है..."),
     # report / misc
-    "report_soon": ("Your one-page report (English + Hindi) is added in the next step.",
-                    "आपकी एक-पेज रिपोर्ट (अंग्रेज़ी + हिंदी) अगले चरण में जुड़ेगी।"),
+    "report_intro": ("A one-page summary in English and Hindi to keep or show your doctor.",
+                     "अपने पास रखने या डॉक्टर को दिखाने के लिए अंग्रेज़ी और हिंदी में एक पेज का सारांश।"),
+    "report_btn": ("Make my report", "मेरी रिपोर्ट बनाएँ"),
+    "download": ("Download PDF", "PDF डाउनलोड करें"),
     "disclaimer": ("This app does not replace your doctor. Never change your medicines without talking to your doctor.",
                    "यह ऐप डॉक्टर की जगह नहीं लेता। डॉक्टर से बात किए बिना दवाइयाँ कभी न बदलें।"),
 }

@@ -74,7 +74,7 @@ def build_context(state: dict, predictions: dict, treatments: dict, alerts: list
         "predicted": {
             "dkd_3y_risk_pct": round(dkd["risk_3y"] * 100) if dkd.get("risk_3y") is not None else None,
             "dkd_outcome": dkd.get("outcome"), "risk_band": dkd.get("band"),
-            "main_drivers": [d["label"] for d in dkd.get("drivers", [])[:3]],
+            "main_drivers": [d["label"] for d in dkd.get("drivers", []) if d["contribution"] > 0][:3],
             "hba1c_in_3_months": (predictions.get("hba1c_3m") or {}).get("hba1c_3m"),
         },
         "active_alerts": [a["message"] for a in alerts[:5]],

@@ -155,6 +155,19 @@ DKD risk is never re-run on every CGM point; it also re-runs once a day (02:00).
   (sensor, Libre upload, home readings), Ask my twin.
 - **Admin:** users, patient-doctor links, import Synthea samples, devices, reset demo data.
 
+## Reports and demo
+
+- **PDF reports** (`src/reports/`, fpdf2 with Noto Sans + Noto Sans Devanagari, OFL, text shaping on):
+  - Doctor: risk with model versions, KDIGO grid, labs with dates and stale flags, eGFR/HbA1c trends,
+    14-day glucose profile (AGP style), ranked options with sources, alerts, AI summary.
+  - Patient: one page, English and Hindi side by side, numbers vs targets, medicines, tips, when to
+    call the doctor. Samples: `docs/samples/`. Download from the Report tab in both portals.
+- **Demo mode:** Admin panel -> Demo data -> **Start demo mode** resets the data and sets up the story
+  (Ramesh without this week's labs; upload `docs/demo/ramesh_labs_today.csv` during the demo).
+- **Demo script:** [docs/demo_script.md](docs/demo_script.md) (15-18 minutes, what to click and say).
+- **Rehearsal:** `.\.venv\Scripts\python.exe scripts/dry_run_demo.py` plays the whole story through the API
+  on a throwaway database in about 35 seconds and prints every step.
+
 ## Live data, medicines and meals
 
 - **Live sensor simulator** (`src/ingestion/simulator.py`): replays a patient's CGM + heart rate +

@@ -62,6 +62,17 @@ def _changed():
     _cached.clear()
 
 
+def get_bytes(path: str) -> bytes:
+    """GET a file (e.g. a PDF report)."""
+    try:
+        r = httpx.get(f"{API_URL}{path}", headers=_headers(), timeout=120)
+    except httpx.HTTPError as e:
+        raise APIError(f"Cannot reach the API at {API_URL}. ({e.__class__.__name__})") from e
+    if r.status_code >= 400:
+        _handle(r)
+    return r.content
+
+
 def post(path: str, json: dict | list | None = None, data: dict | None = None):
     out = _call("POST", path, json=json, data=data)
     if path != "/auth/login":

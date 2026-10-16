@@ -6,6 +6,9 @@
 3. Multiply the result by the option's kidney hazard ratio (trial evidence).
 Drug on/off flags are NOT switched on in step 1, so a drug's kidney benefit is counted once
 (through its hazard ratio) rather than twice.
+Tree models are not perfectly smooth: a small favourable change can nudge the prediction up by a
+point. When every effect of the chosen options is favourable (HbA1c, BP, weight down; hazard
+ratio <= 1) the re-run risk is capped at the current risk, so a benefit never shows as harm.
 """
 
 from __future__ import annotations
@@ -49,8 +52,13 @@ def simulate(state: dict, options: list[str], baseline: dict | None = None) -> d
     base = baseline or predict_dkd(state["features"]["dkd"])
     d, h, hr = apply_effects(state["features"]["dkd"], state["features"]["hba1c"], options)
     rerun = predict_dkd(d)["risk_3y"]
-    after = round(min(max(rerun * hr, 0.0), 1.0), 3)
     eff = clinical_rules()["effects"]
+    favourable = all(eff[o].get("hba1c_change", 0) <= 0 and eff[o].get("sbp_change", 0) <= 0
+                     and eff[o].get("weight_change_pct", 0) <= 0 and eff[o].get("kidney_hr", 1) <= 1
+                     for o in options)
+    if favourable:
+        rerun = min(rerun, base["risk_3y"])
+    after = round(min(max(rerun * hr, 0.0), 1.0), 3)
     hba1c_now = state["glycaemia"]["hba1c"]
     expected_change = sum(eff[o].get("hba1c_change", 0) for o in options)
     out = {

@@ -12,6 +12,9 @@ then runs the twin once for everyone (risk scores and alerts).
 Ramesh (IND-0042) is the demo story: 54 M, T2DM 9 yrs, HbA1c 8.4, eGFR ~63, UACR rising
 18 -> 24 -> 85 mg/g, metformin + telmisartan, ~60% adherence.
 Accounts: admin/admin123, dr.mehta/doctor123, every patient username / patient123.
+
+story=True (admin "Demo mode") leaves out Ramesh's labs from this week, so the demo can upload
+them (docs/demo/ramesh_labs_today.csv) and show the twin's risk rise live.
 """
 
 from __future__ import annotations
@@ -137,12 +140,17 @@ def _to_now(times: pd.Series, offset_days: int, tz: ZoneInfo) -> pd.Series:
     return (times + pd.Timedelta(days=offset_days)).dt.tz_localize(tz).dt.tz_convert("UTC")
 
 
+STORY_PATIENT = "IND-0042"
+
+
 def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rng: random.Random,
-                  tz: ZoneInfo) -> tuple[list[dict], list[dict]]:
+                  tz: ZoneInfo, story: bool = False) -> tuple[list[dict], list[dict]]:
     c = DEMO_CLINICAL[pid]
     rows = []
     for var in ("hba1c", "creatinine", "uacr", "potassium", "ldl"):
         for days, v in c[var]:
+            if story and pid == STORY_PATIENT and days < 30:
+                continue  # demo story: this week's labs arrive during the demo
             t = now - timedelta(days=days, hours=3)
             rows.append(_obs(pid, var, v, t, "ehr", "lab"))
             if var == "creatinine":
@@ -201,7 +209,7 @@ def _doses(med: Medication, adherence: float, now: datetime, tz: ZoneInfo, rng: 
     return out
 
 
-def seed_demo(reset: bool = False, run_twin: bool = True) -> None:
+def seed_demo(reset: bool = False, run_twin: bool = True, story: bool = False) -> None:
     if reset:
         drop_all()
     init_db()
@@ -232,7 +240,7 @@ def seed_demo(reset: bool = False, run_twin: bool = True) -> None:
         s.commit()
 
         for i, (pid, _, _, sex, age, *_rest) in enumerate(DEMO_PATIENTS):
-            obs_rows, meal_rows = _patient_rows(pid, i, sex, YEAR - age, now, rng, tz)
+            obs_rows, meal_rows = _patient_rows(pid, i, sex, YEAR - age, now, rng, tz, story)
             s.execute(insert(Observation), obs_rows)
             if meal_rows:
                 s.execute(insert(Meal), meal_rows)
