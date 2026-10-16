@@ -1,0 +1,14 @@
+alias_code,variable,note
+38483-4,creatinine,Creatinine [Mass/volume] in Blood (used by Synthea)
+6298-4,potassium,Potassium [Moles/volume] in Blood (used by Synthea)
+14959-1,uacr,Microalbumin/Creatinine [Mass Ratio] in Urine (used by Synthea)
+14958-3,uacr,Microalbumin/Creatinine [Mass Ratio] in 24 hour Urine
+2161-8,,Creatinine in urine: not serum creatinine; ignored
+18262-6,ldl,LDL cholesterol direct (used by Synthea)
+2345-7,glucose,Glucose [Mass/volume] in Serum or Plasma
+41653-7,glucose,Glucose [Mass/volume] in Capillary blood by Glucometer
+99504-3,glucose,Glucose [Mass/volume] in Interstitial fluid (CGM)
+17856-6,hba1c,Hemoglobin A1c/Hemoglobin.total in Blood by HPLC
+41950-7,steps,Number of steps in 24 hour Measured
+62238-1,,eGFR by older CKD-EPI: ignored (we recalculate eGFR from creatinine with CKD-EPI 2021)
+33914-3,,eGFR by MDRD (used by Synthea): ignored (we recalculate eGFR from creatinine with CKD-EPI 2021)

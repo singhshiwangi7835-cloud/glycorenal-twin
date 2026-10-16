@@ -136,6 +136,11 @@ eligibility:
     note: "Insulin clearance falls with eGFR; flag hypoglycaemia risk"
     source: "ADA Standards of Care 2026 sec 11"
     verified: false
+  lifestyle:
+    weight_loss_bmi_at_least: 23        # Asian-Indian overweight cut-off
+    steps_below: 7000                   # offer "walk 2,000 more steps" below this
+    source: "WHO Expert Consultation, Lancet 2004;363:157 (BMI cut-offs for Asian populations); Misra 2009 Indian consensus"
+    verified: false
 
 # ---------------------------------------------------------------------------
 # Effect sizes for treatment simulation (starter values: TO VERIFY)

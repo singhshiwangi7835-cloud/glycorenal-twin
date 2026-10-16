@@ -15,7 +15,6 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements-dev.txt
-      - run: python scripts/train.py 2000
       - run: pytest -q
 
   docker:
@@ -29,4 +28,4 @@ jobs:
         run: |
           docker run -d -p 8000:8000 --name twin glycorenal-twin:ci
           for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 2; done
-          curl -sf localhost:8000/patients | head -c 300
+          curl -sf -X POST localhost:8000/auth/login -d "username=dr.mehta&password=doctor123" | head -c 120

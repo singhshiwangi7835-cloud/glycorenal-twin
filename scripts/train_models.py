@@ -32,7 +32,6 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from sklearn.calibration import calibration_curve  # noqa: E402
 from sklearn.impute import SimpleImputer  # noqa: E402
-from sklearn.isotonic import IsotonicRegression  # noqa: E402
 from sklearn.linear_model import LogisticRegression  # noqa: E402
 from sklearn.metrics import (brier_score_loss, mean_absolute_error, roc_auc_score,  # noqa: E402
                              roc_curve)
@@ -42,6 +41,7 @@ from sklearn.preprocessing import StandardScaler  # noqa: E402
 from xgboost import XGBClassifier, XGBRegressor  # noqa: E402
 
 from src.clinical.egfr import egfr_ckd_epi_2021  # noqa: E402
+from src.models.calibration import PlattCalibrator  # noqa: E402
 from src.models.features import GLUCOSE_FEATURES, glucose_training_rows  # noqa: E402
 from src.pipeline import cgm_synth, cgmacros, cohort  # noqa: E402
 
@@ -151,7 +151,7 @@ def train_dkd_current() -> dict:
     return metrics
 
 
-def _uci_sanity(model: XGBClassifier, iso: IsotonicRegression) -> dict:
+def _uci_sanity(model: XGBClassifier, iso: PlattCalibrator) -> dict:
     """Score UCI CKD adults (Apollo Hospitals, India) and check risk is higher in CKD."""
     path = ROOT / "data" / "raw" / "uci_ckd" / "uci_ckd.csv"
     if not path.exists():
@@ -188,8 +188,7 @@ def train_dkd(kind: str, landmarks: pd.DataFrame) -> dict:
     X, y = d[cohort.DKD_FEATURES], d["event"]
     tr, cal, te = split_by_patient(d["patient_id"])
     xgb = xgb_classifier().fit(X[tr], y[tr])
-    iso = IsotonicRegression(out_of_bounds="clip", y_min=0.001, y_max=0.999)
-    iso.fit(xgb.predict_proba(X[cal])[:, 1], y[cal])
+    iso = PlattCalibrator().fit(xgb.predict_proba(X[cal])[:, 1], y[cal])
     p = iso.predict(xgb.predict_proba(X[te])[:, 1])
     lr = make_pipeline(StandardScaler(), LogisticRegression(max_iter=2000)).fit(X[tr], y[tr])
     imp = importance(xgb, cohort.DKD_FEATURES)
@@ -359,8 +358,10 @@ Prevalence {pct(cur.get('prevalence'))}. Caveats: single lab measurement (not co
 months); survey weights not applied; "on ACEi/ARB" partly reflects treatment *because of* DKD;
 US population (only {cur.get('n_asian')} non-Hispanic Asian adults, none identified as Indian).
 
-**dkd_onset / dkd_progression.** XGBoost + isotonic calibration on a separate calibration set,
-split by patient (60/20/20). Glycaemic features (HbA1c, HbA1c change, time in range) feed the
+**dkd_onset / dkd_progression.** XGBoost + Platt (logistic) calibration on a separate
+calibration set, split by patient (60/20/20). Isotonic calibration (the original plan) was
+replaced because, with ~400 calibration patients, it produced wide flat steps that hid treatment
+effects in the simulator (e.g. raw risks 59-76% all became 74%). Glycaemic features (HbA1c, HbA1c change, time in range) feed the
 kidney model, linking Track A to Track B. Top onset features: {feats(on)}. Top progression
 features: {feats(pr)}. Logistic regression comparison: onset {on.get('auroc_logistic_test')},
 progression {pr.get('auroc_logistic_test')}.

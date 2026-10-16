@@ -7,6 +7,7 @@ from pathlib import Path
 _tmp = Path(tempfile.mkdtemp()) / "test_twin.db"
 os.environ["DATABASE_URL"] = f"sqlite:///{_tmp.as_posix()}"
 os.environ["JWT_SECRET"] = "test-secret"
+os.environ["SCHEDULER_ENABLED"] = "false"
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

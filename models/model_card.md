@@ -8,8 +8,8 @@ Prototype for the Digital Twin Challenge 2026. **Decision support only; not for 
 | Model | Predicts | Trained on | Result |
 |---|---|---|---|
 | `dkd_current` | Has DKD now (eGFR < 60 or UACR >= 30) from non-kidney data | **Real data:** NHANES 2017-Mar 2020, 1455 adults with diabetes | AUROC 0.715 (logistic) / 0.696 (XGBoost), 5-fold CV; Asian subgroup (n=167) 0.676 |
-| `dkd_onset` | DKD within 3 years, kidneys healthy now | Synthetic Indian cohort | AUROC 0.894 (test), Brier 0.117, event rate 28% |
-| `dkd_progression` | KDIGO stage worse or eGFR down 30% within 3 years | Synthetic cohort; UCI CKD (India) sanity check | AUROC 0.864 (test), Brier 0.15; UCI risk-vs-CKD AUROC 0.92 |
+| `dkd_onset` | DKD within 3 years, kidneys healthy now | Synthetic Indian cohort | AUROC 0.9 (test), Brier 0.114, event rate 28% |
+| `dkd_progression` | KDIGO stage worse or eGFR down 30% within 3 years | Synthetic cohort; UCI CKD (India) sanity check | AUROC 0.87 (test), Brier 0.146; UCI risk-vs-CKD AUROC 0.929 |
 | `hba1c_forecast` | HbA1c in 3 months | Synthetic cohort | MAE 0.241% vs 0.259% for "no change"; when a drug is added 0.264% vs 0.387%; 80% of errors within [-0.39, 0.38] |
 | `glucose_forecast` | CGM glucose +30 / +60 min | synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet | MAE 8.5 / 14.1 mg/dL vs 19.6 / 33.7 for "stays the same" |
 
@@ -23,8 +23,10 @@ Prevalence 41%. Caveats: single lab measurement (not confirmed over 3
 months); survey weights not applied; "on ACEi/ARB" partly reflects treatment *because of* DKD;
 US population (only 167 non-Hispanic Asian adults, none identified as Indian).
 
-**dkd_onset / dkd_progression.** XGBoost + isotonic calibration on a separate calibration set,
-split by patient (60/20/20). Glycaemic features (HbA1c, HbA1c change, time in range) feed the
+**dkd_onset / dkd_progression.** XGBoost + Platt (logistic) calibration on a separate
+calibration set, split by patient (60/20/20). Isotonic calibration (the original plan) was
+replaced because, with ~400 calibration patients, it produced wide flat steps that hid treatment
+effects in the simulator (e.g. raw risks 59-76% all became 74%). Glycaemic features (HbA1c, HbA1c change, time in range) feed the
 kidney model, linking Track A to Track B. Top onset features: UACR (log) (18%), eGFR (13%), Smoking (6%), HbA1c (6%), Systolic BP (5%). Top progression
 features: eGFR (11%), UACR (log) (10%), On SGLT2i (8%), Smoking (7%), Age (6%). Logistic regression comparison: onset 0.831,
 progression 0.779.
@@ -35,7 +37,7 @@ the simulator's rules, **not** that it predicts real Indian patients' kidneys. D
 simulator use trial hazard ratios (DAPA-CKD, FLOW, FIDELIO-DKD, RENAAL), all `verified: false`.
 
 **UCI CKD sanity check** (356 adults, Apollo Hospitals): UCI has no sex, HbA1c or UACR: sex averaged, HbA1c from random glucose, UACR from albumin dipstick. Label is CKD now, not progression.
-Risk scores separate CKD from non-CKD with AUROC 0.92;
+Risk scores separate CKD from non-CKD with AUROC 0.929;
 the twin's eGFR/KDIGO rule agrees with the hospital label in
 94% of patients. In UCI every diabetic patient has CKD,
 so this checks direction and plumbing, not diabetic progression.

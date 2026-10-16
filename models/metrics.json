@@ -48,9 +48,9 @@
     "n_calibration": 420,
     "n_test": 429,
     "event_rate": 0.282,
-    "auroc_test": 0.894,
+    "auroc_test": 0.9,
     "auroc_logistic_test": 0.831,
-    "brier_test": 0.117,
+    "brier_test": 0.114,
     "top_features": [
       {
         "feature": "log_uacr",
@@ -90,9 +90,9 @@
     "n_calibration": 369,
     "n_test": 365,
     "event_rate": 0.44,
-    "auroc_test": 0.864,
+    "auroc_test": 0.87,
     "auroc_logistic_test": 0.779,
-    "brier_test": 0.15,
+    "brier_test": 0.146,
     "top_features": [
       {
         "feature": "egfr",
@@ -128,7 +128,7 @@
     "uci_sanity_check": {
       "used": true,
       "n_adults": 356,
-      "auroc_risk_vs_ckd_label": 0.92,
+      "auroc_risk_vs_ckd_label": 0.929,
       "agreement_twin_kdigo_vs_label": 0.941,
       "note": "UCI has no sex, HbA1c or UACR: sex averaged, HbA1c from random glucose, UACR from albumin dipstick. Label is CKD now, not progression."
     }

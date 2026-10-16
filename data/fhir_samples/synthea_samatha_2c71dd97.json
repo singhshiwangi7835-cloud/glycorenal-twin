@@ -1,0 +1,7320 @@
+{
+ "resourceType": "Bundle",
+ "type": "collection",
+ "meta": {
+  "tag": [
+   {
+    "code": "synthea-time-shifted",
+    "display": "Synthea Apr 2020 sample; dates shifted by 2393 days"
+   }
+  ]
+ },
+ "entry": [
+  {
+   "resource": {
+    "resourceType": "Patient",
+    "id": "2c71dd97-7085-416a-aa07-d675bbe3adf2",
+    "name": [
+     {
+      "given": [
+       "Samatha845"
+      ],
+      "family": "Mueller846"
+     }
+    ],
+    "gender": "female",
+    "birthDate": "1947-09-04"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-410429000",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "410429000",
+       "display": "Cardiac Arrest"
+      }
+     ],
+     "text": "Cardiac Arrest"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1954-02-25T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-429007001",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "429007001",
+       "display": "History of cardiac arrest (situation)"
+      }
+     ],
+     "text": "History of cardiac arrest (situation)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1954-02-25T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-162864005",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "162864005",
+       "display": "Body mass index 30+ - obesity (finding)"
+      }
+     ],
+     "text": "Body mass index 30+ - obesity (finding)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1962-10-11T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-408512008",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "408512008",
+       "display": "Body mass index 40+ - severely obese (finding)"
+      }
+     ],
+     "text": "Body mass index 40+ - severely obese (finding)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1963-10-17T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-59621000",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "59621000",
+       "display": "Hypertension"
+      }
+     ],
+     "text": "Hypertension"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1965-10-28T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-44054006",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "44054006",
+       "display": "Diabetes"
+      }
+     ],
+     "text": "Diabetes"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1975-12-25T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-271737000",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "271737000",
+       "display": "Anemia (disorder)"
+      }
+     ],
+     "text": "Anemia (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1975-12-25T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-302870006",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "302870006",
+       "display": "Hypertriglyceridemia (disorder)"
+      }
+     ],
+     "text": "Hypertriglyceridemia (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1976-12-30T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-237602007",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "237602007",
+       "display": "Metabolic syndrome X (disorder)"
+      }
+     ],
+     "text": "Metabolic syndrome X (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1976-12-30T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-80394007",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "80394007",
+       "display": "Hyperglycemia (disorder)"
+      }
+     ],
+     "text": "Hyperglycemia (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1978-01-05T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-368581000119106",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "368581000119106",
+       "display": "Neuropathy due to type 2 diabetes mellitus (disorder)"
+      }
+     ],
+     "text": "Neuropathy due to type 2 diabetes mellitus (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1987-02-26T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-431855005",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "431855005",
+       "display": "Chronic kidney disease stage 1 (disorder)"
+      }
+     ],
+     "text": "Chronic kidney disease stage 1 (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1988-10-06T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-127013003",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "127013003",
+       "display": "Diabetic renal disease (disorder)"
+      }
+     ],
+     "text": "Diabetic renal disease (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "1988-10-06T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-49436004",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "49436004",
+       "display": "Atrial Fibrillation"
+      }
+     ],
+     "text": "Atrial Fibrillation"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "2002-11-21T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-53741008",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "53741008",
+       "display": "Coronary Heart Disease"
+      }
+     ],
+     "text": "Coronary Heart Disease"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "onsetDateTime": "2015-11-19T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-195662009",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "195662009",
+       "display": "Acute viral pharyngitis (disorder)"
+      }
+     ],
+     "text": "Acute viral pharyngitis (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "resolved"
+      }
+     ]
+    },
+    "onsetDateTime": "2017-07-05T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-10509002",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "10509002",
+       "display": "Acute bronchitis (disorder)"
+      }
+     ],
+     "text": "Acute bronchitis (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "resolved"
+      }
+     ]
+    },
+    "onsetDateTime": "2018-07-02T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-65363002",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "65363002",
+       "display": "Otitis media"
+      }
+     ],
+     "text": "Otitis media"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "resolved"
+      }
+     ]
+    },
+    "onsetDateTime": "2020-09-10T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-444814009",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "444814009",
+       "display": "Viral sinusitis (disorder)"
+      }
+     ],
+     "text": "Viral sinusitis (disorder)"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "resolved"
+      }
+     ]
+    },
+    "onsetDateTime": "2021-12-24T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "id": "cond-2c71dd97-65966004",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://snomed.info/sct",
+       "code": "65966004",
+       "display": "Fracture of forearm"
+      }
+     ],
+     "text": "Fracture of forearm"
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "resolved"
+      }
+     ]
+    },
+    "onsetDateTime": "2023-05-03T06:11:09Z"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-0",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-1",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-2",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 116.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-3",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 176.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-4",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 63.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-5",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 114.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-6",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.8,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-7",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-8",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 133.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-9",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 113.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-10",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-11",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-11-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-12",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-13",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-14",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 103.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-15",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 182.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-16",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 99.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-17",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 102.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-18",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 6.3,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-19",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.6,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-20",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 131.8,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-21",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 128.3,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-22",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-23",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2023-12-15T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-24",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-25",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-26",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 101.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-27",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 156.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-28",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 94.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-29",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 102.1,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-30",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 4.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-31",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-32",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 122.7,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-33",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 112.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-34",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-35",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-01-05T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-36",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-37",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-38",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 116.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-39",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 149.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-40",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 61.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-41",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 108.0,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-42",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-43",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.6,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-44",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 137.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-45",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 211.9,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-46",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-47",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-02-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-48",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-49",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-50",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 117.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-51",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 193.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-52",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 72.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-53",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 119.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-54",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-55",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-56",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 151.0,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-57",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 79.1,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-58",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-59",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-03-01T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-60",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-61",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-62",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 103.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-63",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 193.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-64",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 63.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-65",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 105.7,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-66",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-67",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.0,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-68",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 142.3,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-69",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 216.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-70",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-71",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-07-12T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-72",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-73",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-74",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 102.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-75",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 183.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-76",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 80.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-77",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 119.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-78",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-79",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-80",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 140.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-81",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 92.3,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-82",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-83",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2024-09-27T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-84",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-85",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-86",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 108.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-87",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 174.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-88",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 93.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-89",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 102.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-90",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-91",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.8,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-92",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 143.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-93",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 179.6,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-94",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-95",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-02-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-96",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-97",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-98",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 105.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-99",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 171.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-100",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 86.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-101",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 121.2,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-102",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.3,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-103",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 3.9,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-104",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 133.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-105",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 48.2,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-106",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-107",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-07T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-108",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-109",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-110",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 104.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-111",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 166.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-112",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 80.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-113",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 103.5,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-114",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.7,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-115",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-116",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 154.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-117",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 225.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-118",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-119",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-03-28T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-120",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-121",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-122",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 104.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-123",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 199.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-124",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 89.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-125",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 120.0,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-126",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-127",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-128",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 123.1,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-129",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 166.1,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-130",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-131",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-04-25T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-132",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-133",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-134",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 119.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-135",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 139.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-136",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 82.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-137",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 118.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-138",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.5,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-139",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.0,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-140",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 122.0,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-141",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 239.0,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-142",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-143",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-10-03T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-144",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-145",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-146",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 114.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-147",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 190.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-148",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 83.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-149",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 116.0,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-150",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.7,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-151",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 3.8,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-152",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 125.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-153",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 41.1,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-154",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-155",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2025-11-21T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-156",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-157",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-158",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 121.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-159",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 160.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-160",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 92.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-161",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 119.5,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-162",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-163",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.2,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-164",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-165",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 84.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-166",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-167",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-02T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-168",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-169",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-170",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 115.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-171",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 185.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-172",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 99.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-173",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 124.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-174",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-175",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.8,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-176",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 138.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-177",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 31.0,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-178",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-179",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-01-30T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-180",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-181",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-182",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 90.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-183",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 178.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-184",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 93.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-185",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 111.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-186",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-187",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.3,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-188",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 141.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-189",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 163.7,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-190",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-191",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-02-20T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-192",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-193",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-194",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 102.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-195",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 155.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-196",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 68.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-197",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 117.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-198",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 4.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-199",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.4,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-200",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 108.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-201",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 88.3,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-202",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-203",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-04-24T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-204",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-205",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-206",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 98.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-207",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 140.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-208",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 88.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-209",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 119.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-210",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 5.8,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-211",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 3.8,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-212",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 133.8,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-213",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 206.5,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-214",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-215",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-05-29T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-216",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-217",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-218",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 109.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-219",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 191.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-220",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 92.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-221",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 104.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-222",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 4.1,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-223",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-224",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 153.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-225",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 279.0,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-226",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-227",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-06-26T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-228",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-229",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-230",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 109.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-231",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 156.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-232",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 93.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-233",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 123.5,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-234",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 3.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-235",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 5.1,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-236",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 114.4,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-237",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 218.9,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-238",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-239",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-07-31T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-240",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "29463-7",
+       "display": "Body Weight"
+      }
+     ],
+     "text": "Body Weight"
+    },
+    "valueQuantity": {
+     "value": 130.2,
+     "unit": "kg",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-241",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "39156-5",
+       "display": "Body Mass Index"
+      }
+     ],
+     "text": "Body Mass Index"
+    },
+    "valueQuantity": {
+     "value": 48.5,
+     "unit": "kg/m2",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-242",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8462-4",
+       "display": "Diastolic Blood Pressure"
+      }
+     ],
+     "text": "Diastolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 111.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-243",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8480-6",
+       "display": "Systolic Blood Pressure"
+      }
+     ],
+     "text": "Systolic Blood Pressure"
+    },
+    "valueQuantity": {
+     "value": 175.0,
+     "unit": "mm[Hg]",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-244",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "8867-4",
+       "display": "Heart rate"
+      }
+     ],
+     "text": "Heart rate"
+    },
+    "valueQuantity": {
+     "value": 95.0,
+     "unit": "/min",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-245",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "2339-0",
+       "display": "Glucose"
+      }
+     ],
+     "text": "Glucose"
+    },
+    "valueQuantity": {
+     "value": 112.6,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-246",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "38483-4",
+       "display": "Creatinine"
+      }
+     ],
+     "text": "Creatinine"
+    },
+    "valueQuantity": {
+     "value": 4.1,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-247",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "6298-4",
+       "display": "Potassium"
+      }
+     ],
+     "text": "Potassium"
+    },
+    "valueQuantity": {
+     "value": 4.2,
+     "unit": "mmol/L",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-248",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "18262-6",
+       "display": "Low Density Lipoprotein Cholesterol"
+      }
+     ],
+     "text": "Low Density Lipoprotein Cholesterol"
+    },
+    "valueQuantity": {
+     "value": 136.9,
+     "unit": "mg/dL",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-249",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "14959-1",
+       "display": "Microalbumin Creatinine Ratio"
+      }
+     ],
+     "text": "Microalbumin Creatinine Ratio"
+    },
+    "valueQuantity": {
+     "value": 235.6,
+     "unit": "mg/g",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-250",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "72166-2",
+       "display": "Tobacco smoking status NHIS"
+      }
+     ],
+     "text": "Tobacco smoking status NHIS"
+    },
+    "valueCodeableConcept": {
+     "text": "Never smoker"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Observation",
+    "id": "obs-2c71dd97-251",
+    "status": "final",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "effectiveDateTime": "2026-10-09T03:02:30Z",
+    "code": {
+     "coding": [
+      {
+       "system": "http://loinc.org",
+       "code": "4548-4",
+       "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+      }
+     ],
+     "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+    },
+    "valueQuantity": {
+     "value": 4.5,
+     "unit": "%",
+     "system": "http://unitsofmeasure.org"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-309362",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "309362",
+       "display": "Clopidogrel 75 MG Oral Tablet"
+      }
+     ],
+     "text": "Clopidogrel 75 MG Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-999967",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "999967",
+       "display": "amLODIPine 5 MG / Hydrochlorothiazide 12.5 MG / Olmesartan medoxomil 20 MG Oral Tablet"
+      }
+     ],
+     "text": "amLODIPine 5 MG / Hydrochlorothiazide 12.5 MG / Olmesartan medoxomil 20 MG Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-705129",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "705129",
+       "display": "Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray"
+      }
+     ],
+     "text": "Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-897718",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "897718",
+       "display": "Verapamil Hydrochloride 40 MG"
+      }
+     ],
+     "text": "Verapamil Hydrochloride 40 MG"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-312961",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "312961",
+       "display": "Simvastatin 20 MG Oral Tablet"
+      }
+     ],
+     "text": "Simvastatin 20 MG Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-865098",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "865098",
+       "display": "Insulin Lispro 100 UNT/ML Injectable Solution [Humalog]"
+      }
+     ],
+     "text": "Insulin Lispro 100 UNT/ML Injectable Solution [Humalog]"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-860975",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "860975",
+       "display": "24 HR Metformin hydrochloride 500 MG Extended Release Oral Tablet"
+      }
+     ],
+     "text": "24 HR Metformin hydrochloride 500 MG Extended Release Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-197604",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "197604",
+       "display": "Digoxin 0.125 MG Oral Tablet"
+      }
+     ],
+     "text": "Digoxin 0.125 MG Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-197361",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "197361",
+       "display": "Amlodipine 5 MG Oral Tablet"
+      }
+     ],
+     "text": "Amlodipine 5 MG Oral Tablet"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationRequest",
+    "id": "med-2c71dd97-855332",
+    "status": "active",
+    "intent": "order",
+    "subject": {
+     "reference": "Patient/2c71dd97-7085-416a-aa07-d675bbe3adf2"
+    },
+    "authoredOn": "2026-10-09T03:02:30Z",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+       "code": "855332",
+       "display": "Warfarin Sodium 5 MG Oral Tablet"
+      }
+     ],
+     "text": "Warfarin Sodium 5 MG Oral Tablet"
+    }
+   }
+  }
+ ]
+}

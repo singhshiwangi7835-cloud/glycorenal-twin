@@ -45,8 +45,14 @@ class Settings(BaseSettings):
     # UI
     api_url: str = "http://localhost:8000"
 
+    # local time zone for medicine reminder times such as "08:00" (stored times are UTC)
+    timezone: str = "Asia/Kolkata"
+
     # seed demo data automatically when the database is empty
     auto_seed: bool = True
+
+    # background jobs (daily twin re-run); tests switch this off
+    scheduler_enabled: bool = True
 
 
 @lru_cache

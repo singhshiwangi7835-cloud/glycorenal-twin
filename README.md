@@ -101,28 +101,58 @@ Raw data is never pushed to GitHub (see `.gitignore`).
 ## Project structure
 
 ```
+config/              settings.py (.env), clinical_rules.yaml, alerts.yaml   <- clinical numbers
+data/reference/      loinc_map.csv, loinc_aliases.csv, drug_classes.csv, indian_foods.csv
+data/fhir_samples/   FHIR R4 sample bundles made from Synthea patients
 src/
-  pipeline/          eGFR, KDIGO, CGM metrics, synthetic cohort, NHANES merge
-  patient_state/     patient record builder
-  model1_risk/       risk prediction
-  model2_treatment/  eligibility, simulation, ranking
-  alerts/            alert engine
-  llm/               doctor + patient assistant
-  twin.py            the living twin loop
-api/                 FastAPI backend
-dashboards/          Streamlit hospital + patient views
-scripts/             data download, training
+  clinical/          eGFR (CKD-EPI 2021), KDIGO, CGM metrics, units, LOINC, drug classes
+  db/                SQLModel tables, session, demo seed
+  auth/              bcrypt passwords, JWT, role checks
+  ingestion/         translator (living-twin loop), FHIR import/export, manual + lab CSV
+  twin/              state.py (TwinState from the database), engine.py (runs the models)
+  models/            dkd.py, t2dm.py (predict), features, calibration
+  treatment/         eligibility, simulate, rank
+  alerts/            alert engine with de-duplication
+  pipeline/          NHANES merge, synthetic cohort, synthetic CGM, CGMacros reader
+api/                 FastAPI: auth, patients, twin, treatments, alerts, ehr
+app/                 Streamlit: Home.py (login) + pages per role
+scripts/             download, cohort, training, FHIR samples, seed
 tests/               pytest suite
-docs/                architecture
+docs/                architecture, model card, model plots
 ```
 
-## Status and caveats
+## How the twin updates (living-twin loop)
 
-- Model 1 is trained on **synthetic data** with a known risk function. Calibrate against
-  ICMR-INDIAB and validate on NHANES / UCI CKD before quoting performance.
-- Treatment effect sizes in `src/model2_treatment/advisor.py` are approximate, summarised from
-  DAPA-CKD, CREDENCE, FLOW, FIDELIO/FIGARO and RENAAL. They are being finalised in the
-  clinical rules sheet.
+Every reading (EHR import, lab CSV, manual entry, sensor) goes through
+`src/ingestion/translator.py`: map LOINC, convert units, skip duplicates, then
+1. instant alerts on that reading (e.g. glucose < 54 = critical; repeats within 60 min are merged),
+2. CGM readings -> glucose +30/+60 min forecast and predicted-hypo alert,
+3. new labs -> full re-run: DKD 3-year risk, HbA1c in 3 months, kidney alerts.
+DKD risk is never re-run on every CGM point; it also re-runs once a day (02:00).
+
+## Hospital EHR (FHIR R4)
+
+- **Import a sample:** `POST /ehr/import/sample` with one of the files in `data/fhir_samples/`
+  (real Synthea patients with type 2 diabetes, dates shifted to today; rebuild them with
+  `scripts/make_fhir_samples.py`).
+- **Fetch from a FHIR server:** `POST /ehr/fetch {"fhir_patient_id": "56196"}` pulls
+  `Patient/56196/$everything` from `FHIR_BASE_URL` (default: the public HAPI R4 test server; its
+  test data changes over time, so example ids may disappear).
+- **Export:** `GET /patients/{id}/fhir` returns the twin's labs, vitals, diagnosis and medicines as
+  a valid FHIR R4 Bundle (5-minute CGM and heart-rate streams stay in the twin).
+
+API docs with every endpoint: http://localhost:8000/docs (click **Authorize**, log in as `dr.mehta`).
+
+## Limitations
+
+- Only `dkd_current` is trained on real patients (NHANES). The onset, progression and HbA1c
+  models are trained on a **simulated** Indian cohort; see [models/model_card.md](models/model_card.md).
+- Treatment effects (`config/clinical_rules.yaml -> effects`) are average trial hazard ratios
+  (DAPA-CKD, CREDENCE, FLOW, FIDELIO-DKD, RENAAL) and are all `verified: false` until checked.
+- DKD risk uses Platt calibration instead of isotonic (smoother with small calibration sets).
+- The glucose forecast is trained on synthetic CGM until CGMacros is downloaded; hypo warnings
+  rely on a rule-based safety net.
+- Demo patients are fictional; Synthea FHIR samples are synthetic and time-shifted.
 - Not a medical device. Not for clinical use.
 
 ## Team
