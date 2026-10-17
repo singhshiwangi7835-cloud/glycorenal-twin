@@ -88,8 +88,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="GlycoRenal Twin API",
-    description="Digital twin for T2DM glycaemic control and DKD prevention. "
-                "Prototype: decision support only, not for clinical use.",
+    description="Digital twin for T2DM glycaemic control and DKD prevention.",
     version="0.7.0",
     lifespan=lifespan,
     docs_url=None,  # served below from local files

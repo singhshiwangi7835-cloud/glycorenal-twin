@@ -197,4 +197,3 @@ with tabs[4]:
             except api.APIError as e:
                 ui.show_error(e)
 
-ui.footer()

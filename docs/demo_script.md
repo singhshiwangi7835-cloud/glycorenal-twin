@@ -162,7 +162,7 @@ dots against targets, medicines, tips, when to call the doctor.
 > NHANES patients (AUROC 0.72) and checked on Indian hospital data from Apollo (94% agreement with the
 > diagnosis). What is simulated: the long-term models learn from a transparent synthetic Indian cohort,
 > because no open Indian longitudinal dataset exists yet; that is our next step with hospital partners.
-> GlycoRenal Twin is decision support only; the doctor decides. Thank you."
+> Thank you."
 
 ---
 

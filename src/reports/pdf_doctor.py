@@ -3,7 +3,7 @@
 Contents: header (patient ID, date, doctor), predicted risks with model versions, KDIGO grid,
 latest results with dates and freshness flags, eGFR + HbA1c trend charts, CGM AGP-style
 summary, ranked treatment options with sources, medicine safety warnings, current medicines,
-active alerts, AI clinical summary (report_doctor mode; template when offline), disclaimer.
+active alerts, AI clinical summary (report_doctor mode; template when offline).
 """
 
 from __future__ import annotations
@@ -152,7 +152,6 @@ def build(session: Session, patient_id: str, doctor_name: str | None = None) -> 
         if tr["not_eligible"]:
             pdf.para("Not eligible or already in place: " + "; ".join(
                 f"{n['label']} ({n['reason']})" for n in tr["not_eligible"]), size=7.5)
-        pdf.para(tr["disclaimer"], size=7.5)
     else:
         pdf.para(tr.get("reason", "Not available"))
 

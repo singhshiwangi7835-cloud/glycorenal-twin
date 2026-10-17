@@ -2,7 +2,7 @@
 
 Contents: today's numbers vs targets (green dot = on target, red = not), medicines and times,
 top 3 lifestyle tips (report_patient mode in each language; templates when offline), when to
-call the doctor, disclaimer. No medicine advice and no drug options.
+call the doctor. No medicine advice and no drug options.
 """
 
 from __future__ import annotations
@@ -12,7 +12,6 @@ from sqlmodel import Session
 
 from src.db.models import Patient
 from src.llm.assistant import ask
-from src.llm.guardrails import FOOTER
 from src.reports.common import INK, ReportPDF, clean
 from src.twin.state import build_state
 
@@ -111,7 +110,4 @@ def build(session: Session, patient_id: str) -> bytes:
     two_columns(HEAD["tips"], tips["en"], tips["hi"])
     two_columns(HEAD["call"], CALL_DOCTOR["en"], CALL_DOCTOR["hi"])
 
-    pdf.ln(2)
-    pdf.set_font("Noto", "", 8)
-    pdf.multi_cell(0, 4.2, clean(f"{FOOTER['en']}\n{FOOTER['hi']}"), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     return bytes(pdf.output())

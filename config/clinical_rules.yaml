@@ -91,7 +91,7 @@ freshness:
   verified: false
 
 # ---------------------------------------------------------------------------
-# Drug eligibility (starter rules, decision support only)
+# Drug eligibility (starter rules)
 # ---------------------------------------------------------------------------
 eligibility:
   metformin:

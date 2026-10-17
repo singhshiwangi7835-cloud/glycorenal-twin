@@ -310,6 +310,3 @@ with tabs[6]:
         st.download_button(f"⬇ {t('download')}", st.session_state["my_pdf"], f"{pid}_my_health.pdf",
                            "application/pdf")
 
-st.divider()
-st.caption(t("disclaimer"))
-ui.footer()

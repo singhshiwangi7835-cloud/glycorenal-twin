@@ -10,7 +10,6 @@ from src.models.dkd import predict_dkd
 from src.treatment.eligibility import evaluate
 from src.treatment.simulate import simulate
 
-DISCLAIMER = "Decision support only. Suggestions with sources; the treating clinician decides."
 
 
 def _short_source(source: str) -> str:
@@ -55,5 +54,4 @@ def rank(state: dict, patient_view: bool = False) -> dict:
         "combined_plan": combo,
         "not_eligible": [] if patient_view else not_eligible,
         "warnings": [] if patient_view else ev["warnings"],
-        "disclaimer": DISCLAIMER,
     }

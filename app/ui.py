@@ -1,4 +1,4 @@
-"""Shared UI pieces: disclaimer footer, sidebar user box, KDIGO colours and chips, charts.
+"""Shared UI pieces: sidebar user box, KDIGO colours and chips, charts.
 
 Look: white background, one accent colour (#0b6e99), KDIGO colours used only for risk.
 """
@@ -13,7 +13,6 @@ import streamlit as st
 
 import api_client
 
-DISCLAIMER = "Prototype – decision support only, not for clinical use"
 ACCENT = "#0b6e99"
 KDIGO_HEX = {"green": "#2e7d32", "yellow": "#f9a825", "orange": "#ef6c00", "red": "#c62828"}
 BAND_HEX = {"low": "#2e7d32", "moderate": "#f9a825", "high": "#ef6c00", "very_high": "#c62828"}
@@ -26,11 +25,6 @@ GRID = {"G1": ["low", "moderate", "high"], "G2": ["low", "moderate", "high"],
         "G4": ["very_high"] * 3, "G5": ["very_high"] * 3}
 
 
-def footer() -> None:
-    st.divider()
-    st.caption(f"⚕️ {DISCLAIMER}")
-
-
 def sidebar_user() -> None:
     user = api_client.current_user()
     if not user:
@@ -40,7 +34,6 @@ def sidebar_user() -> None:
         if st.button("Log out", width="stretch"):
             api_client.logout()
             st.rerun()
-        st.caption(DISCLAIMER)
 
 
 def chip(text: str, hex_: str) -> str:

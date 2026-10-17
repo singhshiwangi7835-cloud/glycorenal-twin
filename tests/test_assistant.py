@@ -25,11 +25,11 @@ def test_medicine_change_filter_english_and_hindi():
     assert not guardrails.violates_patient_rules("Walk for 15 minutes after dinner.")
 
 
-def test_doctor_summary_template_has_numbers_and_footer(client):
+def test_doctor_summary_template_has_numbers(client):
     r = client.post("/patients/IND-0042/assistant", headers=login(client, "dr.mehta", "doctor123"),
                     json={"mode": "doctor_summary"}).json()
     assert "IND-0042" in r["text"] and "HbA1c 8.4%" in r["text"] and "KDIGO G2-A2" in r["text"]
-    assert "Decision support only" in r["text"]
+    assert "Decision support only" not in r["text"]
     assert "Ramesh" not in r["text"]  # de-identified
     if r["offline"]:
         assert r["provider"] == "template"

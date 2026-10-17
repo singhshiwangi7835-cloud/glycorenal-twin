@@ -125,7 +125,7 @@ TEXT = {
                      "अपने पास रखने या डॉक्टर को दिखाने के लिए अंग्रेज़ी और हिंदी में एक पेज का सारांश।"),
     "report_btn": ("Make my report", "मेरी रिपोर्ट बनाएँ"),
     "download": ("Download PDF", "PDF डाउनलोड करें"),
-    "disclaimer": ("This app does not replace your doctor. Never change your medicines without talking to your doctor.",
+    "_unused_disclaimer": ("This app does not replace your doctor. Never change your medicines without talking to your doctor.",
                    "यह ऐप डॉक्टर की जगह नहीं लेता। डॉक्टर से बात किए बिना दवाइयाँ कभी न बदलें।"),
 }
 

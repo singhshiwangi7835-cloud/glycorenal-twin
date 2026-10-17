@@ -32,8 +32,6 @@ BAND_RGB = {"low": (46, 125, 50), "moderate": (249, 168, 37), "high": (239, 108,
 GRID = {"G1": ["low", "moderate", "high"], "G2": ["low", "moderate", "high"],
         "G3a": ["moderate", "high", "very_high"], "G3b": ["high", "very_high", "very_high"],
         "G4": ["very_high"] * 3, "G5": ["very_high"] * 3}
-DISCLAIMER = ("Prototype - decision support only, not for clinical use. Not a medical device. "
-              "The treating clinician decides all treatment.")
 _REPLACE = {"→": "to", "≥": ">=", "≤": "<=", "✓": "", "✗": "", "●": "*", "⚠️": "!", "⚠": "!",
             "🔺": "+", "🔻": "-", "🟠": "", "🟢": "", "**": ""}
 
@@ -84,7 +82,7 @@ class ReportPDF(FPDF):
         self.set_y(-14)
         self.set_font("Noto", "", 7)
         self.set_text_color(*GREY)
-        self.multi_cell(0, 3.5, f"{DISCLAIMER}   Page {self.page_no()}", align="C",
+        self.multi_cell(0, 3.5, f"Page {self.page_no()}", align="C",
                         new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
     def h2(self, text: str, size: float = 11):

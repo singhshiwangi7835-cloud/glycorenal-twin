@@ -7,7 +7,7 @@ ask() flow:
   3. cache: same mode + language + question + data within 30 minutes -> same answer
   4. retrieve 3 guideline snippets (TF-IDF) and call the LLM (Kimi -> Gemini) with a 20 s timeout
   5. patient answers are checked for medicine-change advice; violation or no LLM -> template
-  6. add the "Decision support only" footer
+  6. return the answer
 The LLM is only called on a user action (button or chat), never per reading.
 """
 

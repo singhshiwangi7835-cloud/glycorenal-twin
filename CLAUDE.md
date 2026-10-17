@@ -30,7 +30,7 @@ A proof-of-concept **digital twin** for people with **Type 2 Diabetes (T2DM)** t
 5. Ingests **hospital EHR data (FHIR R4)** and **real-time wearable data** (CGM, heart rate, steps, sleep, BP).
 6. Has **role-based logins** (doctor, patient, admin), **medication reminders**, an **Indian meal log**, an **LLM assistant** (explains, never predicts) and **PDF reports**.
 
-Built for the Digital Twin Challenge 2026 (Happiest Health Summit, Bengaluru). Decision support only. It is not a medical device and does no auto-prescribing.
+Built for the Digital Twin Challenge 2026 (Happiest Health Summit, Bengaluru). It does no auto-prescribing.
 
 ---
 
@@ -282,7 +282,6 @@ Every connector returns a list of `ObservationIn` and calls `translator.save()`,
   - Patient mode never suggests starting, stopping or changing any medicine or dose. If asked, reply "please discuss this with your doctor". Post-check with a keyword filter; on violation, fall back to the template.
   - Doctor mode frames options as suggestions with sources; the clinician decides.
   - Hypo or critical alert in patient mode leads to a fixed safety message (15 g fast-acting carbs, recheck in 15 min, contact the doctor), never LLM-generated.
-  - Always add a "Decision support only" footer.
 - **RAG:** simple TF-IDF retrieval (scikit-learn) over `data/guidelines/*.md`. Add the top 3 snippets to the prompt with their source names.
 - **Cost/limits:** call the LLM only on user action (button or chat), never per reading. Cache by hash of (mode, language, state) for 30 min. Timeout 20 s. On any error or rate limit, return `fallback.py` template text filled from the numbers and show a small "offline summary" badge.
 
@@ -294,7 +293,7 @@ Every connector returns a list of `ObservationIn` and calls `translator.save()`,
 - **Doctor portal:** patient list (sorted by DKD risk, KDIGO colour chip, alert count) → patient detail tabs: Overview (KDIGO heat-map position, eGFR/HbA1c trends, risk cards), Live (CGM chart auto-refresh every 5 s, HR, steps, alerts feed), Treatments (ranked options + "Apply to simulation" toggle, before/after risk bar), Medications (prescribe/edit → reminders), Meals (spike table), EHR (import/export FHIR), AI (summary + chat), Report (download PDF).
 - **Patient app:** Today (big glucose number + arrow, TIR ring, next dose reminder), Medicines (taken/skip, adherence), Meals (log + spike feedback), My health (trends in plain language), Devices (start simulator / connect Dexcom / upload Libre CSV / enter BP), Ask my twin (chat, Hindi/English toggle), Report (PDF).
 - **Admin panel:** create users, link patient ↔ doctor, import Synthea patients in bulk, device connection status, reset demo data.
-- Clean clinical look: white background, one accent colour, KDIGO colours only for risk. Every screen shows the footer "Prototype – decision support only, not for clinical use".
+- Clean clinical look: white background, one accent colour, KDIGO colours only for risk.
 
 ---
 

@@ -1,5 +1,5 @@
 """Doctor portal: patient list sorted by DKD risk, then patient detail tabs
-(Overview, Live, Treatments, Medications, Meals, EHR, AI, Report). Decision support only.
+(Overview, Live, Treatments, Medications, Meals, EHR, AI, Report).
 """
 
 from __future__ import annotations
@@ -223,8 +223,7 @@ with tabs[1]:
                                            for x in kd["learning"]]), hide_index=True, width="stretch")
         else:
             st.info(kd.get("reason"))
-        st.caption("Decision support only. The twin is a simplified model of this patient, tuned to their own data; "
-                   "the clinician decides.")
+        st.caption("The twin is a simplified model of this patient, tuned to their own data.")
 
 # ---------------- Live ----------------
 with tabs[2]:
@@ -360,7 +359,6 @@ with tabs[3]:
                                f"HbA1c {sim_r['hba1c_now']}% → {sim_r['hba1c_after_expected']}% expected"
                                + (f" (model: {sim_r['hba1c_3m_model']}%)" if sim_r.get("hba1c_3m_model") else "") +
                                f"  \nSystolic BP → {sim_r['sbp_after']:.0f}" if sim_r.get("sbp_after") else "")
-                st.caption(sim_r["disclaimer"])
             except api.APIError as e:
                 ui.show_error(e)
         with st.expander("Not eligible / already in place"):
@@ -553,4 +551,3 @@ with tabs[8]:
     st.caption("Contents: labs with dates and stale-data flags, KDIGO grid, eGFR and HbA1c trends, 14-day glucose "
                "profile, risk scores with model versions, ranked options with sources, alerts, AI summary.")
 
-ui.footer()

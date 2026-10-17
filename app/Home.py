@@ -40,7 +40,6 @@ def login_page() -> None:
             st.dataframe(DEMO_ACCOUNTS, hide_index=True, width="stretch")
             st.caption("Other demo patients: priya, mohan, arjun, lakshmi, imran, kavita, "
                        "suresh, anita (password patient123).")
-        ui.footer()
 
 
 user = api_client.current_user()

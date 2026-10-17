@@ -4,7 +4,7 @@
 2. Patient has low glucose or a critical alert -> fixed hypoglycaemia safety message (no LLM).
 3. Patient-mode answers are checked for medicine-change advice (keyword filter, English + Hindi);
    on a violation the template answer is used instead.
-4. Every answer ends with the "Decision support only" footer.
+4. (No disclaimer footer is added to answers.)
 """
 
 from __future__ import annotations
@@ -17,9 +17,6 @@ import pandas as pd
 
 DRUGS_CSV = Path(__file__).resolve().parents[2] / "data" / "reference" / "drug_classes.csv"
 
-FOOTER = {"en": "Decision support only – not medical advice. Your doctor decides your treatment.",
-          "hi": "यह केवल निर्णय-सहायता है, चिकित्सा सलाह नहीं। आपका इलाज आपके डॉक्टर तय करेंगे।"}
-FOOTER_DOCTOR = "Decision support only. Suggestions with sources; the treating clinician decides."
 
 ASK_DOCTOR = {"en": "Please discuss this with your doctor. I can explain your readings, but I can't advise "
                     "on starting, stopping or changing any medicine.",
@@ -87,5 +84,5 @@ def needs_hypo_message(state: dict, alerts: list[dict]) -> bool:
 
 
 def with_footer(text: str, patient_view: bool, language: str) -> str:
-    footer = FOOTER.get(language, FOOTER["en"]) if patient_view else FOOTER_DOCTOR
-    return f"{text.rstrip()}\n\n_{footer}_"
+    """Kept for callers; no disclaimer is appended any more."""
+    return text.rstrip()

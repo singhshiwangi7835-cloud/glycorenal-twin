@@ -36,7 +36,7 @@ def main():
     ax.set_ylim(0, 9)
     ax.axis("off")
     ax.text(8, 8.75, "GlycoRenal Twin: architecture", ha="center", fontsize=15, weight="bold", color=ACCENT)
-    ax.text(8, 8.4, "Digital twin for type 2 diabetes and diabetic kidney disease. Decision support only.",
+    ax.text(8, 8.4, "Digital twin for type 2 diabetes and diabetic kidney disease.",
             ha="center", fontsize=9, color=GREY)
 
     # data sources (left column)

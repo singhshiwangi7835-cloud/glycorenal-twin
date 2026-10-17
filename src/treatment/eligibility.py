@@ -1,6 +1,6 @@
 """Which treatment options are allowed for this patient (rules in clinical_rules.yaml -> eligibility).
 
-Decision support only: every option carries its reason and source; the doctor decides.
+Every option carries its reason and source.
 Returns one entry per option in clinical_rules.yaml -> effects, plus safety warnings about the
 medicines the patient is already taking.
 """

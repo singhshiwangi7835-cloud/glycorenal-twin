@@ -2,7 +2,7 @@
 
 GET  /patients/{pid}/treatments            doctor/admin: all eligible options; patient: lifestyle only
 POST /patients/{pid}/treatments/simulate   {"options": ["sglt2i", "bp_control"]} -> before/after
-Decision support only; the clinician decides. Patients can only simulate lifestyle options.
+Patients can only simulate lifestyle options.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from src.auth.security import current_user
 from src.clinical.rules import clinical_rules
 from src.db.models import Patient, User
 from src.db.session import get_session
-from src.treatment.rank import DISCLAIMER, rank
+from src.treatment.rank import rank
 from src.treatment.simulate import simulate
 from src.twin.state import build_state
 
@@ -46,4 +46,4 @@ def simulate_options(body: SimulateIn, p: Patient = Depends(patient_for),
     state = build_state(session, p.id)
     if state["features"]["dkd"].get("egfr") is None or state["features"]["dkd"].get("log_uacr") is None:
         raise HTTPException(409, "Needs eGFR (creatinine) and UACR to estimate kidney risk")
-    return {**simulate(state, body.options), "disclaimer": DISCLAIMER}
+    return simulate(state, body.options)

@@ -136,8 +136,8 @@ rank by absolute risk reduction. Doctors see all options; patients see lifestyle
   of the twin (no names), plus the top 3 guideline snippets (TF-IDF RAG over `data/guidelines/`).
   It explains and never predicts.
 - Guardrails: patients are never told to change a medicine ("please discuss this with your
-  doctor", English and Hindi); a low-sugar alert gives a fixed 15-15 safety message; there is
-  always a "decision support only" footer; answers are cached for 30 minutes.
+  doctor", English and Hindi); a low-sugar alert gives a fixed 15-15 safety message;
+  answers are cached for 30 minutes.
 - `src/reports/`: the doctor PDF (labs with stale flags, KDIGO grid, trends, CGM profile, risk,
   genetics, ranked options, AI summary) and a one-page bilingual patient PDF.
 

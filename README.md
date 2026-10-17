@@ -13,9 +13,6 @@ assistant that explains results in English and Hindi, and PDF reports.
 
 Made for the Digital Twin Challenge 2026 (Happiest Health Summit, Bengaluru).
 
-> Decision support only. This is not a medical device and not for clinical use. The doctor makes
-> every treatment decision; patients are only shown lifestyle suggestions.
-
 ![Architecture](docs/architecture.png)
 
 ## Features
@@ -164,7 +161,7 @@ These files can be edited without touching Python. Restart the API afterwards.
   summaries 10-60 s.
 - Patient safety rules: no advice to change medicines (English and Hindi keyword check, with template
   fallback); medicine questions get "please discuss this with your doctor"; low glucose gets a fixed
-  15-15 rule message; every answer ends with "Decision support only".
+  15-15 rule message.
 
 ## Project layout
 
