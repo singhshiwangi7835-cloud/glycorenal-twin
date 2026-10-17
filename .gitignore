@@ -14,6 +14,9 @@ venv/
 data/raw/*
 !data/raw/.gitkeep
 !data/raw/DATA_SOURCES.md
+# ShanghaiT2DM real CGM (CC BY 4.0, 3.4 MB zip) is committed; it is unpacked automatically on first use
+!data/raw/shanghai_t2dm/
+data/raw/shanghai_t2dm/extracted/
 data/processed/*
 !data/processed/.gitkeep
 data/synthetic/*

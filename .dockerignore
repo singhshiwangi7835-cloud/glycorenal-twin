@@ -8,6 +8,8 @@
 .pytest_cache
 .env
 data/raw
+!data/raw/shanghai_t2dm
+data/raw/shanghai_t2dm/extracted
 data/processed
 data/synthetic
 data/*.db

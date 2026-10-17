@@ -114,7 +114,7 @@ Hugging Face Spaces (Docker, one container) step by step, including where to ent
 | Synthetic Indian T2DM cohort, 2,000 patients x 5 years quarterly | DKD onset/progression and HbA1c models; ICMR-INDIAB-informed settings in `config/clinical_rules.yaml` | generated |
 | Synthea (MITRE) sample patients | FHIR R4 sample bundles in `data/fhir_samples/` | Apache 2.0 |
 | CGMacros (PhysioNet) | Glucose forecast and simulator when downloaded (synthetic CGM until then) | ODC-BY |
-| ShanghaiT2DM (Zhao et al., Sci Data 2023; figshare 10.6084/m9.figshare.20444397) | **Real CGM** of 100 people with T2DM: trains and tests the glucose and spike models; "▶ Real patient CGM" replays one in the Live tab | CC BY 4.0 |
+| ShanghaiT2DM (Zhao et al., Sci Data 2023; figshare 10.6084/m9.figshare.20444397) | **Real CGM** of 100 people with T2DM: trains and tests the glucose and spike models; "▶ Real patient CGM" replays one in the Live tab. The original 3.4 MB zip is included in `data/raw/shanghai_t2dm/` | CC BY 4.0 |
 | Indian foods | `data/reference/indian_foods.csv`, carbs and GI category (to verify vs IFCT 2017) | project |
 
 Trained models are committed in `models/` (about 3 MB), so nothing needs downloading to run.

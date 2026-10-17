@@ -1,7 +1,8 @@
 """ShanghaiT2DM: real CGM from 100 people with type 2 diabetes (Zhao et al., Sci Data 2023, CC BY 4.0).
 
-Download: https://doi.org/10.6084/m9.figshare.20444397 -> data/raw/shanghai_t2dm/ (zip). Unpack with
-`extract()` (done once; files go to data/raw/shanghai_t2dm/extracted/).
+Source: https://doi.org/10.6084/m9.figshare.20444397. The original zip is committed in
+data/raw/shanghai_t2dm/ (3.4 MB) and unpacked automatically on first use into
+data/raw/shanghai_t2dm/extracted/ (git-ignored).
 
 What it has: CGM every 15 minutes for 3-14 days, meal times (as text, no carb counts), medicines,
 and a summary sheet (age, sex, BMI, HbA1c, creatinine, eGFR, complications). No heart rate or steps.
@@ -45,6 +46,11 @@ def extract() -> int:
 
 
 def available() -> bool:
+    if not (T2DM_DIR.exists() and any(T2DM_DIR.glob("*.xls*"))):
+        try:
+            extract()
+        except OSError:  # read-only folder or damaged zip: carry on without real CGM
+            return False
     return T2DM_DIR.exists() and any(T2DM_DIR.glob("*.xls*"))
 
 
