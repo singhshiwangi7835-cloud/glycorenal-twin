@@ -24,8 +24,17 @@ with st.sidebar:
     st.session_state["lang"] = "hi" if choice == "हिंदी" else "en"
 
 first_name = (user["full_name"] or "").split(" ")[0]
-st.title(f"💙 {t('title')}")
-st.caption(f"{t('hello')} {first_name} · {pid}")
+st.markdown(f"<div class='gr-hello'>{ui.logo(40)}<div class='hi'>{t('hello')}, {first_name}"
+            f"<small>{pid} · {t('title')}</small></div></div>", unsafe_allow_html=True)
+# patient app: pill-shaped tabs, narrower column (design)
+st.markdown("<style>.block-container{max-width:760px}"
+            ".stTabs [role='tablist']{gap:6px;border-bottom:none!important;flex-wrap:wrap}"
+            ".stTabs [data-testid='stTab']{padding:6px 14px!important;border-radius:999px;background:#EFEDE7}"
+            ".stTabs [data-testid='stTab'] p{color:#46565F!important}"
+            ".stTabs [data-testid='stTab'][aria-selected='true']{background:#13212A}"
+            ".stTabs [data-testid='stTab'][aria-selected='true'] p{color:#fff!important}"
+            ".stTabs .react-aria-SelectionIndicator{display:none}</style>",
+            unsafe_allow_html=True)
 
 
 def _status_label(g: float) -> str:
@@ -53,15 +62,19 @@ with tabs[0]:
         s = tw["state"]
         latest = s["cgm"].get("latest")
         fc = tw["predictions"].get("glucose_30m")
-        c = st.columns([2, 2, 2])
+        c = [st.container()] + st.columns(2)  # glucose card full width, then ring and next dose
         with c[0]:
             if latest:
                 g = latest["value"]
-                colour = ui.KDIGO_HEX["red"] if g < 70 else (ui.KDIGO_HEX["orange"] if g > 180 else ui.KDIGO_HEX["green"])
-                st.markdown(f"<div style='font-size:15px;color:#52606d'>{t('sugar_now')}</div>"
-                            f"<div style='font-size:64px;font-weight:700;color:{colour};line-height:1'>{g:.0f} "
-                            f"<span style='font-size:40px'>{latest['arrow']}</span></div>"
-                            f"<div>mg/dL · {_status_label(g)} · {ui.minutes_ago(latest['time'])} {t('minutes_ago')}</div>",
+                cls = "low" if g < 70 else ("high" if g > 250 else "")
+                recent = api.get(f"/patients/{pid}/observations", variable="glucose", device="cgm", hours=3)
+                live = "<span class='gr-live'>● LIVE</span>" if (ui.minutes_ago(latest["time"]) or 99) < 15 else ""
+                st.markdown(f"<div class='glu-hero {cls}'><div style='display:flex;justify-content:space-between'>"
+                            f"<span class='lbl'>{t('sugar_now')}</span>{live}</div>"
+                            f"<div class='val'>{g:.0f}<span class='arrow'>{latest['arrow']}</span><small>mg/dL</small></div>"
+                            f"<span class='state'>{_status_label(g)} · {ui.minutes_ago(latest['time'])} {t('minutes_ago')}</span>"
+                            f"{ui.sparkline([r['value'] for r in recent])}"
+                            f"<div class='foot'><span>3 h</span><span>70 – 180</span></div></div>",
                             unsafe_allow_html=True)
                 if fc:
                     st.caption(f"{t('forecast')}: ~{fc['plus_30']} mg/dL")
@@ -75,7 +88,7 @@ with tabs[0]:
             tir = (s["cgm"].get("metrics") or {}).get("tir_pct")
             st.plotly_chart(ui.tir_ring(tir, t("in_range")), width="stretch", key="tir")
             st.caption(t("target_tir"))
-        with c[2]:
+        with c[2].container(border=True):
             st.markdown(f"**{t('next_dose')}**")
             due = rem["due_now"]
             nxt = due[0] if due else rem["next"]

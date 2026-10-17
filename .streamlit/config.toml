@@ -1,10 +1,14 @@
-# Clean clinical look: white background, one accent colour (KDIGO colours are used only for risk)
+# Design: logo navy accent, warm off-white background (KDIGO colours are used only for risk)
 [theme]
 base = "light"
-primaryColor = "#0b6e99"
-backgroundColor = "#ffffff"
-secondaryBackgroundColor = "#f3f6f8"
-textColor = "#1f2933"
+primaryColor = "#1C3C5F"
+backgroundColor = "#F6F5F1"
+secondaryBackgroundColor = "#EFEDE7"
+textColor = "#13212A"
+baseRadius = "8px"
+
+[theme.sidebar]
+backgroundColor = "#FFFFFF"
 
 [client]
 toolbarMode = "minimal"

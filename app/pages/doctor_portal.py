@@ -15,7 +15,9 @@ import api_client as api
 import ui
 
 ui.sidebar_user()
-st.title("🩺 Doctor portal")
+st.markdown("<div class='gr-eyebrow'>Clinician portal</div>", unsafe_allow_html=True)
+st.title("Patients")
+st.caption("Every patient, sorted by predicted 3-year kidney risk and coloured by the KDIGO heat map.")
 
 
 try:
@@ -26,14 +28,14 @@ except api.APIError as e:
 
 # ---------------- patient list ----------------
 with st.expander(f"Patients ({len(patients)}), highest predicted 3-year kidney risk first", expanded=True):
-    table =["<table style='width:100%;border-collapse:collapse;font-size:14px'>",
-             "<tr style='text-align:left;border-bottom:2px solid #e4e7eb'><th>ID</th><th>Name</th><th>Age</th>"
+    table =["<table class='gr-tbl'>",
+             "<tr><th>ID</th><th>Name</th><th>Age</th>"
              "<th>KDIGO</th><th>DKD risk (3 yr)</th><th>HbA1c</th><th>eGFR</th><th>UACR</th><th>TIR</th>"
              "<th>Adherence</th><th>Alerts</th></tr>"]
     for p in patients:
         fmt = lambda v, f="{:.0f}", s="": (f.format(v) + s) if v is not None else "–"  # noqa: E731
         table.append(
-            f"<tr style='border-bottom:1px solid #eef2f5'><td><b>{p['patient_id']}</b></td><td>{p['display_name']}</td>"
+            f"<tr><td class='gr-mono'><b>{p['patient_id']}</b></td><td><b>{p['display_name']}</b></td>"
             f"<td>{p['age']}{p['sex']}</td><td>{ui.kdigo_chip(p['kdigo'], p['kdigo_colour'])}</td>"
             f"<td>{ui.risk_chip(p['dkd_risk_3y'], p['risk_band'])}</td><td>{fmt(p['hba1c'], '{:.1f}', '%')}</td>"
             f"<td>{fmt(p['egfr'])}</td><td>{fmt(p['uacr'])}</td><td>{fmt(p['tir_pct'], '{:.0f}', '%')}</td>"
@@ -56,6 +58,15 @@ except api.APIError as e:
 s, preds, alerts = twin["state"], twin["predictions"], twin["alerts"]
 k, g, cgm = s["kidney"], s["glycaemia"], s["cgm"]
 dkd = preds.get("dkd_3y", {})
+_p = next((x for x in patients if x["patient_id"] == pid), {})
+_prof = s["profile"]
+st.markdown(
+    f"<div class='gr-pt'><div class='big-av'>{ui.initials(_p.get('display_name', pid))}</div><div>"
+    f"<h2>{_p.get('display_name', pid)}</h2><div class='meta'><span class='gr-mono'>{pid}</span> · "
+    f"{_prof.get('age')} {_prof.get('sex')} · {_prof.get('dm_duration_yrs')} yrs with diabetes"
+    f"{' · hypertension' if _prof.get('hypertension') else ''}</div></div><div class='right'>"
+    f"{ui.kdigo_chip(k.get('stage'), k.get('colour'))}{ui.risk_chip(dkd.get('risk_3y'), dkd.get('band'))}"
+    f"</div></div>", unsafe_allow_html=True)
 
 tabs = st.tabs(["Overview", "Personal twin", "Live", "Treatments", "Medications", "Meals", "EHR",
                 "AI assistant", "Report"])

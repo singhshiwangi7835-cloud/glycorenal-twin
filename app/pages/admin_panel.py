@@ -11,7 +11,8 @@ import api_client as api
 import ui
 
 ui.sidebar_user()
-st.title("🛠️ Admin panel")
+st.markdown("<div class='gr-eyebrow'>Admin console</div>", unsafe_allow_html=True)
+st.title("Admin panel")
 
 try:
     ov = api.get("/admin/overview")
