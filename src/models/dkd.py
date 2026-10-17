@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 
+from src.clinical.genetics import apply_odds_ratio, dkd_odds_ratio
 from src.clinical.rules import clinical_rules
 from src.models.registry import load, version
 
@@ -29,6 +30,7 @@ LABELS = {
     "hypertension": "Hypertension", "adherence": "Medicine adherence", "on_sglt2i": "On SGLT2i",
     "on_glp1ra": "On GLP-1 RA", "on_acei_arb": "On ACEi/ARB", "on_finerenone": "On finerenone",
     "on_insulin": "On insulin", "on_sulfonylurea": "On sulfonylurea",
+    "ckd_prs_percentile": "Kidney polygenic score (simulated)",
 }
 
 
@@ -57,12 +59,19 @@ def predict_dkd(features: dict, top: int = 5) -> dict:
     X = _frame(features, b["features"])
     raw = float(b["model"].predict_proba(X)[0, 1])
     risk = float(b["calibrator"].predict([raw])[0])
+    # genetic modifier (not in the trained model): odds ratio from clinical_rules.yaml -> genetics
+    prs = features.get("ckd_prs_percentile")
+    gen_or = dkd_odds_ratio(prs)
+    risk = apply_odds_ratio(risk, gen_or)
 
     contrib = b["model"].get_booster().predict(xgb.DMatrix(X), pred_contribs=True)[0][:-1]
     drivers = sorted(
         [{"feature": f, "label": LABELS.get(f, f), "value": features.get(f),
           "contribution": round(float(c), 3)} for f, c in zip(b["features"], contrib)],
         key=lambda d: -abs(d["contribution"]))[:top]
+    if gen_or != 1.0:
+        drivers.append({"feature": "ckd_prs_percentile", "label": LABELS["ckd_prs_percentile"], "value": prs,
+                        "contribution": round(math.log(gen_or), 3)})
     return {
         "kind": kind,
         "outcome": ("DKD within 3 years" if kind == "onset"
@@ -71,6 +80,7 @@ def predict_dkd(features: dict, top: int = 5) -> dict:
         "band": risk_band(risk),
         "model_version": version(f"dkd_{kind}"),
         "drivers": drivers,  # contribution in log-odds: > 0 raises risk, < 0 lowers it
+        "genetic_odds_ratio": gen_or,
     }
 
 

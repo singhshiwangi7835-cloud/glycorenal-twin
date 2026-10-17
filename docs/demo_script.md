@@ -55,6 +55,12 @@ Open **IND-0042 · Ramesh Kumar**. Overview tab.
 > paper, no kidney disease yet. But his twin says **77% chance of developing kidney disease in three
 > years**, driven by his albuminuria, eGFR and glucose control. Note the KDIGO grid and the trends."
 
+Open **🧬 Genetic markers (simulated test)**.
+
+> "The twin also reads his genetic test from the EHR: a kidney polygenic score in the 82nd percentile
+> raises his risk, and two gene variants (TCF7L2, CYP2C9) mean a sulfonylurea would work less well and
+> carry more hypo risk, so the treatment advisor warns against it. These results are simulated."
+
 ## 4:30 - 5:30  His own twin, not an average (Doctor Personal twin tab)
 
 Doctor → **Personal twin** tab.
@@ -82,9 +88,12 @@ Patient → **भोजन** (Meals) → pick **सफ़ेद चावल** (
 Left window: doctor → **Live** tab. Within ~30 seconds glucose climbs past 250 (peak about 310) and an
 alert appears.
 
-> "He logged a typical lunch: two katoris of rice and dal, 99 grams of carbs. The twin knows rice is his
-> worst food: on average +134 mg/dL. The live trace climbs, the twin forecasts 30 and 60 minutes ahead,
-> and raises an alert above 250."
+> "He logged a typical lunch: two katoris of rice and dal, 99 grams of carbs. While his sugar is still
+> normal, the twin raises a **spike early warning: above 250 likely within 90 minutes**. (Around his
+> usual mealtimes it may appear even before he logs the meal; then say "it warned us before he ate".)
+> It knows his habits: at this time of day he usually eats about 95 grams of carbs and went above 250 on
+> most recent days. In our tests 3 out of 4 spikes were warned at least an hour ahead. His app shows the
+> same warning in Hindi with a tip: a 15-minute walk. Then the live trace climbs past 250."
 
 Patient → **भोजन**: show "आपकी शुगर सबसे ज़्यादा बढ़ाने वाले 3 खाने" (top 3 spiking foods).
 

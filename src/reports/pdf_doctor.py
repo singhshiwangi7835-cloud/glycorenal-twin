@@ -85,6 +85,10 @@ def build(session: Session, patient_id: str, doctor_name: str | None = None) -> 
                  "low" if a7 is not None and a7 < 80 else "ok"])
     colours.append(RED if a7 is not None and a7 < 80 else GREEN)
     pdf.table(["Test", "Value", "Date", "Age", "Status"], rows, [46, 54, 34, 22, 26], status_colours=colours)
+    gen = s.get("genetics") or []
+    if gen:
+        pdf.para("Genetic markers (simulated): " + "; ".join(f"{x['label']}: {x['result']}" for x in gen) + ".",
+                 size=8.5)
 
     # ---- trends ----
     pdf.h2("Trends")

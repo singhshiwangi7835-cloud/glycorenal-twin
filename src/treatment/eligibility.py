@@ -7,6 +7,7 @@ medicines the patient is already taking.
 
 from __future__ import annotations
 
+from src.clinical.genetics import drug_cautions
 from src.clinical.rules import clinical_rules
 
 
@@ -28,6 +29,7 @@ def evaluate(state: dict) -> dict:
     albuminuria = uacr is not None and uacr >= el["finerenone"]["uacr_at_least"]
     htn = state["profile"]["hypertension"] or (state["vitals"]["sbp"] or 0) >= 140
     out: list[dict] = []
+    pgx = drug_cautions(state.get("genetics") or [])
 
     if egfr is None:
         return {"options": [], "warnings": ["No creatinine/eGFR on record: order kidney labs first"]}
@@ -88,7 +90,7 @@ def evaluate(state: dict) -> dict:
     elif not above_target:
         out.append(_opt("metformin", False, "HbA1c at target"))
     else:
-        out.append(_opt("metformin", True, f"HbA1c {hba1c}% above target, eGFR {egfr:.0f}"))
+        out.append(_opt("metformin", True, f"HbA1c {hba1c}% above target, eGFR {egfr:.0f}", pgx["metformin"]))
 
     for opt, flag, rule_key in [("dpp4i", "on_dpp4i", None), ("sulfonylurea", "on_sulfonylurea", "sulfonylurea"),
                                 ("insulin_basal", "on_insulin", "insulin")]:
@@ -102,6 +104,7 @@ def evaluate(state: dict) -> dict:
                 cautions.append(f"High hypoglycaemia risk at eGFR {egfr:.0f}")
             elif rule_key:
                 cautions.append("Hypoglycaemia risk")
+            cautions += pgx.get(opt, [])
             if opt == "dpp4i" and f["on_glp1ra"]:
                 out.append(_opt(opt, False, "Do not combine DPP-4 inhibitor with GLP-1 RA"))
                 continue
@@ -147,6 +150,11 @@ def safety_warnings(state: dict) -> list[str]:
         if f["on_sglt2i"] and egfr < el["sglt2i"]["initiate_egfr_at_least"]:
             w.append(f"SGLT2i with eGFR {egfr:.0f}: may continue for kidney protection, "
                      "little glucose-lowering effect")
+    pgx = drug_cautions(state.get("genetics") or [])
+    if f.get("on_sulfonylurea"):
+        w += [f"On a sulfonylurea: {c}" for c in pgx["sulfonylurea"]]
+    if f.get("on_metformin"):
+        w += [f"On metformin: {c}" for c in pgx["metformin"]]
     if f.get("on_acei") and f.get("on_arb"):
         w.append("ACE inhibitor AND ARB together: do not combine (hyperkalaemia, AKI)")
     if pot is not None and pot > el["acei_arb"]["hold_if_potassium_above"] and \

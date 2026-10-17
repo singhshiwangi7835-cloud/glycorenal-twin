@@ -16,19 +16,20 @@ from src.alerts.engine import check_state, raise_alert
 from src.clinical import loinc
 from src.db.models import Meal, Observation, Patient, Prediction
 from src.models.dkd import predict_dkd
-from src.models.t2dm import forecast_glucose, forecast_hba1c
+from src.models.t2dm import forecast_glucose, forecast_hba1c, forecast_spike
 from src.twin.state import build_state
 
 
-def _recent_cgm(session: Session, patient_id: str, now: datetime) -> pd.DataFrame:
+def _recent_cgm(session: Session, patient_id: str, now: datetime,
+                window: timedelta = timedelta(hours=2, minutes=5)) -> pd.DataFrame:
     obs = session.exec(select(Observation).where(
         Observation.patient_id == patient_id, Observation.loinc_code == loinc.code("glucose"),
-        Observation.device == "cgm", Observation.effective_time > now - timedelta(hours=2, minutes=5),
+        Observation.device == "cgm", Observation.effective_time > now - window,
         Observation.effective_time <= now).order_by(Observation.effective_time)).all()
     df = pd.DataFrame({"time": [o.effective_time for o in obs], "glucose": [o.value for o in obs]})
     df["carbs_g"] = 0.0
     meals = session.exec(select(Meal).where(Meal.patient_id == patient_id,
-                                            Meal.time > now - timedelta(hours=2), Meal.time <= now)).all()
+                                            Meal.time > now - window, Meal.time <= now)).all()
     for m in meals:
         if len(df):
             i = (df["time"] - m.time).abs().idxmin()
@@ -58,8 +59,36 @@ def run_short(session: Session, patient_id: str, now: datetime | None = None) ->
                       "kidney": {}, "adherence": {"pct_7d": None}}
         found = [a for a in check_state(mini_state, g) if a[0] == "predicted_hypo"]
         g["new_alerts"] = _raise(session, patient_id, found)
+        sp = spike_check(session, patient_id, now)
+        g["spike"] = sp
+        g["new_alerts"] += _raise(session, patient_id, spike_alerts(sp))
     session.commit()
     return g
+
+
+def spike_check(session: Session, patient_id: str, now: datetime, save_every_s: int = 15) -> dict:
+    """90-minute spike early warning from 7 days of CGM + meals; stored at most every 15 s."""
+    sp = forecast_spike(_recent_cgm(session, patient_id, now, timedelta(days=7, hours=2)))
+    if sp.get("available") and sp.get("probability") is not None:
+        last = session.exec(select(Prediction.created_at).where(
+            Prediction.patient_id == patient_id, Prediction.kind == "spike_90m")
+            .order_by(Prediction.created_at.desc())).first()
+        if last is None or now - _aware(last) > timedelta(seconds=save_every_s):
+            _save(session, patient_id, "spike_90m", sp["probability"], sp, sp["model_version"])
+    return sp
+
+
+def _aware(t: datetime) -> datetime:
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
+def spike_alerts(sp: dict) -> list[tuple[str, str, str]]:
+    if not (sp.get("available") and sp.get("spike_likely")):
+        return []
+    why = "; ".join(sp["reasons"][:2])
+    return [("predicted_spike", "warning",
+             f"Glucose spike above {sp['spike_above']:.0f} likely within {sp['horizon_minutes']} min "
+             f"(probability {sp['probability']:.0%}, now {sp['now']} mg/dL" + (f"; {why})" if why else ")"))]
 
 
 def run_full(session: Session, patient_id: str, now: datetime | None = None) -> dict:
@@ -79,6 +108,7 @@ def run_full(session: Session, patient_id: str, now: datetime | None = None) -> 
     if g.get("available"):
         _save(session, patient_id, "glucose_30m", g["plus_30"], g, g["model_version"])
     out["glucose"] = g
+    out["spike"] = spike_check(session, patient_id, now, save_every_s=0)  # alerts only from live CGM (run_short)
     out["new_alerts"] = _raise(session, patient_id, check_state(state, g))
     session.commit()
     return out
@@ -87,7 +117,7 @@ def run_full(session: Session, patient_id: str, now: datetime | None = None) -> 
 def latest_predictions(session: Session, patient_id: str) -> dict:
     """Most recent stored prediction of each kind."""
     out = {}
-    for kind in ("dkd_3y", "hba1c_3m", "glucose_30m"):
+    for kind in ("dkd_3y", "hba1c_3m", "glucose_30m", "spike_90m"):
         p = session.exec(select(Prediction).where(Prediction.patient_id == patient_id,
                                                   Prediction.kind == kind)
                          .order_by(Prediction.created_at.desc())).first()

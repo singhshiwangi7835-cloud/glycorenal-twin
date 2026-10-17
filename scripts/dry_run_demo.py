@@ -82,6 +82,7 @@ def main() -> int:
         st = c.post("/patients/IND-0042/devices/simulator/start", headers=doc, json={}).json()
         sent = ticks(6)
         check(st["running"] and len(sent) == 6, f"6 readings: {[x['glucose'] for x in sent]}")
+        before_meal = sent
 
         step(5, "Patient: logs a rice meal -> spike + alert")
         r = c.post("/patients/IND-0042/meals", headers=pat,
@@ -91,6 +92,18 @@ def main() -> int:
         alerts = [a for x in sent for a in x["new_alerts"]]
         check(r["simulated_rise_added"] and peak > 250, f"meal {r['total_carbs_g']} g carbs; glucose peak {peak} mg/dL")
         check(any("above 250" in a for a in alerts), f"alerts: {alerts}")
+        both = before_meal + sent
+        early = next((i for i, x in enumerate(both) if any("spike above" in a for a in x["new_alerts"])), None)
+        cross = next((i for i, x in enumerate(both) if x["glucose"] >= 250), None)
+        check(early is not None and cross is not None and early < cross,
+              f"90-min spike warning at reading {early}, glucose crossed 250 at reading {cross} "
+              f"({(cross - early) * 5 if early is not None and cross is not None else '?'} min of warning)")
+
+        step(55, "Doctor: genetic markers (simulated) in the twin")
+        tw0 = c.get("/patients/IND-0042/twin", headers=doc).json()
+        gen = tw0["state"].get("genetics", [])
+        check(len(gen) == 4 and tw0["predictions"]["dkd_3y"].get("genetic_odds_ratio", 1) > 1,
+              "; ".join(f"{g['label']}: {g['result']}" for g in gen))
 
         step(6, "Patient: medicines and a missed dose")
         rem = c.get("/patients/IND-0042/reminders", headers=pat).json()

@@ -97,6 +97,16 @@ with tabs[0]:
             st.caption("Lower than the average patient in the model: " +
                        ", ".join(f"{d['label']} ({_val(d)})" for d in down))
         st.caption(dkd.get("model_version", ""))
+        gen = s.get("genetics") or []
+        if gen:
+            with st.expander("🧬 Genetic markers (simulated test)", expanded=False):
+                for x in gen:
+                    st.write(f"{'⚠️' if x['flag'] else '•'} **{x['label']}**: {x['result']}")
+                if dkd.get("genetic_odds_ratio", 1.0) != 1.0:
+                    st.caption(f"Kidney polygenic score multiplies the odds of the 3-year outcome by "
+                               f"{dkd['genetic_odds_ratio']} (included in the risk above).")
+                st.caption("Simulated results for the prototype. Effects and sources: config/clinical_rules.yaml "
+                           "-> genetics (to verify).")
     with right:
         h = s["history"]
         st.plotly_chart(ui.trend_chart(h["egfr"], "eGFR (CKD-EPI 2021)", "mL/min/1.73m²", 60, "above"),
@@ -253,18 +263,30 @@ with tabs[2]:
             return
         st_cgm = tw["state"]["cgm"]
         fc = tw["predictions"].get("glucose_30m")
+        sp = tw["predictions"].get("spike_90m")
+        if sp and ui.minutes_ago(sp["created_at"]) > 10:
+            sp = None  # stale (sensor off)
         latest = st_cgm.get("latest")
-        c = st.columns(4)
+        c = st.columns(5)
         if latest:
-            c[0].metric("Glucose now", f"{latest['value']:.0f} mg/dL {latest['arrow']}",
+            c[0].metric("Glucose now (mg/dL)", f"{latest['value']:.0f} {latest['arrow']}",
                         f"{ui.minutes_ago(latest['time'])} min ago", delta_color="off")
         if fc:
             c[1].metric("Forecast +30 / +60 min", f"{fc['plus_30']} / {fc['plus_60']}",
                         "⚠ hypo risk" if fc.get("hypo_risk_30m") else None, delta_color="inverse")
+        if sp:
+            c[2].metric(f"Spike > {sp['spike_above']:.0f} in {sp['horizon_minutes']} min", f"{sp['probability']:.0%}",
+                        "⚠ likely" if sp.get("spike_likely") else None, delta_color="inverse",
+                        help="Early-warning model (glucose_spike_90m): last 2 h of CGM, meals, activity and the "
+                             "patient's habits at this time of day over the past week.")
         if hr:
-            c[2].metric("Heart rate", f"{hr[-1]['value']:.0f} /min")
+            c[3].metric("Heart rate", f"{hr[-1]['value']:.0f} /min")
         steps = tw["state"]["vitals"]["steps_per_day"]
-        c[3].metric("Steps (7-day avg)", f"{steps:,}" if steps else "–")
+        c[4].metric("Steps (7-day avg)", f"{steps:,}" if steps else "–")
+        if sp and sp.get("spike_likely"):
+            st.warning(f"**Spike early warning:** {sp['probability']:.0%} chance of glucose above "
+                       f"{sp['spike_above']:.0f} within {sp['horizon_minutes']} min. "
+                       + ("Why: " + "; ".join(sp["reasons"]) + "." if sp.get("reasons") else ""))
         st.plotly_chart(ui.cgm_chart(rows[-150:], "CGM, latest readings (green band = 70-180 mg/dL)", fc),
                         width="stretch", key=f"cgm_{pid}")
         seen = st.session_state.setdefault("seen_alerts", set())

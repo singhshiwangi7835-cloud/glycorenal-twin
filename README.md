@@ -19,8 +19,9 @@ Built for the **Digital Twin Challenge 2026** (Happiest Health Summit, Bengaluru
 | | |
 |---|---|
 | **Twin state** | Latest labs with age and stale-data flags; eGFR by the race-free **CKD-EPI 2021** equation; **KDIGO** G/A stage and heat-map colour; eGFR slope; 14-day CGM metrics (TIR, TBR, TAR, GMI, CV, data sufficiency); BP target by albuminuria; 7/30-day medicine adherence |
-| **Track A** | Glucose forecast +30 / +60 min with a rule-based hypo safety net; HbA1c in 3 months; 2-hour meal spikes and "top 3 spiking foods" |
+| **Track A** | Glucose forecast +30 / +60 min with a rule-based hypo safety net; **spike early warning 90 minutes ahead** (glucose > 250, uses the patient's habits at this time of day); HbA1c in 3 months; 2-hour meal spikes and "top 3 spiking foods" |
 | **Track B** | 3-year DKD **onset** (kidneys healthy now) or **progression** (DKD now) risk with the factors driving it; glycaemic features feed the kidney model |
+| **EHR + genetics** | Static EHR (demographics, diagnoses, labs, medicines) fused with wearables (CGM, heart rate, steps, sleep). **Genetic markers (simulated):** kidney polygenic score adjusts DKD risk; TCF7L2 / CYP2C9 / SLC22A1 add sulfonylurea and metformin cautions |
 | **Treatment advisor** | Eligibility from KDIGO 2022 / ADA 2026 rules (eGFR, UACR, potassium, current drugs), simulate each option on the twin (HbA1c, BP, weight change -> re-run the model -> trial hazard ratio), rank: *"Add SGLT2 inhibitor: DKD 3-yr risk 62% -> 38% (DAPA-CKD)"* |
 | **Living twin** | Every reading: save -> instant alerts -> CGM metrics -> short-term forecast. Kidney risk re-runs on new labs, medicine changes and daily |
 | **Data in** | FHIR R4 import (Synthea samples, public HAPI server) and export; lab CSV; live CGM simulator; Libre CSV upload; Dexcom (coming soon); patient app entries |
@@ -128,7 +129,8 @@ Raw data is never pushed to GitHub.
 | `dkd_onset`: DKD within 3 years | Synthetic cohort | AUROC 0.90, Brier 0.11 |
 | `dkd_progression`: KDIGO stage worse or eGFR -30% in 3 years | Synthetic cohort; UCI check | AUROC 0.87; on UCI (Indian) risk separates CKD with AUROC 0.93; KDIGO rule agrees with the hospital diagnosis in **94%** |
 | `hba1c_forecast`: HbA1c in 3 months | Synthetic cohort | MAE 0.26% when a drug is added (vs 0.39% "no change") |
-| `glucose_forecast`: +30 / +60 min | Synthetic CGM | MAE 6 / 9 mg/dL (vs 13 / 21 "stays the same") |
+| `glucose_forecast`: +30 / +60 min | Synthetic CGM | MAE 8 / 12 mg/dL (vs 15 / 24 "stays the same") |
+| `glucose_spike_90m`: glucose > 250 within 90 min | Synthetic CGM | AUROC 0.97; 99% of spikes warned, 74% at least 60 min ahead (median 85 min) |
 
 Full details, plots and honest limitations: [models/model_card.md](models/model_card.md) and `docs/models/`.
 
@@ -206,6 +208,8 @@ GitHub Actions runs all three on every push, then builds the Docker image and sm
 - Glucose forecast trained on synthetic CGM until CGMacros is added; hypo warnings rely on a
   rule-based safety net as well as the model.
 - Demo patients are fictional; Synthea samples are synthetic and time-shifted to today.
+- Genetic markers are simulated test results; their effects are literature-based starter values
+  (`verified: false`). The spike warning is trained on synthetic CGM where meals are always logged.
 - Hindi view: alert messages and medicine names still appear in English.
 - Slow on Windows-on-ARM laptops (x64 emulation): a full page load can take 10-25 s.
 

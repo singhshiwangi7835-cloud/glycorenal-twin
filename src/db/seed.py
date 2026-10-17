@@ -2,6 +2,7 @@
 
 Creates: admin, dr.mehta, 10 patients (each with a login) and, per patient,
   - 12 months of labs (HbA1c, creatinine -> eGFR, UACR, potassium, LDL)
+  - a simulated genetic test (kidney polygenic score, TCF7L2, CYP2C9, SLC22A1)
   - 6 months of weekly BP and monthly weight/BMI
   - 14 days of 5-minute CGM + heart rate, daily steps and sleep (data/synthetic/cgm/, or
     generated on the fly), moved forward by whole days so it ends now and meals stay at meal times
@@ -110,6 +111,22 @@ DEMO_CLINICAL = {
                      meds=[("Metformin", "metformin", "500 mg", ["20:00"], True)]),
 }
 
+# simulated genetic test results: (kidney PRS percentile, TCF7L2 risk alleles,
+#                                   CYP2C9 0 normal / 1 intermediate / 2 poor, SLC22A1 reduced alleles)
+DEMO_GENETICS = {
+    "IND-0042": (82, 2, 1, 0),   # Ramesh: high kidney genetic risk, TCF7L2 TT
+    "IND-0107": (55, 1, 0, 0),
+    "IND-0215": (30, 0, 0, 0),
+    "IND-0333": (90, 1, 2, 1),   # Mohan: CYP2C9 poor metaboliser, already on glimepiride
+    "IND-0481": (75, 2, 0, 2),   # Arjun: two OCT1 reduced-function alleles, on metformin
+    "IND-0512": (45, 0, 0, 1),
+    "IND-0618": (88, 1, 0, 0),
+    "IND-0724": (15, 0, 0, 0),
+    "IND-0839": (60, 1, 1, 0),   # Suresh: on gliclazide, CYP2C9 intermediate
+    "IND-0950": (40, 0, 0, 0),
+}
+GENE_VARS = ["ckd_prs_percentile", "tcf7l2_rs7903146", "cyp2c9_phenotype", "slc22a1_reduced_alleles"]
+
 DEMO_ACCOUNTS = [("admin", "admin123", "admin"), ("dr.mehta", "doctor123", "doctor")] + [
     (p[1], "patient123", "patient") for p in DEMO_PATIENTS
 ]
@@ -156,6 +173,10 @@ def _patient_rows(pid: str, i: int, sex: str, birth_year: int, now: datetime, rn
             if var == "creatinine":
                 rows.append(_obs(pid, "egfr", egfr_ckd_epi_2021(v, max(18, t.year - birth_year), sex),
                                  t, "ehr", "calculated"))
+    if pid in DEMO_GENETICS:  # one genetic test, two years ago (simulated)
+        t_gen = now - timedelta(days=730)
+        for var, val in zip(GENE_VARS, DEMO_GENETICS[pid]):
+            rows.append(_obs(pid, var, val, t_gen, "ehr", "genetic_test"))
     sbp, dbp = c["bp"]
     for w in range(26):  # weekly BP for 6 months, slowly drifting up to today's value
         t = now - timedelta(days=7 * w + 1, hours=rng.randint(0, 4))

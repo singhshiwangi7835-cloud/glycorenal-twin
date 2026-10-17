@@ -80,6 +80,8 @@ def minutes_ago(iso: str | None) -> int | None:
     if not iso:
         return None
     t = datetime.fromisoformat(iso)
+    if t.tzinfo is None:  # stored as UTC
+        t = t.replace(tzinfo=timezone.utc)
     return int((datetime.now(timezone.utc) - t).total_seconds() // 60)
 
 

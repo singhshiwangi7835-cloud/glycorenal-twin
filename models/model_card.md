@@ -12,6 +12,7 @@ Prototype for the Digital Twin Challenge 2026. **Decision support only; not for 
 | `dkd_progression` | KDIGO stage worse or eGFR down 30% within 3 years | Synthetic cohort; UCI CKD (India) sanity check | AUROC 0.87 (test), Brier 0.146; UCI risk-vs-CKD AUROC 0.929 |
 | `hba1c_forecast` | HbA1c in 3 months | Synthetic cohort | MAE 0.241% vs 0.259% for "no change"; when a drug is added 0.264% vs 0.387%; 80% of errors within [-0.39, 0.38] |
 | `glucose_forecast` | CGM glucose +30 / +60 min | synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet | MAE 8.2 / 12.2 mg/dL vs 14.5 / 23.5 for "stays the same" |
+| `glucose_spike_90m` | Glucose above 250.0 within 90 min (early warning) | synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet | AUROC 0.968; 74% of spikes warned >= 60 min ahead (median 85 min) |
 
 Plots (ROC, calibration, top features, forecast example): `docs/models/`.
 
@@ -54,13 +55,29 @@ The model alone can miss a steady fall it never saw in training (it may expect a
 live twin adds a **rule-based safety net** (`src/models/t2dm.py`): a hypo warning also fires when
 glucose is already < 70 or the last-15-minute trend reaches < 80 within 30 minutes.
 
+**glucose_spike_90m (early warning).** XGBoost classifier: will glucose go above
+250.0 mg/dL within the next 90 minutes (from a reading below it)?
+Inputs: the glucose features above plus **habit features** from the patient's previous 7 days at the
+same time of day (usual carbs and peak in the coming 90 minutes, share of days with a spike), so it
+can warn before a meal is logged. Split by person. Test AUROC 0.968
+(without habits 0.969); at probability >= 0.5:
+sensitivity 0.721, warnings correct 0.607. Of 138
+spikes in test patients, 99% were warned, 74%
+at least 60 minutes ahead (median warning 85 min before crossing).
+Data: synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet. On synthetic data habits add little because meals are logged; with real
+irregular logging they matter more. Most warnings come right after the meal is logged.
+
+**Genetic markers (simulated, not a model).** A kidney polygenic score >= 80th percentile multiplies
+the odds of the 3-year DKD outcome by 1.35 (< 20th: 0.85), applied after calibration; TCF7L2, CYP2C9
+and SLC22A1 add pharmacogenomic cautions. Values in `config/clinical_rules.yaml -> genetics`, to verify.
+
 ## Limitations (say this to judges)
 
 1. Only `dkd_current` is trained and validated on real patients; it is cross-sectional and US-based.
 2. Onset, progression and HbA1c models are trained on a **simulated** Indian cohort; they are a
    working pipeline ready to be retrained on real longitudinal data (e.g. hospital EHR via FHIR,
    ICMR registries), not validated predictors.
-3. Glucose forecasts are weakest for sudden lows; hypo warnings rely on the rule-based
+3. Glucose forecasts and the spike warning are weakest for sudden lows and unlogged meals; hypo warnings rely on the rule-based
    safety net, and the synthetic CGM is not a substitute for real sensor data (CGMacros).
 4. Treatment simulation multiplies risk by trial hazard ratios; real effects vary by patient.
 5. Not a medical device; no CDSCO approval; outputs must be reviewed by a clinician.

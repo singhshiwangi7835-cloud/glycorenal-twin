@@ -199,5 +199,48 @@
       "hypo_sensitivity": 0.0,
       "hypo_warnings_correct": null
     }
+  },
+  "glucose_spike_90m": {
+    "data": "synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet",
+    "horizon_minutes": 90,
+    "spike_above_mg_dl": 250.0,
+    "alert_probability": 0.5,
+    "n_train_rows": 120353,
+    "n_test_rows": 30733,
+    "event_rate": 0.066,
+    "auroc_test": 0.968,
+    "auroc_without_habits": 0.969,
+    "sensitivity": 0.721,
+    "precision": 0.607,
+    "spikes_in_test": 138,
+    "spikes_warned_pct": 0.993,
+    "spikes_warned_60min_ahead_pct": 0.739,
+    "median_lead_minutes": 85,
+    "top_features": [
+      {
+        "label": "habit_peak_next_90m",
+        "share": 0.238
+      },
+      {
+        "label": "habit_spike_rate_next_90m",
+        "share": 0.202
+      },
+      {
+        "label": "carbs_30m",
+        "share": 0.075
+      },
+      {
+        "label": "habit_carbs_next_90m",
+        "share": 0.062
+      },
+      {
+        "label": "g_lag_30",
+        "share": 0.051
+      },
+      {
+        "label": "g_now",
+        "share": 0.042
+      }
+    ]
   }
 }

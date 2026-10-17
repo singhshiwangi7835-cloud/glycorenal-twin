@@ -65,6 +65,10 @@ with tabs[0]:
                             unsafe_allow_html=True)
                 if fc:
                     st.caption(f"{t('forecast')}: ~{fc['plus_30']} mg/dL")
+                sp = tw["predictions"].get("spike_90m")
+                if sp and sp.get("spike_likely") and ui.minutes_ago(sp["created_at"]) <= 10:
+                    st.warning("⚠ " + t("spike_warning").format(line=f"{sp['spike_above']:.0f}",
+                                                                 p=f"{sp['probability']:.0%}"))
             else:
                 st.info(t("no_cgm"))
         with c[1]:

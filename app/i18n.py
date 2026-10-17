@@ -34,6 +34,10 @@ TEXT = {
     "high_sugar": ("High sugar", "शुगर ज़्यादा"),
     "good_range": ("In range", "सही दायरे में"),
     "forecast": ("In 30 minutes (estimate)", "30 मिनट में (अनुमान)"),
+    "spike_warning": ("Your twin expects your sugar to go above {line} in the next 1½ hours ({p} chance). "
+                      "A 15-minute walk and a smaller portion help.",
+                      "आपका ट्विन अनुमान लगा रहा है कि अगले डेढ़ घंटे में शुगर {line} से ऊपर जा सकती है ({p} संभावना)। "
+                      "15 मिनट टहलना और कम मात्रा में खाना मदद करता है।"),
     "new_alert": ("New alert", "नई चेतावनी"),
     "medicine_due_toast": ("Time for your medicine", "दवा लेने का समय"),
     "alerts": ("Alerts", "चेतावनियाँ"),

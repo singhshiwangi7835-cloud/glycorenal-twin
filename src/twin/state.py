@@ -17,6 +17,7 @@ from sqlmodel import Session, select
 
 from config.settings import get_settings
 
+from src.clinical.genetics import GENE_VARS, summarize as summarize_genetics
 from src.clinical import loinc
 from src.clinical.cgm_metrics import cgm_metrics, gmi
 from src.clinical.drugs import class_flags, classify
@@ -69,14 +70,14 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
 
     # ---------------- observations (non-CGM) ----------------
     # labs and slow-changing vitals only; 5-minute CGM and heart-rate streams are read separately
-    code_var = {loinc.code(v): v for v in LAB_VARS + VITAL_VARS if v != "heart_rate"}
+    code_var = {loinc.code(v): v for v in LAB_VARS + VITAL_VARS + GENE_VARS if v != "heart_rate"}
     rows = session.exec(
         select(Observation).where(Observation.patient_id == patient_id,
                                   Observation.loinc_code.in_(list(code_var)),
                                   Observation.effective_time <= now)
         .order_by(Observation.effective_time)
     ).all()
-    hist: dict[str, list[dict]] = {v: [] for v in LAB_VARS + VITAL_VARS}
+    hist: dict[str, list[dict]] = {v: [] for v in LAB_VARS + VITAL_VARS + GENE_VARS}
     for o in rows:
         var = code_var[o.loinc_code]
         hist[var].append({"time": _utc(o.effective_time), "value": o.value, "source": o.source})
@@ -107,6 +108,10 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
                      "days_old": days, "stale": stale, "source": r["source"]}
         if stale and var != "egfr":
             flags.append(f"{loinc.display(var)} is {days // 30} months old")
+
+    # ---------------- genetics (simulated test results, doctor view only) ----------------
+    genetics = summarize_genetics({v: ({"value": latest(v)["value"], "time": latest(v)["time"].isoformat()}
+                                       if latest(v) else None) for v in GENE_VARS})
 
     # ---------------- kidney ----------------
     egfr = latest("egfr")["value"] if latest("egfr") else None
@@ -226,6 +231,7 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
         "smoker": int(p.smoker), "family_history": int(p.family_history_ckd),
         "hypertension": int(p.hypertension or (vitals["sbp"] or 0) >= 140),
         "adherence": adh_frac,
+        "ckd_prs_percentile": latest("ckd_prs_percentile")["value"] if latest("ckd_prs_percentile") else None,
         **{k: flags_meds[k] for k in ["on_sglt2i", "on_glp1ra", "on_acei_arb", "on_finerenone",
                                       "on_insulin", "on_sulfonylurea"]},
     }
@@ -247,6 +253,7 @@ def build_state(session: Session, patient_id: str, now: datetime | None = None) 
         "profile": {"age": age, "sex": p.sex, "dm_duration_yrs": dm_years, "smoker": p.smoker,
                     "family_history_ckd": p.family_history_ckd, "hypertension": p.hypertension},
         "labs": labs,
+        "genetics": genetics,
         "history": {v: series(v) for v in ["hba1c", "egfr", "uacr", "sbp", "dbp", "weight", "potassium"]},
         "kidney": kidney,
         "glycaemia": glyc,

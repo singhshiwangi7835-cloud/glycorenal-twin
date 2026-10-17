@@ -79,6 +79,7 @@ def build_context(state: dict, predictions: dict, treatments: dict, alerts: list
             "dkd_outcome": dkd.get("outcome"), "risk_band": dkd.get("band"),
             "main_drivers": [d["label"] for d in dkd.get("drivers", []) if d["contribution"] > 0][:3],
             "hba1c_in_3_months": (predictions.get("hba1c_3m") or {}).get("hba1c_3m"),
+            "glucose_spike_likely_next_90_min": (predictions.get("spike_90m") or {}).get("spike_likely"),
         },
         "active_alerts": [a["message"] for a in alerts[:5]],
         "stale_data": state["freshness_flags"],
@@ -89,7 +90,10 @@ def build_context(state: dict, predictions: dict, treatments: dict, alerts: list
         ctx["top_spiking_foods"] = [f"{f['food']} (+{f['avg_spike']:.0f} mg/dL)" for f in (top_foods or [])]
         ctx["top_spiking_foods_hi"] = [f["food_hi"] for f in (top_foods or [])]
         ctx.pop("medicines")  # patients see their medicines in the app; the assistant never discusses them
+        ctx["predicted"]["main_drivers"] = [d for d in ctx["predicted"]["main_drivers"] if "genetic" not in d.lower()
+                                            and "polygenic" not in d.lower()]  # genetics: doctor view only
     else:
+        ctx["genetic_markers_simulated"] = [f"{x['label']}: {x['result']}" for x in state.get("genetics", [])]
         ctx["ranked_options"] = [o["summary"] for o in opts[:5]]
         ctx["safety_warnings"] = treatments.get("warnings", [])
     return ctx

@@ -337,3 +337,36 @@ personal_twin:
     egfr_results_full: 4
     uacr_results_full: 3
     weights: {cgm: 0.35, meals: 0.2, egfr: 0.3, uacr: 0.15}
+
+# ---------------------------------------------------------------------------
+# Genetic markers (SIMULATED for the prototype). Stored as Observations in the EHR; shown to
+# the doctor only. Effects are starter values to verify against the cited literature.
+# ---------------------------------------------------------------------------
+genetics:
+  ckd_prs:
+    label: "Kidney polygenic risk score"
+    high_from_percentile: 80
+    low_below_percentile: 20
+    odds_ratio_high: 1.35          # multiplies the odds of the 3-year DKD outcome
+    odds_ratio_low: 0.85
+    source: "CKDGen / Wuttke Nat Genet 2019 (eGFR GWAS); Khan Nat Med 2022 (kidney polygenic score, OR ~1.3-1.5 top vs middle)"
+    verified: false
+  tcf7l2_rs7903146:
+    label: "TCF7L2 rs7903146 (T2D risk gene)"
+    caution_from_alleles: 1
+    caution: "TCF7L2 risk allele(s): reduced glucose-lowering response to sulfonylureas reported"
+    source: "Pearson ER, Diabetes 2007 (GoDARTS); Grant SF, Nat Genet 2006"
+    verified: false
+  cyp2c9_phenotype:
+    label: "CYP2C9 metaboliser"
+    values: {0: "normal", 1: "intermediate", 2: "poor"}
+    caution_from: 1
+    caution: "CYP2C9 reduced function: slower sulfonylurea clearance, higher hypoglycaemia risk; prefer lowest dose or another class"
+    source: "CPIC guideline concepts; Zhou K, Diabetes Care 2010 (CYP2C9 and sulfonylurea response)"
+    verified: false
+  slc22a1_reduced_alleles:
+    label: "SLC22A1 (OCT1) reduced-function alleles"
+    caution_from_alleles: 2
+    caution: "Two OCT1 reduced-function alleles: possible weaker response to / more GI intolerance with metformin"
+    source: "Shu Y, J Clin Invest 2007; Dujic T, Diabetes 2015"
+    verified: false

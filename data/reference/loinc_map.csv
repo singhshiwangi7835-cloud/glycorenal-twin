@@ -13,3 +13,7 @@ bmi,39156-5,BMI,kg/m2,false,Body mass index (BMI) [Ratio]
 steps,55423-8,Steps (daily),steps,true,Number of steps in unspecified time Pedometer; 41950-7 (steps in 24 hours) may fit better
 sleep,93832-4,Sleep duration,h,false,Sleep duration
 ldl,13457-7,LDL cholesterol,mg/dL,false,Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation
+ckd_prs_percentile,X-GEN-CKDPRS,Kidney polygenic risk score,percentile,true,"Local code (simulated). A real lab would report LOINC 69548-6 Genetic variant assessment / risk score"
+tcf7l2_rs7903146,X-GEN-TCF7L2,TCF7L2 rs7903146 risk alleles,alleles,true,"Local code (simulated). Real reports: LOINC 69548-6 + HGVS / rsID"
+cyp2c9_phenotype,X-GEN-CYP2C9,CYP2C9 metaboliser (0 normal 1 intermediate 2 poor),phenotype,true,"Local code (simulated). Real reports: LOINC 79713-4 CYP2C9 gene product metabolic activity interpretation"
+slc22a1_reduced_alleles,X-GEN-SLC22A1,SLC22A1 (OCT1) reduced-function alleles,alleles,true,"Local code (simulated). Real reports: LOINC 69548-6 + HGVS"
