@@ -29,7 +29,7 @@ from config.settings import get_settings
 from src.clinical import loinc
 from src.db.models import DeviceConnection, Observation, Patient
 from src.ingestion.translator import ObservationIn, save
-from src.pipeline import cgm_synth, cgmacros
+from src.pipeline import cgm_synth, cgmacros, shanghai
 
 log = logging.getLogger("glycorenal.simulator")
 CGM_DIR = Path(__file__).resolve().parents[2] / "data" / "synthetic" / "cgm"
@@ -64,6 +64,10 @@ def _trace(patient_id: str, source: str) -> tuple[pd.DataFrame, str]:
         t = t.dropna(subset=["glucose"])
         t["heart_rate"] = t["heart_rate"].fillna(t["heart_rate"].median())
         return t.reset_index(drop=True), f"CGMacros {pid}"
+    if source.startswith("shanghai") and shanghai.available():
+        pid = source.split(":", 1)[1] if ":" in source else shanghai.demo_participant()
+        t = shanghai.load_participant(pid).dropna(subset=["glucose"]).reset_index(drop=True)
+        return t[["time", "glucose", "heart_rate", "steps"]], f"real CGM: ShanghaiT2DM {pid.split('_')[0]}"
     path = CGM_DIR / f"{patient_id}.csv"
     if path.exists():
         return pd.read_csv(path, parse_dates=["time"]), "synthetic trace"
@@ -178,16 +182,17 @@ def tick(session: Session) -> list[dict]:
             r = s.rows.iloc[s.idx % len(s.rows)]
             s.idx += 1
             s.readings_sent += 1
-            batch.append((s.patient_id, float(r["glucose"]), float(r["heart_rate"]), int(r["steps"])))
+            hr = float(r["heart_rate"]) if pd.notna(r["heart_rate"]) else None  # real CGM sets have no HR
+            batch.append((s.patient_id, float(r["glucose"]), hr, int(r["steps"])))
     now = datetime.now(timezone.utc)
     sent = []
     for pid, g, hr, steps in batch:
-        result = save(session, [
-            ObservationIn(patient_id=pid, variable="glucose", value=round(g), time=now,
-                          source="simulator", device="cgm"),
-            ObservationIn(patient_id=pid, variable="heart_rate", value=round(hr), time=now,
-                          source="simulator", device="fitbit"),
-        ], check_duplicates=False)
+        items = [ObservationIn(patient_id=pid, variable="glucose", value=round(g), time=now,
+                               source="simulator", device="cgm")]
+        if hr is not None:
+            items.append(ObservationIn(patient_id=pid, variable="heart_rate", value=round(hr), time=now,
+                                       source="simulator", device="fitbit"))
+        result = save(session, items, check_duplicates=False)
         if steps:
             _add_steps(session, pid, steps, now)
         sent.append({"patient_id": pid, "glucose": round(g), "new_alerts": result["new_alerts"]})

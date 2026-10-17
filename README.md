@@ -114,6 +114,7 @@ Hugging Face Spaces (Docker, one container) step by step, including where to ent
 | Synthetic Indian T2DM cohort, 2,000 patients x 5 years quarterly | DKD onset/progression and HbA1c models; ICMR-INDIAB-informed settings in `config/clinical_rules.yaml` | generated |
 | Synthea (MITRE) sample patients | FHIR R4 sample bundles in `data/fhir_samples/` | Apache 2.0 |
 | CGMacros (PhysioNet) | Glucose forecast and simulator when downloaded (synthetic CGM until then) | ODC-BY |
+| ShanghaiT2DM (Zhao et al., Sci Data 2023; figshare 10.6084/m9.figshare.20444397) | **Real CGM** of 100 people with T2DM: trains and tests the glucose and spike models; "▶ Real patient CGM" replays one in the Live tab | CC BY 4.0 |
 | Indian foods | `data/reference/indian_foods.csv`, carbs and GI category (to verify vs IFCT 2017) | project |
 
 Trained models are committed in `models/` (about 3 MB), so nothing needs downloading to run.
@@ -129,8 +130,8 @@ Raw data is never pushed to GitHub.
 | `dkd_onset`: DKD within 3 years | Synthetic cohort | AUROC 0.90, Brier 0.11 |
 | `dkd_progression`: KDIGO stage worse or eGFR -30% in 3 years | Synthetic cohort; UCI check | AUROC 0.87; on UCI (Indian) risk separates CKD with AUROC 0.93; KDIGO rule agrees with the hospital diagnosis in **94%** |
 | `hba1c_forecast`: HbA1c in 3 months | Synthetic cohort | MAE 0.26% when a drug is added (vs 0.39% "no change") |
-| `glucose_forecast`: +30 / +60 min | Synthetic CGM | MAE 8 / 12 mg/dL (vs 15 / 24 "stays the same") |
-| `glucose_spike_90m`: glucose > 250 within 90 min | Synthetic CGM | AUROC 0.97; 99% of spikes warned, 74% at least 60 min ahead (median 85 min) |
+| `glucose_forecast`: +30 / +60 min | Synthetic + **real** CGM (ShanghaiT2DM, 100 people with T2DM) | On held-out **real** patients: MAE 9.8 / 17.1 mg/dL (vs 11.8 / 19.4 "stays the same") |
+| `glucose_spike_90m`: glucose > 250 within 90 min | Synthetic + **real** CGM (ShanghaiT2DM) | On held-out **real** patients: AUROC 0.93; 72% of spikes warned at least 30 min ahead (median 55 min) |
 
 Full details, plots and honest limitations: [models/model_card.md](models/model_card.md) and `docs/models/`.
 
@@ -178,7 +179,7 @@ src/treatment/       eligibility, simulate, rank
 src/alerts/ src/reminders/ src/meals/   alert engine, doses and adherence, meal spikes
 src/llm/             assistant, client, prompts, guardrails, retrieval, templates
 src/reports/         doctor and patient PDFs
-src/pipeline/        NHANES merge, synthetic cohort, synthetic CGM, CGMacros reader
+src/pipeline/        NHANES merge, synthetic cohort, synthetic CGM, CGMacros and ShanghaiT2DM readers
 api/                 FastAPI app and routers
 app/                 Streamlit: Home.py (login), pages per role, i18n.py
 scripts/             data, training, seed, FHIR samples, dry run, LLM test, secret check, diagram
@@ -205,8 +206,8 @@ GitHub Actions runs all three on every push, then builds the Docker image and sm
 - Treatment effects are average trial hazard ratios (DAPA-CKD, CREDENCE, FLOW, FIDELIO-DKD, RENAAL),
   all `verified: false` until checked; real effects vary by patient.
 - DKD risk uses Platt calibration rather than isotonic (smoother with small calibration sets).
-- Glucose forecast trained on synthetic CGM until CGMacros is added; hypo warnings rely on a
-  rule-based safety net as well as the model.
+- Glucose models train on synthetic + real Chinese CGM (ShanghaiT2DM, 15-minute readings, no carb
+  counts); no real Indian CGM yet. Hypo warnings rely on a rule-based safety net as well as the model.
 - Demo patients are fictional; Synthea samples are synthetic and time-shifted to today.
 - Genetic markers are simulated test results; their effects are literature-based starter values
   (`verified: false`). The spike warning is trained on synthetic CGM where meals are always logged.

@@ -234,6 +234,11 @@ with tabs[2]:
         if b[0].button("▶ Start sensor", key="sim_start"):
             api.post(f"/patients/{pid}/devices/simulator/start", json={})
             st.rerun()
+        if b[1].button("▶ Real patient CGM", key="sim_real",
+                       help="Replays a real T2DM patient's sensor (ShanghaiT2DM, 15-minute CGM, open data). "
+                            "Falls back to the synthetic trace if the dataset is not downloaded."):
+            api.post(f"/patients/{pid}/devices/simulator/start", json={"source": "shanghai"})
+            st.rerun()
     else:
         if b[0].button("■ Stop sensor", key="sim_stop"):
             api.post(f"/patients/{pid}/devices/simulator/stop")

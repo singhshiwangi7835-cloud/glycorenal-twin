@@ -1,7 +1,7 @@
 """Devices and home readings.
 
 GET  /patients/{pid}/devices                  simulator / Libre / Dexcom status
-POST /patients/{pid}/devices/simulator/start  {"source": "synthetic" | "cgmacros:CGMacros-001"}
+POST /patients/{pid}/devices/simulator/start  {"source": "synthetic" | "cgmacros:CGMacros-001" | "shanghai[:2015_0_20210203]"}
 POST /patients/{pid}/devices/simulator/stop
 POST /patients/{pid}/devices/simulator/scenario   {"scenario": "meal_spike" | "hypo"}
 POST /patients/{pid}/devices/libre            upload a LibreView CSV export

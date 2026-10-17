@@ -11,8 +11,8 @@ Prototype for the Digital Twin Challenge 2026. **Decision support only; not for 
 | `dkd_onset` | DKD within 3 years, kidneys healthy now | Synthetic Indian cohort | AUROC 0.9 (test), Brier 0.114, event rate 28% |
 | `dkd_progression` | KDIGO stage worse or eGFR down 30% within 3 years | Synthetic cohort; UCI CKD (India) sanity check | AUROC 0.87 (test), Brier 0.146; UCI risk-vs-CKD AUROC 0.929 |
 | `hba1c_forecast` | HbA1c in 3 months | Synthetic cohort | MAE 0.241% vs 0.259% for "no change"; when a drug is added 0.264% vs 0.387%; 80% of errors within [-0.39, 0.38] |
-| `glucose_forecast` | CGM glucose +30 / +60 min | synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet | MAE 8.2 / 12.2 mg/dL vs 14.5 / 23.5 for "stays the same" |
-| `glucose_spike_90m` | Glucose above 250.0 within 90 min (early warning) | synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet | AUROC 0.968; 74% of spikes warned >= 60 min ahead (median 85 min) |
+| `glucose_forecast` | CGM glucose +30 / +60 min | synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people) | **Real held-out patients:** MAE 9.8 / 17.1 mg/dL vs 11.8 / 19.4 for "stays the same" |
+| `glucose_spike_90m` | Glucose above 250.0 within 90 min (early warning) | synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people) | **Real held-out patients:** AUROC 0.928; 72% of spikes warned >= 30 min ahead (median 55 min) |
 
 Plots (ROC, calibration, top features, forecast example): `docs/models/`.
 
@@ -49,8 +49,19 @@ Synthetic, so it reproduces the simulator's adherence and drug-effect assumption
 
 **glucose_forecast.** XGBoost on the last 2 hours of CGM (lags, slopes, mean/SD), time of day,
 carbs eaten and activity. Split by person. Hypo warning = forecast < 80 mg/dL:
-+30 min sensitivity 0.086, warnings correct 0.192
-(58 hypo readings in test). Data: synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet.
++30 min sensitivity 0.779, warnings correct 0.293
+(358 hypo readings in test). Data: synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people).
+
+**Real CGM (ShanghaiT2DM, Zhao et al. Sci Data 2023, CC BY 4.0).** 100 people with T2DM, 15-minute
+CGM for up to 14 days. Readings are filled in to 5 minutes from past readings only, and rows are
+used only at real readings, so targets are always real. One person's recordings never sit in both
+training and test. **Why real data was added:** models trained on synthetic CGM alone did *worse*
+than "stays the same" on these real patients (+30 min MAE 17.3 vs
+12.0; spike warnings caught
+34% of spikes >= 30 min ahead). Trained on
+synthetic + real, held-out real patients: +30 min MAE 9.8 (vs 11.8),
++60 min MAE 17.1 (vs 19.4). Meals in this data have no
+carb counts, so these are forecasts with unlogged meals.
 The model alone can miss a steady fall it never saw in training (it may expect a rebound), so the
 live twin adds a **rule-based safety net** (`src/models/t2dm.py`): a hypo warning also fires when
 glucose is already < 70 or the last-15-minute trend reaches < 80 within 30 minutes.
@@ -59,13 +70,17 @@ glucose is already < 70 or the last-15-minute trend reaches < 80 within 30 minut
 250.0 mg/dL within the next 90 minutes (from a reading below it)?
 Inputs: the glucose features above plus **habit features** from the patient's previous 7 days at the
 same time of day (usual carbs and peak in the coming 90 minutes, share of days with a spike), so it
-can warn before a meal is logged. Split by person. Test AUROC 0.968
-(without habits 0.969); at probability >= 0.5:
-sensitivity 0.721, warnings correct 0.607. Of 138
-spikes in test patients, 99% were warned, 74%
-at least 60 minutes ahead (median warning 85 min before crossing).
-Data: synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet. On synthetic data habits add little because meals are logged; with real
+can warn before a meal is logged. Split by person. Test AUROC 0.956
+(without habits 0.95); at probability >= 0.5:
+sensitivity 0.767, warnings correct 0.595. Of 445
+spikes in test patients, 100% were warned, 74%
+at least 60 minutes ahead (median warning 90 min before crossing).
+Data: synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people). On synthetic data habits add little because meals are logged; with real
 irregular logging they matter more. Most warnings come right after the meal is logged.
+**Held-out real patients (ShanghaiT2DM):** AUROC 0.928, sensitivity 0.497,
+warnings correct 0.4; of 155 real spikes 72%
+were warned at least 30 minutes ahead (median 55 min). Lead times on real data may be
+up to 10 minutes optimistic, because the 15-minute readings are filled in to 5 minutes.
 
 **Genetic markers (simulated, not a model).** A kidney polygenic score >= 80th percentile multiplies
 the odds of the 3-year DKD outcome by 1.35 (< 20th: 0.85), applied after calibration; TCF7L2, CYP2C9
@@ -73,11 +88,12 @@ and SLC22A1 add pharmacogenomic cautions. Values in `config/clinical_rules.yaml 
 
 ## Limitations (say this to judges)
 
-1. Only `dkd_current` is trained and validated on real patients; it is cross-sectional and US-based.
+1. Trained and tested on real patients: `dkd_current` (NHANES; cross-sectional, US-based) and the two
+   glucose models (ShanghaiT2DM; Chinese inpatients/outpatients, 15-minute CGM). No Indian real data yet.
 2. Onset, progression and HbA1c models are trained on a **simulated** Indian cohort; they are a
    working pipeline ready to be retrained on real longitudinal data (e.g. hospital EHR via FHIR,
    ICMR registries), not validated predictors.
-3. Glucose forecasts and the spike warning are weakest for sudden lows and unlogged meals; hypo warnings rely on the rule-based
+3. Glucose forecasts and the spike warning are weakest for sudden lows; real data has no carb counts; hypo warnings rely on the rule-based
    safety net, and the synthetic CGM is not a substitute for real sensor data (CGMacros).
 4. Treatment simulation multiplies risk by trial hazard ratios; real effects vary by patient.
 5. Not a medical device; no CDSCO approval; outputs must be reviewed by a clinician.

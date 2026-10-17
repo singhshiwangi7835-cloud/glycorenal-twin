@@ -104,3 +104,16 @@ def state_ramesh(client):
         st = build_state(s, "IND-0042")
     assert st["genetics"], "seed should give Ramesh simulated genetic results"
     return st
+
+
+def test_shanghai_real_cgm_loader():
+    from src.pipeline import shanghai
+    if not shanghai.available():
+        pytest.skip("ShanghaiT2DM not downloaded (data/raw is not in git)")
+    pid = shanghai.demo_participant()
+    s = shanghai.load_participant(pid)
+    real = s[s["measured"] == 1]
+    assert len(real) > 200 and s["glucose"].dropna().between(30, 500).all()
+    assert (pd.to_datetime(s["time"]).diff().dropna() == pd.Timedelta(minutes=5)).all()  # regular grid
+    assert s["meal"].sum() >= 1 and (s["carbs_g"] == 0).all()
+    assert shanghai.summary()["hba1c_pct"].between(4, 16).mean() > 0.8

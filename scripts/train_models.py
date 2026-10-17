@@ -45,7 +45,7 @@ from src.models.calibration import PlattCalibrator  # noqa: E402
 from src.clinical.rules import alert_rules  # noqa: E402
 from src.models.features import (GLUCOSE_FEATURES, SPIKE_FEATURES, glucose_training_rows,  # noqa: E402
                                  spike_frame, spike_training_rows)
-from src.pipeline import cgm_synth, cgmacros, cohort  # noqa: E402
+from src.pipeline import cgm_synth, cgmacros, cohort, shanghai  # noqa: E402
 
 MODELS = ROOT / "models"
 PLOTS = ROOT / "docs" / "models"
@@ -261,7 +261,7 @@ def _glucose_series() -> tuple[list[tuple[str, pd.DataFrame]], str]:
             s = cgmacros.load_participant(pid)
             if s["glucose"].notna().sum() > 500:
                 series.append((pid, s))
-        return series, f"CGMacros v1.0.0 ({len(series)} participants)"
+        return series + _real_series(), f"CGMacros v1.0.0 ({len(series)} participants) + REAL ShanghaiT2DM CGM"
     series = []
     for i in range(40):  # synthetic patients across the HbA1c range
         hba1c = float(np.clip(RNG.normal(8.0, 1.3), 5.8, 12))
@@ -273,19 +273,48 @@ def _glucose_series() -> tuple[list[tuple[str, pd.DataFrame]], str]:
                                           nadir=float(RNG.uniform(48, 66)))
         r = r.rename(columns={"steps": "activity"})
         series.append((f"SYN-CGM-{i:02d}", r))
-    return series, "synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet"
+    label = "synthetic CGM (40 simulated patients x 14 days)"
+    real = _real_series()
+    if real:
+        label += f" + REAL ShanghaiT2DM CGM ({len({p.split('-')[1] for p, _ in real})} people)"
+    return series + real, label
+
+
+def _real_series() -> list[tuple[str, pd.DataFrame]]:
+    """ShanghaiT2DM recordings; id 'SH-<person>-<recording>' so one person never lands in train and test."""
+    if not shanghai.available():
+        return []
+    out = []
+    for rid in shanghai.participant_ids():
+        r = shanghai.load_participant(rid)[["time", "glucose", "carbs_g", "steps", "measured"]]
+        person, rec = rid.split("_")[:2]
+        out.append((f"SH-{person}-{rec}", r.rename(columns={"steps": "activity"})))
+    return out
+
+
+def _person(pid: str) -> str:
+    return "-".join(pid.split("-")[:2]) if pid.startswith("SH-") else pid
+
+
+def _only_measured(f: pd.DataFrame, s: pd.DataFrame) -> pd.DataFrame:
+    """Real 15-minute data: keep rows at real readings (inputs use only past readings, targets are real)."""
+    if "measured" not in s:
+        return f
+    return f[s["measured"].reindex(f.index).fillna(0).to_numpy() == 1]
 
 
 def train_glucose() -> dict:
     series, source = _glucose_series()
     rows = []
     for pid, s in series:
-        f = glucose_training_rows(s)
-        f["pid"] = pid
+        f = _only_measured(glucose_training_rows(s.drop(columns="measured", errors="ignore")), s)
+        f["pid"] = _person(pid)
         rows.append(f)
     d = pd.concat(rows, ignore_index=True)
     tr, _, te = split_by_patient(d["pid"], (0.8, 0.0, 0.2))
-    models, metrics = {}, {"data": source, "n_train_rows": int(tr.sum()), "n_test_rows": int(te.sum())}
+    real_te = te & d["pid"].str.startswith("SH-").to_numpy()
+    models, metrics = {}, {"data": source, "n_train_rows": int(tr.sum()), "n_test_rows": int(te.sum()),
+                           "n_test_rows_real": int(real_te.sum())}
     for h in ("30", "60"):
         y = d[f"y_{h}"]
         m = XGBRegressor(n_estimators=300, max_depth=5, learning_rate=0.08, subsample=0.9,
@@ -301,6 +330,11 @@ def train_glucose() -> dict:
             "hypo_sensitivity": round(float(hypo_pred[hypo_true].mean()), 3) if hypo_true.any() else None,
             "hypo_warnings_correct": round(float(hypo_true[hypo_pred].mean()), 3) if hypo_pred.any() else None,
         }
+        if real_te.any():  # held-out REAL patients only
+            pr = m.predict(d.loc[real_te, GLUCOSE_FEATURES])
+            metrics[f"plus_{h}min"]["real_test_mae"] = round(mean_absolute_error(y[real_te], pr), 1)
+            metrics[f"plus_{h}min"]["real_test_mae_persistence"] = round(
+                mean_absolute_error(y[real_te], d.loc[real_te, "g_now"]), 1)
         models[h] = m
     # example plot: one test patient, one day
     pid = d.loc[te, "pid"].iloc[0]
@@ -340,11 +374,12 @@ def train_spike() -> dict:
     series, source = _glucose_series()
     rows = []
     for pid, s in series:
-        f = spike_training_rows(s, horizon, line)
-        f["pid"] = pid
+        f = _only_measured(spike_training_rows(s.drop(columns="measured", errors="ignore"), horizon, line), s)
+        f["pid"] = _person(pid)
         rows.append(f)
     d = pd.concat(rows, ignore_index=True)
     tr, _, te = split_by_patient(d["pid"], (0.8, 0.0, 0.2))
+    real_te = te & d["pid"].str.startswith("SH-").to_numpy()
     y = d["y_spike"]
     pos = max(int(y[tr].sum()), 1)
     m = XGBClassifier(n_estimators=300, max_depth=5, learning_rate=0.06, subsample=0.9, colsample_bytree=0.9,
@@ -358,14 +393,18 @@ def train_spike() -> dict:
                          n_jobs=4).fit(d.loc[tr, GLUCOSE_FEATURES], y[tr])
     p_base = base.predict_proba(d.loc[te, GLUCOSE_FEATURES])[:, 1]
     # lead time on the full test series (every reading, including those already above the line)
-    leads = []
+    leads, real_leads = [], []
     test_ids = set(d.loc[te, "pid"])
     for pid, s in series:
-        if pid not in test_ids:
+        if _person(pid) not in test_ids:
             continue
-        f = spike_frame(s, horizon, line).dropna(subset=["g_now"]).reset_index(drop=True)
+        f = spike_frame(s.drop(columns="measured", errors="ignore"), horizon, line)
+        f = f.dropna(subset=["g_now"]).reset_index(drop=True)
         prob = m.predict_proba(f[SPIKE_FEATURES])[:, 1]
-        leads += _lead_times(f, prob, thr, line, horizon)
+        lt = _lead_times(f, prob, thr, line, horizon)
+        leads += lt
+        if pid.startswith("SH-"):
+            real_leads += lt
     leads_a = np.array(leads) if leads else np.array([0])
     metrics = {
         "data": source, "horizon_minutes": horizon, "spike_above_mg_dl": line, "alert_probability": thr,
@@ -379,12 +418,78 @@ def train_spike() -> dict:
         "spikes_warned_60min_ahead_pct": round(float((leads_a >= 60).mean()), 3),
         "median_lead_minutes": int(np.median(leads_a[leads_a > 0])) if (leads_a > 0).any() else 0,
     }
+    if real_te.any() and y[real_te].nunique() == 2:  # held-out REAL patients only
+        pr, yr = m.predict_proba(d.loc[real_te, SPIKE_FEATURES])[:, 1], y[real_te].to_numpy()
+        ra = np.array(real_leads) if real_leads else np.array([0])
+        metrics["real_test"] = {
+            "n_rows": int(real_te.sum()), "event_rate": round(float(yr.mean()), 3),
+            "auroc": round(float(roc_auc_score(yr, pr)), 3),
+            "sensitivity": round(float((pr >= thr)[yr == 1].mean()), 3),
+            "precision": round(float(yr[pr >= thr].mean()), 3) if (pr >= thr).any() else None,
+            "spikes": len(real_leads), "spikes_warned_pct": round(float((ra > 0).mean()), 3),
+            "spikes_warned_30min_ahead_pct": round(float((ra >= 30).mean()), 3),
+            "median_lead_minutes": int(np.median(ra[ra > 0])) if (ra > 0).any() else 0}
     imp = m.get_booster().get_score(importance_type="gain")
     tot = sum(imp.values()) or 1
     metrics["top_features"] = [{"label": k, "share": round(v / tot, 3)}
                                for k, v in sorted(imp.items(), key=lambda kv: -kv[1])[:6]]
     save("glucose_spike_90m", {"model": m, "features": SPIKE_FEATURES, "metrics": metrics, "config": cfg})
     return metrics
+
+
+def validate_shanghai() -> dict:
+    """External test on REAL patients: ShanghaiT2DM (100 people with T2DM, 15-minute CGM).
+
+    Run on demand (`train_models.py shanghai`) with models trained WITHOUT Shanghai data; it showed that
+    synthetic-only models do not transfer, which is why Shanghai is now part of training.
+    The saved models are used as they are (no retraining). Carbs are unknown in this data (meals are
+    text), so this is the hard case of unlogged meals. Forecasts are scored only at real sensor readings
+    (between them the 15-minute data is filled in to 5 minutes, using only past readings as inputs).
+    """
+    if not shanghai.available():
+        return {"used": False, "note": "ShanghaiT2DM not downloaded"}
+    glu, sp = joblib.load(MODELS / "glucose_forecast.joblib"), joblib.load(MODELS / "glucose_spike_90m.joblib")
+    cfg = sp["config"]
+    horizon, line, thr = int(cfg["horizon_minutes"]), float(cfg["spike_above"]), float(cfg["alert_probability_at_least"])
+    g_rows, s_rows, leads, people = [], [], [], set()
+    for pid in shanghai.participant_ids():
+        raw = shanghai.load_participant(pid)
+        s = raw[["time", "glucose", "carbs_g", "steps"]].rename(columns={"steps": "activity"})
+        f = glucose_training_rows(s)
+        f = f[raw.loc[f.index, "measured"].to_numpy() == 1]
+        g_rows.append(f)
+        sf = spike_frame(s, horizon, line)
+        sf["measured"] = raw["measured"].to_numpy()
+        ok = sf.dropna(subset=["g_now", "g_lag_60", "_future_peak"])
+        ok = ok[(ok["measured"] == 1) & (ok["g_now"] < line)].copy()
+        ok["y"] = (ok["_future_peak"] >= line).astype(int)
+        if len(ok):
+            ok["p"] = sp["model"].predict_proba(ok[SPIKE_FEATURES])[:, 1]
+            s_rows.append(ok[["y", "p"]])
+        full = sf.dropna(subset=["g_now"]).reset_index(drop=True)
+        if len(full):
+            leads += _lead_times(full, sp["model"].predict_proba(full[SPIKE_FEATURES])[:, 1], thr, line, horizon)
+        people.add(pid.split("_")[0])
+    g = pd.concat(g_rows)
+    out = {"used": True, "data": f"ShanghaiT2DM (real CGM, {len(people)} people with T2DM, "
+                                  f"{len(g_rows)} recordings; carbs not recorded)", "n_forecast_points": len(g)}
+    for h in ("30", "60"):
+        pred = glu["models"][h].predict(g[GLUCOSE_FEATURES])
+        out[f"plus_{h}min"] = {"mae": round(mean_absolute_error(g[f"y_{h}"], pred), 1),
+                               "mae_persistence_baseline": round(mean_absolute_error(g[f"y_{h}"], g["g_now"]), 1)}
+    sr = pd.concat(s_rows)
+    la = np.array(leads) if leads else np.array([0])
+    warn = sr["p"] >= thr
+    out["spike"] = {
+        "n_points": len(sr), "event_rate": round(float(sr["y"].mean()), 3),
+        "auroc": round(float(roc_auc_score(sr["y"], sr["p"])), 3) if sr["y"].nunique() == 2 else None,
+        "sensitivity": round(float(warn[sr["y"] == 1].mean()), 3),
+        "precision": round(float(sr["y"][warn].mean()), 3) if warn.any() else None,
+        "spikes": len(leads), "spikes_warned_pct": round(float((la > 0).mean()), 3),
+        "spikes_warned_30min_ahead_pct": round(float((la >= 30).mean()), 3),
+        "median_lead_minutes": int(np.median(la[la > 0])) if (la > 0).any() else 0,
+    }
+    return out
 
 
 # --------------------------------------------------------------------------- model card
@@ -402,6 +507,7 @@ def write_model_card(m: dict) -> None:
 
     g30, g60 = glu.get("plus_30min", {}), glu.get("plus_60min", {})
     sp = m.get("glucose_spike_90m", {})
+    spr, old = sp.get("real_test", {}), m.get("shanghai_synthetic_only_model", {})
     card = f"""# GlycoRenal Twin: model card
 
 Version {VERSION}. Generated by `scripts/train_models.py`; numbers below are from that run.
@@ -415,8 +521,8 @@ Prototype for the Digital Twin Challenge 2026. **Decision support only; not for 
 | `dkd_onset` | DKD within 3 years, kidneys healthy now | Synthetic Indian cohort | AUROC {on.get('auroc_test')} (test), Brier {on.get('brier_test')}, event rate {pct(on.get('event_rate'))} |
 | `dkd_progression` | KDIGO stage worse or eGFR down 30% within 3 years | Synthetic cohort; UCI CKD (India) sanity check | AUROC {pr.get('auroc_test')} (test), Brier {pr.get('brier_test')}; UCI risk-vs-CKD AUROC {uci.get('auroc_risk_vs_ckd_label', 'n/a')} |
 | `hba1c_forecast` | HbA1c in 3 months | Synthetic cohort | MAE {a1c.get('mae_test')}% vs {a1c.get('mae_no_change_baseline')}% for "no change"; when a drug is added {a1c.get('mae_when_new_drug')}% vs {a1c.get('mae_when_new_drug_no_change_baseline')}%; 80% of errors within {a1c.get('interval_80pct')} |
-| `glucose_forecast` | CGM glucose +30 / +60 min | {glu.get('data')} | MAE {g30.get('mae')} / {g60.get('mae')} mg/dL vs {g30.get('mae_persistence_baseline')} / {g60.get('mae_persistence_baseline')} for "stays the same" |
-| `glucose_spike_90m` | Glucose above {sp.get('spike_above_mg_dl')} within 90 min (early warning) | {sp.get('data')} | AUROC {sp.get('auroc_test')}; {pct(sp.get('spikes_warned_60min_ahead_pct'))} of spikes warned >= 60 min ahead (median {sp.get('median_lead_minutes')} min) |
+| `glucose_forecast` | CGM glucose +30 / +60 min | {glu.get('data')} | **Real held-out patients:** MAE {g30.get('real_test_mae')} / {g60.get('real_test_mae')} mg/dL vs {g30.get('real_test_mae_persistence')} / {g60.get('real_test_mae_persistence')} for "stays the same" |
+| `glucose_spike_90m` | Glucose above {sp.get('spike_above_mg_dl')} within 90 min (early warning) | {sp.get('data')} | **Real held-out patients:** AUROC {spr.get('auroc')}; {pct(spr.get('spikes_warned_30min_ahead_pct'))} of spikes warned >= 30 min ahead (median {spr.get('median_lead_minutes')} min) |
 
 Plots (ROC, calibration, top features, forecast example): `docs/models/`.
 
@@ -455,6 +561,17 @@ Synthetic, so it reproduces the simulator's adherence and drug-effect assumption
 carbs eaten and activity. Split by person. Hypo warning = forecast < 80 mg/dL:
 +30 min sensitivity {g30.get('hypo_sensitivity')}, warnings correct {g30.get('hypo_warnings_correct')}
 ({g30.get('hypo_events_in_test')} hypo readings in test). Data: {glu.get('data')}.
+
+**Real CGM (ShanghaiT2DM, Zhao et al. Sci Data 2023, CC BY 4.0).** 100 people with T2DM, 15-minute
+CGM for up to 14 days. Readings are filled in to 5 minutes from past readings only, and rows are
+used only at real readings, so targets are always real. One person's recordings never sit in both
+training and test. **Why real data was added:** models trained on synthetic CGM alone did *worse*
+than "stays the same" on these real patients (+30 min MAE {(old.get('plus_30min') or {}).get('mae')} vs
+{(old.get('plus_30min') or {}).get('mae_persistence_baseline')}; spike warnings caught
+{pct((old.get('spike') or {}).get('spikes_warned_30min_ahead_pct'))} of spikes >= 30 min ahead). Trained on
+synthetic + real, held-out real patients: +30 min MAE {g30.get('real_test_mae')} (vs {g30.get('real_test_mae_persistence')}),
++60 min MAE {g60.get('real_test_mae')} (vs {g60.get('real_test_mae_persistence')}). Meals in this data have no
+carb counts, so these are forecasts with unlogged meals.
 The model alone can miss a steady fall it never saw in training (it may expect a rebound), so the
 live twin adds a **rule-based safety net** (`src/models/t2dm.py`): a hypo warning also fires when
 glucose is already < 70 or the last-15-minute trend reaches < 80 within 30 minutes.
@@ -470,6 +587,10 @@ spikes in test patients, {pct(sp.get('spikes_warned_pct'))} were warned, {pct(sp
 at least 60 minutes ahead (median warning {sp.get('median_lead_minutes')} min before crossing).
 Data: {sp.get('data')}. On synthetic data habits add little because meals are logged; with real
 irregular logging they matter more. Most warnings come right after the meal is logged.
+**Held-out real patients (ShanghaiT2DM):** AUROC {spr.get('auroc')}, sensitivity {spr.get('sensitivity')},
+warnings correct {spr.get('precision')}; of {spr.get('spikes')} real spikes {pct(spr.get('spikes_warned_30min_ahead_pct'))}
+were warned at least 30 minutes ahead (median {spr.get('median_lead_minutes')} min). Lead times on real data may be
+up to 10 minutes optimistic, because the 15-minute readings are filled in to 5 minutes.
 
 **Genetic markers (simulated, not a model).** A kidney polygenic score >= 80th percentile multiplies
 the odds of the 3-year DKD outcome by 1.35 (< 20th: 0.85), applied after calibration; TCF7L2, CYP2C9
@@ -477,11 +598,12 @@ and SLC22A1 add pharmacogenomic cautions. Values in `config/clinical_rules.yaml 
 
 ## Limitations (say this to judges)
 
-1. Only `dkd_current` is trained and validated on real patients; it is cross-sectional and US-based.
+1. Trained and tested on real patients: `dkd_current` (NHANES; cross-sectional, US-based) and the two
+   glucose models (ShanghaiT2DM; Chinese inpatients/outpatients, 15-minute CGM). No Indian real data yet.
 2. Onset, progression and HbA1c models are trained on a **simulated** Indian cohort; they are a
    working pipeline ready to be retrained on real longitudinal data (e.g. hospital EHR via FHIR,
    ICMR registries), not validated predictors.
-3. Glucose forecasts and the spike warning are weakest for sudden lows and unlogged meals; hypo warnings rely on the rule-based
+3. Glucose forecasts and the spike warning are weakest for sudden lows; real data has no carb counts; hypo warnings rely on the rule-based
    safety net, and the synthetic CGM is not a substitute for real sensor data (CGMacros).
 4. Treatment simulation multiplies risk by trial hazard ratios; real effects vary by patient.
 5. Not a medical device; no CDSCO approval; outputs must be reviewed by a clinician.
@@ -525,6 +647,9 @@ def main(which: list[str]) -> None:
     if "spike" in which:
         print("Training glucose_spike_90m ...", flush=True)
         metrics["glucose_spike_90m"] = train_spike()
+    if "shanghai" in which:
+        print("Testing glucose models on real ShanghaiT2DM patients ...", flush=True)
+        metrics["shanghai_validation"] = validate_shanghai()
     MODELS.mkdir(exist_ok=True)
     metrics_path.write_text(json.dumps(metrics, indent=2, default=float))
     write_model_card(metrics)

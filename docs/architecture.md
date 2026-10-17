@@ -74,7 +74,7 @@ flowchart LR
 | Hospital EHR (static) | `fhir_import.py`: Synthea bundles in `data/fhir_samples/` or live fetch from a FHIR R4 server (public HAPI) | Patient, Condition (T2DM, CKD), lab Observations by LOINC, MedicationRequest -> medicines + reminders. Export back as a FHIR Bundle |
 | Genetic test (static, simulated) | Stored as Observations with local codes `X-GEN-*` (`data/reference/loinc_map.csv`) | Kidney polygenic score, TCF7L2, CYP2C9, SLC22A1 |
 | Lab results | `manual.py`, lab CSV upload | HbA1c, creatinine (-> eGFR), UACR, potassium, LDL |
-| CGM + heart rate + steps (dynamic) | `simulator.py` replays a trace (synthetic, or CGMacros once downloaded) as if live; `libre_csv.py`; `dexcom.py` stub | A reading every 5 minutes (every 3 s in demo mode) |
+| CGM + heart rate + steps (dynamic) | `simulator.py` replays a trace as if live: synthetic, a **real ShanghaiT2DM patient** ("▶ Real patient CGM"), or CGMacros once downloaded; `libre_csv.py`; `dexcom.py` stub | A reading every 5 minutes (every 3 s in demo mode) |
 | Patient app | `manual.py`, meals and dose endpoints | Meals (Indian food list), doses taken/skipped, BP, weight, sleep |
 
 Every connector returns the same `ObservationIn` and calls `translator.save()`.
@@ -111,8 +111,8 @@ spikes (every 1 min), stale sensors (every 10 min), tomorrow's dose events (00:0
 | `dkd_onset` | DKD within 3 years | Synthetic Indian cohort, 2,000 x 5 years | AUROC 0.90 |
 | `dkd_progression` | KDIGO stage worse or eGFR -30% in 3 years | Synthetic cohort; UCI CKD (India) check | AUROC 0.87; KDIGO agrees with diagnosis 94% |
 | `hba1c_forecast` | HbA1c in 3 months | Synthetic cohort | MAE 0.26% when a drug is added |
-| `glucose_forecast` | Glucose +30 / +60 min | Synthetic CGM | MAE 8 / 12 mg/dL |
-| `glucose_spike_90m` | Glucose above 250 within 90 min | Synthetic CGM | AUROC 0.97; 74% of spikes warned at least 60 min ahead |
+| `glucose_forecast` | Glucose +30 / +60 min | Synthetic + **real** CGM (ShanghaiT2DM, 100 people) | Real held-out patients: MAE 9.8 / 17.1 mg/dL (vs 11.8 / 19.4 "stays the same") |
+| `glucose_spike_90m` | Glucose above 250 within 90 min | Synthetic + **real** CGM | Real held-out patients: AUROC 0.93; 72% of spikes warned at least 30 min ahead |
 
 **Genetic markers (simulated):** a kidney polygenic score at or above the 80th percentile multiplies
 the odds of the DKD outcome by 1.35 (below the 20th: 0.85). TCF7L2 and CYP2C9 add sulfonylurea

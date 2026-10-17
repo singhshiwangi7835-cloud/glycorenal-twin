@@ -180,67 +180,107 @@
     ]
   },
   "glucose_forecast": {
-    "data": "synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet",
-    "n_train_rows": 127872,
-    "n_test_rows": 31968,
+    "data": "synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people)",
+    "n_train_rows": 214275,
+    "n_test_rows": 56542,
+    "n_test_rows_real": 20578,
     "plus_30min": {
-      "mae": 8.2,
-      "rmse": 12.7,
-      "mae_persistence_baseline": 14.5,
-      "hypo_events_in_test": 58,
-      "hypo_sensitivity": 0.086,
-      "hypo_warnings_correct": 0.192
+      "mae": 9.3,
+      "rmse": 14.3,
+      "mae_persistence_baseline": 14.2,
+      "hypo_events_in_test": 358,
+      "hypo_sensitivity": 0.779,
+      "hypo_warnings_correct": 0.293,
+      "real_test_mae": 9.8,
+      "real_test_mae_persistence": 11.8
     },
     "plus_60min": {
-      "mae": 12.2,
-      "rmse": 19.3,
-      "mae_persistence_baseline": 23.5,
-      "hypo_events_in_test": 58,
-      "hypo_sensitivity": 0.0,
-      "hypo_warnings_correct": null
+      "mae": 15.2,
+      "rmse": 23.4,
+      "mae_persistence_baseline": 23.3,
+      "hypo_events_in_test": 357,
+      "hypo_sensitivity": 0.535,
+      "hypo_warnings_correct": 0.317,
+      "real_test_mae": 17.1,
+      "real_test_mae_persistence": 19.4
     }
   },
   "glucose_spike_90m": {
-    "data": "synthetic CGM (40 simulated patients x 14 days); CGMacros not downloaded yet",
+    "data": "synthetic CGM (40 simulated patients x 14 days) + REAL ShanghaiT2DM CGM (100 people)",
     "horizon_minutes": 90,
     "spike_above_mg_dl": 250.0,
     "alert_probability": 0.5,
-    "n_train_rows": 120353,
-    "n_test_rows": 30733,
-    "event_rate": 0.066,
-    "auroc_test": 0.968,
-    "auroc_without_habits": 0.969,
-    "sensitivity": 0.721,
-    "precision": 0.607,
-    "spikes_in_test": 138,
-    "spikes_warned_pct": 0.993,
-    "spikes_warned_60min_ahead_pct": 0.739,
-    "median_lead_minutes": 85,
+    "n_train_rows": 198809,
+    "n_test_rows": 57501,
+    "event_rate": 0.093,
+    "auroc_test": 0.956,
+    "auroc_without_habits": 0.95,
+    "sensitivity": 0.767,
+    "precision": 0.595,
+    "spikes_in_test": 445,
+    "spikes_warned_pct": 0.998,
+    "spikes_warned_60min_ahead_pct": 0.735,
+    "median_lead_minutes": 90,
+    "real_test": {
+      "n_rows": 20460,
+      "event_rate": 0.041,
+      "auroc": 0.928,
+      "sensitivity": 0.497,
+      "precision": 0.4,
+      "spikes": 155,
+      "spikes_warned_pct": 1.0,
+      "spikes_warned_30min_ahead_pct": 0.723,
+      "median_lead_minutes": 55
+    },
     "top_features": [
       {
         "label": "habit_peak_next_90m",
-        "share": 0.238
+        "share": 0.3
       },
       {
         "label": "habit_spike_rate_next_90m",
-        "share": 0.202
+        "share": 0.147
       },
       {
         "label": "carbs_30m",
-        "share": 0.075
+        "share": 0.071
       },
       {
         "label": "habit_carbs_next_90m",
-        "share": 0.062
-      },
-      {
-        "label": "g_lag_30",
-        "share": 0.051
+        "share": 0.064
       },
       {
         "label": "g_now",
-        "share": 0.042
+        "share": 0.057
+      },
+      {
+        "label": "slope_15",
+        "share": 0.044
       }
     ]
+  },
+  "shanghai_synthetic_only_model": {
+    "used": true,
+    "data": "ShanghaiT2DM (real CGM, 100 people with T2DM, 109 recordings; carbs not recorded)",
+    "n_forecast_points": 110977,
+    "plus_30min": {
+      "mae": 17.3,
+      "mae_persistence_baseline": 12.0
+    },
+    "plus_60min": {
+      "mae": 30.4,
+      "mae_persistence_baseline": 20.2
+    },
+    "spike": {
+      "n_points": 107277,
+      "event_rate": 0.029,
+      "auroc": 0.871,
+      "sensitivity": 0.181,
+      "precision": 0.241,
+      "spikes": 561,
+      "spikes_warned_pct": 0.75,
+      "spikes_warned_30min_ahead_pct": 0.335,
+      "median_lead_minutes": 15
+    }
   }
 }

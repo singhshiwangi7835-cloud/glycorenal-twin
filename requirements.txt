@@ -27,3 +27,5 @@ fhir.resources==8.2.0
 openai==2.21.0
 fpdf2==2.8.6
 uharfbuzz==0.53.0
+openpyxl==3.1.5      # read ShanghaiT2DM Excel files (training only)
+xlrd==2.0.1          # old .xls files in ShanghaiT2DM

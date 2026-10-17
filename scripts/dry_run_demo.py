@@ -168,6 +168,18 @@ def main() -> int:
         alerts = [a for x in ticks(12) for a in x["new_alerts"]]
         check(any("Low glucose likely" in a for a in alerts), f"alerts: {alerts}")
 
+        step(115, "Real patient CGM (ShanghaiT2DM) through the live twin")
+        from src.pipeline import shanghai
+        if shanghai.available():
+            simulator.stop(Session(engine), "IND-0107")
+            st = c.post("/patients/IND-0107/devices/simulator/start", headers=doc, json={"source": "shanghai"}).json()
+            sent = ticks(8, "IND-0107")
+            check(st["running"] and "ShanghaiT2DM" in st["source"] and len(sent) == 8,
+                  f"{st['source']}: {[x['glucose'] for x in sent]}")
+            simulator.stop(Session(engine), "IND-0107")
+        else:
+            print("    --  ShanghaiT2DM not downloaded; skipped")
+
         step(12, "Both PDF reports")
         SAMPLES.mkdir(parents=True, exist_ok=True)
         for kind, hdr in (("doctor", doc), ("patient", pat)):
