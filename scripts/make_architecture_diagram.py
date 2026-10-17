@@ -41,9 +41,9 @@ def main():
 
     # data sources (left column)
     ax.text(1.55, 7.95, "DATA SOURCES", ha="center", fontsize=8, weight="bold", color=GREY)
-    sources = [("Hospital EHR", ["FHIR R4: HAPI server,", "Synthea bundles"]),
+    sources = [("Hospital EHR", ["FHIR R4: HAPI, Synthea;", "labs, meds, genetics"]),
                ("Lab results", ["manual entry, lab CSV"]),
-               ("Wearables", ["CGM simulator (CGMacros),", "Libre CSV, Dexcom (soon)"]),
+               ("Wearables", ["CGM, heart rate, steps,", "Libre CSV, Dexcom (soon)"]),
                ("Patient app", ["meals, doses taken,", "BP, weight, sleep"])]
     for i, (t, ln) in enumerate(sources):
         box(ax, 0.2, 6.55 - i * 1.6, 2.7, 1.3, t, ln, "src")
@@ -56,7 +56,7 @@ def main():
             weight="bold", color=GREY)
     box(ax, 3.6, 4.3, 2.6, 1.7, "Translator", ["LOINC map, units,", "de-duplicate,", "living-twin loop"])
     box(ax, 3.6, 2.3, 2.6, 1.4, "SQLite database", ["Observation, Medication,", "Meal, Alert, Prediction"])
-    box(ax, 6.6, 4.3, 2.4, 1.7, "Twin state", ["eGFR CKD-EPI 2021,", "KDIGO, CGM metrics,", "trends, adherence"])
+    box(ax, 6.6, 4.3, 2.4, 1.7, "Twin state", ["eGFR CKD-EPI 2021, KDIGO,", "CGM metrics, adherence,", "genetics, personal twin"])
     arrow(ax, 4.9, 4.3, 4.9, 3.7)
     arrow(ax, 6.2, 3.0, 7.0, 4.3)
 
@@ -64,10 +64,10 @@ def main():
     ax.add_patch(FancyBboxPatch((9.3, 1.0), 2.95, 6.6, boxstyle="round,pad=0.02,rounding_size=0.15",
                                 fc="#f6fbf6", ec="#2e7d32", lw=1.2))
     ax.text(10.78, 7.45, "TWIN ENGINE", ha="center", fontsize=8, weight="bold", color="#2e7d32")
-    eng = [("T2DM predictor", ["glucose +30/+60 min,", "HbA1c in 3 months"]),
+    eng = [("T2DM predictor", ["glucose +30/+60 min,", "spike 90 min ahead,", "HbA1c in 3 months"]),
            ("DKD predictor", ["onset / progression,", "3-year risk + drivers"]),
            ("Treatment advisor", ["eligibility, simulate,", "rank (trial HRs)"]),
-           ("Alerts + reminders", ["hypo predicted, UACR,", "doses, stale sensor"])]
+           ("Alerts + reminders", ["hypo / spike predicted,", "UACR, doses, sensor"])]
     for i, (t, ln) in enumerate(eng):
         box(ax, 9.45, 5.95 - i * 1.6, 2.65, 1.3, t, ln, "brain")
     arrow(ax, 9.0, 5.15, 9.45, 5.15)
