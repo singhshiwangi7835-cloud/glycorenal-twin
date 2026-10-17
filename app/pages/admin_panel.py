@@ -1,5 +1,5 @@
-"""Admin panel (minimal): overview, users, link patient to doctor, import EHR samples,
-device status, reset demo data.
+"""Admin panel: overview, users, link patient to doctor, hospital EHR (connect to a FHIR server, search,
+import and keep patients synced; upload FHIR files; Synthea samples), device status, reset demo data.
 """
 
 from __future__ import annotations
@@ -65,13 +65,104 @@ with tabs[1]:
             st.rerun()
 
 with tabs[2]:
+    doctor_names = {d["id"]: d["full_name"] or d["username"] for d in ov["doctors"]}
+    assign = st.selectbox("Assign imported patients to", [None] + list(doctor_names),
+                          format_func=lambda i: "(no doctor yet)" if i is None else doctor_names[i], key="ehr_doc")
+
+    def _show(r: dict, label: str) -> None:
+        st.write(f"✓ {label} → **{r['patient_id']}** {r.get('display_name', '')}: {r['observations_saved']} results, "
+                 f"{r['medications_added']} medicines"
+                 + (f", DKD 3-yr risk {r['dkd_risk_3y']:.0%}" if r.get("dkd_risk_3y") is not None else ""))
+
+    # ---- 1. live connection to a hospital FHIR server ----
+    st.markdown("#### 1. Hospital EHR (FHIR R4 server)")
+    st.caption("Patients imported from the server stay linked: new lab results and prescriptions are pulled "
+               "again automatically, so nothing has to be typed twice.")
+    try:
+        status = api.get("/ehr/server")
+    except api.APIError as e:
+        status = {"ok": False, "base_url": "", "error": str(e)}
+    base = st.text_input("FHIR server address", value=status.get("base_url", ""),
+                         help="Default comes from FHIR_BASE_URL in .env (public HAPI R4 test server). A hospital "
+                              "server needs an access token in FHIR_AUTH_TOKEN.")
+    if base != status.get("base_url"):
+        status = api.get("/ehr/server", base_url=base)
+    if status.get("ok"):
+        st.success(f"Connected: {status.get('software') or 'FHIR server'}, FHIR {status.get('fhir_version')}"
+                   + (" · with access token" if status.get("auth") else ""))
+    else:
+        st.error(f"Cannot reach the server: {status.get('error', '')}")
+
+    cc = st.columns([3, 2, 1])
+    name = cc[0].text_input("Search patients by name (empty = any)", key="ehr_name")
+    t2dm = cc[1].checkbox("Only patients with type 2 diabetes", value=True, key="ehr_t2dm")
+    if cc[2].button("Search", disabled=not status.get("ok")):
+        try:
+            st.session_state["ehr_hits"] = api.get("/ehr/search", name=name, diabetes_only=t2dm, base_url=base)
+        except api.APIError as e:
+            ui.show_error(e)
+    hits = st.session_state.get("ehr_hits", [])
+    if hits:
+        table = pd.DataFrame(hits)
+        table.insert(0, "import", False)
+        picked = st.data_editor(table, hide_index=True, width="stretch", disabled=list(table.columns[1:]),
+                                column_config={"import": st.column_config.CheckboxColumn("Import"),
+                                               "imported_as": "Already here as"}, key="ehr_pick")
+        chosen = picked[picked["import"]]
+        if st.button(f"Import and link {len(chosen)} patient(s)", type="primary", disabled=chosen.empty):
+            for _, row in chosen.iterrows():
+                with st.spinner(f"Pulling {row['name']} from the hospital server ..."):
+                    try:
+                        _show(api.post("/ehr/fetch", json={"fhir_patient_id": row["fhir_id"], "base_url": base,
+                                                           "doctor_id": assign}), row["name"])
+                    except api.APIError as e:
+                        st.write(f"✗ {row['name']}: {e}")
+            st.session_state.pop("ehr_hits", None)
+    with st.expander("Import by FHIR patient id"):
+        fid = st.text_input("FHIR patient id", key="ehr_fid")
+        if st.button("Import and link", disabled=not fid.strip()):
+            try:
+                _show(api.post("/ehr/fetch", json={"fhir_patient_id": fid.strip(), "base_url": base,
+                                                   "doctor_id": assign}), fid.strip())
+            except api.APIError as e:
+                ui.show_error(e)
+
+    links = api.get("/ehr/links")
+    if links["patients"]:
+        every = f"every {links['sync_minutes']} min" if links["sync_minutes"] else "only when you press Sync now"
+        st.markdown(f"**Linked patients** (re-synced {every})")
+        st.dataframe(pd.DataFrame(links["patients"]), hide_index=True, width="stretch")
+        if st.button("🔄 Sync now"):
+            with st.spinner("Pulling new results from the hospital server ..."):
+                try:
+                    r = api.post("/ehr/sync")
+                    st.success(f"Synced {r['synced']} patient(s), {r['new_observations']} new results"
+                               + (f", {r['failed']} failed" if r["failed"] else ""))
+                except api.APIError as e:
+                    ui.show_error(e)
+
+    # ---- 2. files ----
+    st.markdown("#### 2. Upload FHIR files")
+    files = st.file_uploader("FHIR R4 Bundles (.json), one or more", type=["json"], accept_multiple_files=True)
+    if files and st.button(f"Import {len(files)} file(s)", type="primary"):
+        import json
+        for f in files:
+            try:
+                q = f"?doctor_id={assign}" if assign else ""
+                _show(api.post(f"/ehr/import/bundle{q}", json=json.loads(f.getvalue())), f.name)
+            except (api.APIError, ValueError) as e:
+                st.write(f"✗ {f.name}: {e}")
+
+    # ---- 3. samples ----
+    st.markdown("#### 3. Sample patients")
     samples = api.get("/ehr/samples")
-    st.write(f"{len(samples)} Synthea FHIR sample bundles in data/fhir_samples/")
-    if st.button("Import all Synthea samples", type="primary"):
+    st.caption(f"{len(samples)} Synthea FHIR sample bundles in data/fhir_samples/")
+    if st.button("Import all Synthea samples"):
         for name in samples:
             try:
-                r = api.post("/ehr/import/sample", json={"name": name})
-                st.write(f"✓ {name} → {r['patient_id']} ({r['observations_saved']} observations)")
+                q = f"?doctor_id={assign}" if assign else ""
+                r = api.post("/ehr/import/sample" + q, json={"name": name})
+                _show(r, name)
             except api.APIError as e:
                 st.write(f"✗ {name}: {e}")
 

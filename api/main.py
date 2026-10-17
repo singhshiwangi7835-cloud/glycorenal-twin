@@ -30,7 +30,7 @@ from src.alerts.engine import check_stale_sensors
 from src.db.models import Patient
 from src.db.seed import seed_demo
 from src.db.session import engine, init_db, is_empty
-from src.ingestion import simulator
+from src.ingestion import fhir_import, simulator
 from src.meals.engine import compute_spikes
 from src.reminders.engine import ensure_dose_events, mark_missed
 from src.twin.engine import run_all
@@ -73,6 +73,9 @@ async def lifespan(app: FastAPI):
         scheduler.add_job(_job(ensure_dose_events, "dose events"), "cron", hour=0, minute=5, id="doses")
         scheduler.add_job(_job(run_all, "daily twin"), "cron", hour=2, minute=0, id="daily_twin")
         scheduler.add_job(_job(refit_all, "personal twins"), "cron", hour=2, minute=30, id="personal_twin")
+        if s.ehr_sync_minutes > 0:
+            scheduler.add_job(_job(fhir_import.sync_all, "hospital EHR sync"), "interval",
+                              minutes=s.ehr_sync_minutes, id="ehr_sync")
         scheduler.start()
         runner = simulator.Runner(engine, s.sim_speed_seconds)
         runner.start()

@@ -40,3 +40,47 @@ def test_export_then_reimport_round_trip(client):
     b["entry"][0]["resource"]["id"] = "roundtrip-1"
     r = client.post("/ehr/import/bundle", headers=h, json=b).json()
     assert r["created"] and r["observations_saved"] > 20
+
+
+def test_hospital_link_search_and_resync(client, monkeypatch):
+    """A fake FHIR server: import links the patient, a re-sync updates it without duplicates."""
+    import json
+
+    import httpx
+    from sqlmodel import Session, select
+
+    from src.db.models import Observation
+    from src.db.session import engine
+    from src.ingestion import fhir_import
+
+    sample = json.loads((fhir_import.SAMPLES / fhir_import.list_samples()[-1]).read_text(encoding="utf-8"))
+    pat = next(e["resource"] for e in sample["entry"] if e["resource"]["resourceType"] == "Patient")
+
+    def handler(req: httpx.Request) -> httpx.Response:
+        if req.url.path.endswith("/metadata"):
+            return httpx.Response(200, json={"fhirVersion": "4.0.1", "software": {"name": "Test FHIR"}})
+        if req.url.path.endswith("/$everything"):
+            return httpx.Response(200, json=sample)
+        if req.url.path.endswith("/Patient"):
+            assert "44054006" in str(req.url)  # type 2 diabetes filter
+            return httpx.Response(200, json={"resourceType": "Bundle", "entry": [{"resource": pat}]})
+        return httpx.Response(404)
+
+    monkeypatch.setattr(fhir_import, "_client", lambda timeout=30: httpx.Client(transport=httpx.MockTransport(handler)))
+    base = "https://fhir.example-hospital.test/R4"
+    h = login(client, "admin", "admin123")
+    assert client.get("/ehr/server", headers=h, params={"base_url": base}).json()["ok"]
+    hits = client.get("/ehr/search", headers=h, params={"base_url": base}).json()
+    assert hits[0]["fhir_id"] == pat["id"]
+    r = client.post("/ehr/fetch", headers=h, json={"fhir_patient_id": pat["id"], "base_url": base}).json()
+    pid = r["patient_id"]
+    assert r["linked_to"] == base
+    links = client.get("/ehr/links", headers=h).json()["patients"]
+    assert any(x["patient_id"] == pid and x["status"] == "linked" for x in links)
+    with Session(engine) as s:
+        before = len(s.exec(select(Observation).where(Observation.patient_id == pid)).all())
+    sync = client.post("/ehr/sync", headers=h).json()
+    assert sync["synced"] >= 1 and sync["failed"] == 0
+    with Session(engine) as s:
+        assert len(s.exec(select(Observation).where(Observation.patient_id == pid)).all()) == before
+    assert client.get("/ehr/search", headers=h, params={"base_url": base}).json()[0]["imported_as"] == pid

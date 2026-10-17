@@ -37,6 +37,8 @@ class Settings(BaseSettings):
 
     # data sources
     fhir_base_url: str = "https://hapi.fhir.org/baseR4"
+    fhir_auth_token: str = ""          # optional Bearer token for a hospital FHIR server (never commit)
+    ehr_sync_minutes: int = 60         # linked hospital patients are re-pulled this often (0 = off)
     dexcom_client_id: str = ""
     dexcom_client_secret: str = ""
     dexcom_base_url: str = "https://sandbox-api.dexcom.com"

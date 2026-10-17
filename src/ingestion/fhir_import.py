@@ -1,7 +1,11 @@
 """Hospital EHR via FHIR R4: import a bundle, fetch from a FHIR server, export a twin.
 
 import_bundle()   Bundle (Synthea sample or hospital) -> Patient, Observations, Medications
-fetch_patient()   GET {FHIR_BASE_URL}/Patient/{id}/$everything (default: public HAPI R4 test server)
+fetch_patient()   GET {FHIR_BASE_URL}/Patient/{id}/$everything (default: public HAPI R4 test server);
+                  the patient stays LINKED to that server and is re-synced automatically
+server_status()   GET {base}/metadata: is the hospital server reachable, which FHIR version
+search_patients() find patients on the server by name, optionally only those with type 2 diabetes
+sync_all()        re-pull every linked patient (background job, every EHR_SYNC_MINUTES)
 export_bundle()   our patient -> FHIR R4 Bundle (GET /patients/{id}/fhir)
 
 Mapping: Patient (name, gender, birthDate); Condition (SNOMED 44054006 T2DM -> diabetes onset
@@ -25,7 +29,7 @@ from sqlmodel import Session, select
 from config.settings import get_settings
 from src.clinical import loinc
 from src.clinical.drugs import classify
-from src.db.models import Medication, Observation, Patient
+from src.db.models import DeviceConnection, Medication, Observation, Patient
 from src.ingestion.translator import ObservationIn, save
 
 SAMPLES = Path(__file__).resolve().parents[2] / "data" / "fhir_samples"
@@ -170,13 +174,102 @@ def import_sample(session: Session, name: str, doctor_id: int | None = None) -> 
     return import_bundle(session, json.loads(path.read_text(encoding="utf-8")), doctor_id)
 
 
+EHR_PROVIDER = "ehr_fhir"   # DeviceConnection.provider for a patient linked to a hospital FHIR server
+
+
+def _base(base_url: str | None) -> str:
+    return (base_url or get_settings().fhir_base_url).rstrip("/")
+
+
+def _client(timeout: float = 30) -> httpx.Client:
+    headers = {"Accept": "application/fhir+json"}
+    token = get_settings().fhir_auth_token
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return httpx.Client(timeout=timeout, headers=headers, follow_redirects=True)
+
+
+def server_status(base_url: str | None = None) -> dict:
+    base = _base(base_url)
+    try:
+        with _client(15) as c:
+            r = c.get(f"{base}/metadata", params={"_summary": "true"})
+            r.raise_for_status()
+            m = r.json()
+        return {"ok": True, "base_url": base, "fhir_version": m.get("fhirVersion"),
+                "software": (m.get("software") or {}).get("name"), "auth": bool(get_settings().fhir_auth_token)}
+    except (httpx.HTTPError, ValueError) as e:
+        return {"ok": False, "base_url": base, "error": str(e)[:200]}
+
+
+def search_patients(session: Session, name: str = "", diabetes_only: bool = True,
+                    base_url: str | None = None, count: int = 20) -> list[dict]:
+    """Patients on the FHIR server. diabetes_only: has a Condition coded SNOMED 44054006 (T2DM)."""
+    params: dict = {"_count": count}
+    if name.strip():
+        params["name"] = name.strip()
+    if diabetes_only:
+        params["_has:Condition:patient:code"] = f"http://snomed.info/sct|{SNOMED_T2DM}"
+    with _client() as c:
+        r = c.get(f"{_base(base_url)}/Patient", params=params)
+        r.raise_for_status()
+        bundle = r.json()
+    local = {p.fhir_id: p.id for p in session.exec(select(Patient).where(Patient.fhir_id.is_not(None)))}
+    out = []
+    for e in bundle.get("entry", []):
+        p = e.get("resource", {})
+        if p.get("resourceType") != "Patient":
+            continue
+        n = (p.get("name") or [{}])[0]
+        out.append({"fhir_id": p.get("id"),
+                    "name": " ".join(n.get("given", []) + [n.get("family", "")]).strip() or "(no name)",
+                    "gender": p.get("gender"), "birth_date": p.get("birthDate"),
+                    "imported_as": local.get(p.get("id"))})
+    return out
+
+
+def _link(session: Session, patient_id: str, base: str, fhir_id: str, status: str = "linked") -> None:
+    conn = session.exec(select(DeviceConnection).where(DeviceConnection.patient_id == patient_id,
+                                                       DeviceConnection.provider == EHR_PROVIDER)).first()
+    if conn is None:
+        conn = DeviceConnection(patient_id=patient_id, provider=EHR_PROVIDER)
+    conn.status = status  # "linked", not "connected": no CGM is expected from a hospital record
+    conn.tokens = {"base_url": base, "fhir_id": fhir_id}
+    conn.last_sync = datetime.now(timezone.utc)
+    session.add(conn)
+    session.commit()
+
+
+def linked_patients(session: Session) -> list[dict]:
+    rows = session.exec(select(DeviceConnection).where(DeviceConnection.provider == EHR_PROVIDER)).all()
+    return [{"patient_id": c.patient_id, "fhir_id": c.tokens.get("fhir_id"), "server": c.tokens.get("base_url"),
+             "status": c.status, "last_sync": c.last_sync.isoformat() if c.last_sync else None} for c in rows]
+
+
+def sync_all(session: Session) -> dict:
+    """Re-pull every linked patient, so new labs and medicines arrive without typing anything again."""
+    done, failed, new_obs = 0, 0, 0
+    conns = session.exec(select(DeviceConnection).where(DeviceConnection.provider == EHR_PROVIDER)).all()
+    for pid, tokens in [(c.patient_id, dict(c.tokens)) for c in conns]:
+        base, fid = tokens.get("base_url"), tokens.get("fhir_id")
+        try:
+            r = fetch_patient(session, fid, base_url=base)
+            done += 1
+            new_obs += r["observations_saved"]
+        except (httpx.HTTPError, ValueError) as e:
+            failed += 1
+            _link(session, pid, base, fid, status=f"error: {str(e)[:80]}")
+    return {"synced": done, "failed": failed, "new_observations": new_obs}
+
+
 def fetch_patient(session: Session, fhir_patient_id: str, doctor_id: int | None = None,
                   base_url: str | None = None, max_pages: int = 5) -> dict:
-    """Pull one patient's record from a FHIR R4 server ($everything, following 'next' pages)."""
-    base = (base_url or get_settings().fhir_base_url).rstrip("/")
+    """Pull one patient's record from a FHIR R4 server ($everything, following 'next' pages).
+    Importing again updates the same patient (no duplicates), so this is also the re-sync."""
+    base = _base(base_url)
     url = f"{base}/Patient/{fhir_patient_id}/$everything?_count=200"
     entries = []
-    with httpx.Client(timeout=30, headers={"Accept": "application/fhir+json"}) as client:
+    with _client() as client:
         for _ in range(max_pages):
             r = client.get(url)
             r.raise_for_status()
@@ -186,8 +279,11 @@ def fetch_patient(session: Session, fhir_patient_id: str, doctor_id: int | None 
             if not nxt:
                 break
             url = nxt
-    return import_bundle(session, {"resourceType": "Bundle", "type": "collection", "entry": entries},
-                         doctor_id)
+    result = import_bundle(session, {"resourceType": "Bundle", "type": "collection", "entry": entries},
+                           doctor_id)
+    _link(session, result["patient_id"], base, fhir_patient_id)
+    result["linked_to"] = base
+    return result
 
 
 def export_bundle(session: Session, patient_id: str) -> dict:
