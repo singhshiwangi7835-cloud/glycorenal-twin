@@ -11,7 +11,9 @@ import os
 import httpx
 import streamlit as st
 
-API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
+# "localhost" is swapped for 127.0.0.1: on Windows, localhost tries IPv6 first and every call waits ~2 s
+# before falling back (the API listens on IPv4), which made each screen take several seconds.
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000").rstrip("/").replace("//localhost", "//127.0.0.1")
 TIMEOUT = 40
 
 

@@ -1,14 +1,18 @@
-# Design: logo navy accent, warm off-white background (KDIGO colours are used only for risk)
+# Design (glycorenal-twin-ui_3.html): logo navy accent, warm off-white background, white inputs with a
+# light border. KDIGO colours are used only for risk.
 [theme]
 base = "light"
 primaryColor = "#1C3C5F"
 backgroundColor = "#F6F5F1"
-secondaryBackgroundColor = "#EFEDE7"
+secondaryBackgroundColor = "#FFFFFF"
 textColor = "#13212A"
+borderColor = "#E5E3DC"
+showWidgetBorder = true
 baseRadius = "8px"
 
 [theme.sidebar]
 backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F6F5F1"
 
 [client]
 toolbarMode = "minimal"
