@@ -32,5 +32,4 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/
-recordings/
-scripts/record_demo.py
+
