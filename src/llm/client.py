@@ -54,6 +54,13 @@ def complete(system: str, user: str, max_tokens: int = 5000, attempts: int = 2) 
                     model=model, max_tokens=max_tokens, temperature=0.2,
                     messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
                 text = (r.choices[0].message.content or "").strip()
+                cut = r.choices[0].finish_reason == "length"
+                if text and cut and attempt + 1 < attempts:  # answer stopped mid-sentence: try once more
+                    log.warning("LLM %s answer was cut off, attempt %d", name, attempt + 1)
+                    continue
+                if text and cut:  # still cut: keep only the complete sentences
+                    end = max(text.rfind(". "), text.rfind(".\n"), text.rfind("।"))
+                    text = text[:end + 1].strip() if end > 0 else text
                 if text:
                     return text, f"{name} ({model})"
                 log.warning("LLM %s returned no text (finish=%s), attempt %d", name, r.choices[0].finish_reason,
