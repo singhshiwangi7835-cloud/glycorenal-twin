@@ -60,6 +60,14 @@ def main():
     arrow(ax, 4.9, 4.3, 4.9, 3.7)
     arrow(ax, 6.2, 3.0, 7.0, 4.3)
 
+    # progressive twin callout (personal models refit nightly)
+    ax.plot([7.8, 7.8], [4.3, 2.75], color="#e8702a", ls="--", lw=1.8)
+    ax.add_patch(FancyBboxPatch((6.55, 1.0), 2.5, 1.6, boxstyle="round,pad=0.02,rounding_size=0.12",
+                                fc="#e8702a", ec="#e8702a", lw=1.3))
+    ax.text(7.8, 2.4, "Progressive twin", ha="center", va="top", fontsize=11, weight="bold", color="white")
+    ax.text(7.8, 2.05, "starts at population values,\nrefits nightly on the\npatient's own data",
+            ha="center", va="top", fontsize=9, color="white", linespacing=1.3)
+
     # twin engine
     ax.add_patch(FancyBboxPatch((9.3, 1.0), 2.95, 6.6, boxstyle="round,pad=0.02,rounding_size=0.15",
                                 fc="#f6fbf6", ec="#2e7d32", lw=1.2))

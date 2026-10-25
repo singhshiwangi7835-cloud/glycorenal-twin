@@ -15,6 +15,8 @@ Made for the Digital Twin Challenge 2026 (Happiest Health Summit, Bengaluru).
 
 ![Architecture](docs/architecture.png)
 
+Presentation deck: [docs/Glycorenal twin.pptx](docs/Glycorenal%20twin.pptx)
+
 ## Features
 
 | Area | Details |
