@@ -17,6 +17,8 @@ Made for the Digital Twin Challenge 2026 (Happiest Health Summit, Bengaluru).
 
 Presentation deck: [docs/Glycorenal twin.pptx](docs/Glycorenal%20twin.pptx)
 
+Demo video: [https://youtu.be/65URHLJaF6M](https://youtu.be/65URHLJaF6M)
+
 ## Features
 
 | Area | Details |
